@@ -32,7 +32,7 @@
         <style>
             .margin {
                 background: burlywood;
-                overflow: hidden;
+                overflow: hidden; /* BFC */
             }
             .margin p {
                 margin: 5px auto 25px;
@@ -40,7 +40,7 @@
             }
         </style>
         <p>1</p>
-        <div style="overflow: hidden">
+        <div style="overflow: hidden"> <!--BFC是独立的，消除与外部元素的重叠-->
             <p>2</p>
         </div>
         <p>3</p>

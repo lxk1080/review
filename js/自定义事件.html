@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<button id="btn">点我</button>
+	</body>
+</html>
+
+<script>
+	var btn = document.querySelector('#btn');
+	
+	var eve = new Event('custom');
+	
+	btn.addEventListener('custom', function(){
+		alert('this is a custom event!')
+	});
+	
+	btn.dispatchEvent(eve);
+	
+	btn.onclick = function() {
+		btn.dispatchEvent(eve);
+	}
+</script>

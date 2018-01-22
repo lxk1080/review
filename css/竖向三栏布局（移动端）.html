@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1 user-scalable=0"/>
+    <title>Layout</title>
+    <style>
+        html * {
+            padding: 0;
+            margin: 0;
+        }
+        .header {
+            height: 100px;
+            background: red;
+        }
+        .content {
+            position: absolute;
+            top: 100px;
+            bottom: 100px;
+            width: 100%;
+            background: yellow;
+            overflow: auto;
+        }
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 100px;
+            background: blue;
+        }
+    </style>
+</head>
+<body>
+    <header class="header"></header>
+    <article class="content">
+        <h1>内容区</h1>
+        <p>1. 这是内容区</p>
+        <p>1. 这是内容区</p>
+        <p>1. 这是内容区</p>
+        <p>1. 这是内容区</p>
+        <p>1. 这是内容区</p>
+        <p>1. 这是内容区</p>
+        <p>1. 这是内容区</p>
+        <p>1. 这是内容区</p>
+        <p>1. 这是内容区</p>
+        <p>1. 这是内容区</p>
+        <p>1. 这是内容区</p>
+    </article>
+    <footer class="footer"></footer>
+</body>
+</html>

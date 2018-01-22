@@ -1,0 +1,54 @@
+三、 一 M 二 M
+--
+页面布局
+CSS盒模型
+DOM事件
+HTTP协议
+面向对象
+原型链
+通信、安全、算法
+
+1、三栏布局
+--
+float（兼容性好，要处理浮动问题）
+absolute（脱离文档流，不建议采用）
+flex（最完美，高度可以不固定）
+table（兼容性好，高度可以不固定）
+grid（网格布局）
+
+2、CSS盒模型
+--
+标准模型 + IE模型
+content-box （标准模型）
+border-box （IE模型）
+
+--js设置获取盒模型对应的宽高
+--
+el.style.width/height （只能取到内联的样式）
+el.currentStyle.width/height （只有IE支持）
+window.getComputedStyle(el).width （兼容谷歌、火狐）
+el.getBoundingClientRect().width（获取宽高 以及 元素的各个边到视窗左上的距离）
+
+--边距重叠的情况
+--
+1、父子元素上下边距重叠
+2、兄弟元素上下边距重叠
+3、空元素上下边距重叠
+
+BFC (块状格式化上下文)
+--
+BFC原理（渲染规则）
+ 1. BFC的垂直方向边距会重叠
+ 2. BFC不会与浮动的元素重叠
+ 3. BFC是一个独立的容器，外面的元素不会影响里面的，反之亦然
+ 4. BFC的子元素即使是float也会参与高度运算
+创建BFC
+ 1. float的值不为none
+ 2. position的值不为static或relative
+ 3. display属性与table相关
+ 4. overflow不为visible
+
+
+
+
+

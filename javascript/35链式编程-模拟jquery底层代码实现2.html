@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+		<input type="button" value="点击" id="inp">
+        
+		<script>
+		
+		//模拟jquery底层代码实现链式编程
+		
+		//块级作用域
+		//1.程序启动，代码直接执行
+		//2.内部成员变量外部无法访问
+		//__________________________________________________构造函数模版
+		
+		(function(window,undefined){
+			
+			// $ 最常用的对象  返回给外界  大型程序开发一般使用"_"作为私用的对象（规范）
+			function _$(arguments){
+				//实现各种方法的代码
+				
+				//id选择器的正则表达式
+				var idselector = /#\w+/;
+				this.dom;  //接收所得到的元素
+				
+				//如果参数与正则表达式匹配，则接收dom元素
+				if(idselector.test(arguments[0])){  
+						this.dom = document.getElementById(arguments[0].substring(1));
+					} else {
+							throw new Error('不是id选择器的对应元素');
+						}
+				
+			}
+			
+			// 在Function类上扩展一个可以实现链式编程的方法（待续）
+			/*Function.prototype.method = function(methodName , fn){
+					this.prototype[methodName] = fn;
+					return this;  //链式编程的关键
+				}*/
+			
+			//______________________________________________________构造函数原型对象
+			
+			//在_$的原型对象上加一些公共的方法
+			_$.prototype = {	
+					constructor : _$,
+					addEvent : function(type,fn){  
+						if(window.addEventListener){   //FF
+								this.dom.addEventListener(type,fn);
+							} else if(window.attachEvent){   //IE
+								this.dom.attachEvent('on'+type,fn);
+							}
+							return this;
+					},
+					setStyle : function(prop,val){
+						this.dom.style[prop] = val; 
+						return this;
+					}
+				};
+				
+			//__________________________________________________与外界建立连接
+			
+			//window上先注册一个全局变量，与外界产生关系，可以在全局作用域中使用
+			window.$ = _$;  
+			
+			//__________________________________________________准备的方法
+			
+			//写一个准备的方法
+			_$.onReady = function(fn){
+					//1.使用$()实例化对象_$,真正的注册到window上
+					window.$ = function(){
+							return new _$(arguments);
+						}
+						
+					//2.执行传入进来的代码
+					fn();
+					
+					//3.实现链式编程（待续）
+					//_$.method('addEvent',function(){}).method('addStyle',function(){});
+						
+				};
+
+			})(window);  //程序的入口，window传入到作用域内
+		
+			//________________________________________________________执行模拟代码
+			
+			$.onReady(function(){
+				$('#inp').setStyle('color','blue').addEvent('click',function(){
+					$('#inp').setStyle('color','red');
+					setTimeout(function(){alert('被点击了')},1); //alert方法默认会先执行，加一个执行延迟即可后执行
+					});
+			})
+		
+		
+		</script>
+
+
+
+
+</body>
+</html>

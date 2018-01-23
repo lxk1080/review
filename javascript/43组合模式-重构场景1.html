@@ -1,0 +1,179 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+		<script src="接口类-鸭式辨型.js"></script>
+        <script src="遍历多维数组的方法.js"></script>
+		<script>
+		
+		/* 场景模拟
+		
+		总公司	    
+				北京分公司
+							销售部
+									销售员1
+									销售员2
+							开发部
+									开发员1
+									开发员2
+				上海分公司
+				
+							销售部
+									销售员3
+									销售员4
+							开发部
+									开发员3
+									开发员4
+					
+			实际的任务是落实到人员身上去做的，只有人员才具备具体的方法实现
+		*/
+		
+		
+		//组合模式的引用场景和特点
+		/*
+		场景：
+		1.存在一批组织成某种层次体系的对象
+		2.希望对这批对象或其中的一部分对象实施一个操作
+		
+		应用特点：
+		1.组合模式只有两种类型的对象：  组合对象    叶子对象（没有子节点的对象）
+		2.这两种类型都实现同一批接口
+		3.一般我们会在组合对象中调用其方法并隐式调用"下级对象"的方法（一般采用递归的形式去做）
+		*/
+		
+		var compositeInterface = new LXK.Interface(compositeInterface,['addChild','getChild']);
+		var leafInterface = new LXK.Interface(leafInterface,['hardWork','sleep']);
+		
+		
+		//组合对象类
+		function Composite(name){
+			this.name = name;     //对象名：可能是公司、分公司、部门等
+			this.type = 'Composite';   //注明是 组合对象
+			this.children = [];   //组合对象都不是最下层的对象，所以有孩子节点
+		}
+		Composite.prototype = {
+			constructor : Composite,
+			addChild : function(child){
+				this.children.push(child);  //添加孩子节点
+				return this;   //链式编程
+			},
+			getChild : function(name){
+				
+				var elements = [];
+				
+				//递归函数
+				var pushLeaf = function(item){  //遍历多维数组，由于是对象，所以要一级一级的去遍历
+						if(item.type === 'Composite'){  //如果类型是组合对象
+							item.children.each(arguments.callee); //继续遍历这个组合对象里的子节点（递归）
+						} else if (item.type === 'Leaf'){   
+							elements.push(item);
+						}
+					};
+				
+				//传递一个name值，指定name下所有类型为Leaf的对象执行操作
+				//如果不是最上层的对象（因为总是以最上层对象调用方法，this代表最上层对象）
+				if(name && name !== this.name){ 
+					
+					this.children.each(function(item){
+						//如果是2级节点
+						if(item.name === name && item.type === 'Composite'){
+							item.children.each(pushLeaf);
+						}	
+						//如果是3级4级........N级节点
+						if(item.name !== name && item.type === 'Composite'){
+							item.children.each(arguments.callee);
+						}
+						//如果传递的name是叶子对象	
+						if(item.name === name && item.type === 'Leaf'){
+							elements.push(item);
+						}	
+					})
+					
+				//不传递 name 参数或者传递总公司名，让总公司里的所有员工工作
+				} else {  
+					this.children.each(pushLeaf);  //引用遍历多维数组的方法，pushLeaf是上面定义的递归函数
+				}
+						
+				return elements;
+			},
+			hardWork : function(name){  //这个 name 可能是公司名、分公司名、部门名、人名等
+				var leafObject = this.getChild(name);  //最终返回叶子对象
+				for(var i = 0; i < leafObject.length; i++){
+					leafObject[i].hardWork();
+				}
+			},
+			sleep : function(name){
+				var leafObject = this.getChild(name);
+				for(var i = 0; i < leafObject.length; i++){
+					leafObject[i].hardWork();
+				}
+			}
+		}
+		
+		//叶子对象类
+		function Leaf(name){
+			this.name = name;    //最下层的节点名字
+			this.type = 'Leaf';  //注明是 叶子对象，叶子对象没有子节点
+		}
+		Leaf.prototype = {
+			constructor : Leaf,
+			addChild : function(){
+				throw new Error('叶子对象不能添加孩子');
+			},
+			getChild : function(name){
+				if(this.name == name){  //获取自己本身
+					return this;
+				}
+				alert('这个对象没有任何的孩子节点');
+			},
+			hardWork : function(){
+				document.write(this.name+'  is working...<br><br>');	
+			},
+			sleep : function(){
+				document.write(this.name+'  is sleeping...<br><br>');	
+			}
+		}
+		
+		
+		
+		//测试代码
+		
+		var p1 = new Leaf('销售员1');
+		var p2 = new Leaf('销售员2');
+		var p3 = new Leaf('销售员3');
+		var p4 = new Leaf('销售员4');
+		var p5 = new Leaf('开发员1');
+		var p6 = new Leaf('开发员2');
+		var p7 = new Leaf('开发员3');
+		var p8 = new Leaf('开发员4');
+		
+		var d1 = new Composite('北京销售部');
+		d1.addChild(p1).addChild(p2);
+		var d2 = new Composite('北京开发部');
+		d2.addChild(p5).addChild(p6);
+		var d3 = new Composite('上海销售部');
+		d3.addChild(p3).addChild(p4);
+		var d4 = new Composite('上海开发部');
+		d4.addChild(p7).addChild(p8);
+		
+		var c1 = new Composite('北京分公司');
+		c1.addChild(d1).addChild(d2);
+		var c2 = new Composite('上海分公司');
+		c2.addChild(d3).addChild(d4);
+		
+		var c = new Composite('LXK总公司');
+		c.addChild(c1).addChild(c2);
+				
+		
+		c.hardWork('上海分公司');
+		
+		</script>
+
+
+
+</body>
+</html>

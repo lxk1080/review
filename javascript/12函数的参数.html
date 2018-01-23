@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>无标题文档</title>
+</head>
+
+<body>
+
+<script>
+
+  function test(a, b, c, d) {
+
+    //函数的形参个数
+
+    var num1 = test.length;
+
+    //函数的实际参数，内部使用一个数组去接受函数的实际参数
+    //arguments对象只能在函数的内部使用和访问
+
+    var num2 = arguments.length;
+
+    //如果使代码更严谨，规定函数的形参和实参相等
+    // arguments.callee指的是函数本身， arguments.callee.length等同于test.length
+
+    if (arguments.callee.length == arguments.length) {
+      return a + b + c + d;
+    } else {
+      return "参数不正确";
+    }
+  }
+
+
+  //arguments.callee通常用于递归操作，指代函数本身，防止原函数发生改变而发生错误
+  //arguments.callee具有动态性
+
+  function fact(num) {
+    if (num <= 1) {
+      return 1;
+    } else {
+      return num * arguments.callee(num - 1); //此时arguments.callee代表fact函数
+    }
+  }
+
+  var f = fact;  //将函数体赋值给一个变量
+
+  fact = null;  //将原函数赋值为null
+
+  alert(f(5));  //此时的arguments.callee指代f()这个函数，函数仍然可以执行
+
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+
+		<script>
+		
+		//类的概念
+		
+		//_______________________________第一种方式  工厂模型
+		
+		function cp(name , age , sex){
+			
+				var obj = new Object();
+				
+				obj.name = name;	
+				obj.age = age;
+				obj.sex = sex;
+				
+				return obj;
+			
+			}
+		
+		var p1 = cp('z3',14,'男');
+		var p2 = cp('qq',16,'女');
+		
+		
+		
+		//______________________________________第二种方式  构造函数
+		
+		//函数的第一个字母大写（类的模版）
+		
+		function Cp(name , age){
+				
+				this.name = name ;
+				this.age = age ;
+					
+			}
+		
+		var p1 = new Cp('xq',18);
+
+		p1 instanceof Cp;  //val="true"，p1 是 Cp 的对象实例
+		p1 instanceof Object;  //val="true"
+		
+		//__________________________________________创建对象的方式
+		
+		//01 作为构造函数
+		var p1 = new Cp('xq',18);
+		
+		//02 作为普通函数
+		Cp('xq',12);   //此时 直接定义在window上，this 指代 window 对象
+		
+		//03 在另一个对象的作用域中调用
+		var o = new Object();
+		
+		Cp.call( o ,'x4', 23);  // call 绑定函数作用域，把 Cp 的作用域绑定到对象 o 中
+		
+		alert(o.name);
+		
+		
+		
+		</script>
+
+</body>
+</html>

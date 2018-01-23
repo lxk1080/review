@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+<script>
+		
+		/* 场景模拟
+		
+		总公司	    
+				销售部
+						销售员1
+						销售员2
+						销售员3
+			    开发部
+						开发员1
+						开发员2
+						开发员3
+		*/
+		
+		//用纯粹的面向对象思想构建这个场景
+		
+		
+		//公司类
+		function Com(name){
+			this.name = name;  //公司名
+			this.depts = [];   //公司里的部门
+		};
+		Com.prototype = {
+			constructor : Com,
+			addDept : function(dept){   //公司可以添加部门
+				this.depts.push(dept);	
+				return this;
+			},
+			getDepts : function(){       //公司可以查询有哪些部门
+				return this.depts;
+			}
+		};
+		
+		//部门类
+		function Dept(name){
+			this.name = name;
+			this.persons = [];
+		};
+		Dept.prototype = {
+			constructor : Dept,
+			addPerson : function(person){
+				this.persons.push(person);
+				return this;
+			},
+			getPersons : function(){
+				return this.persons;
+			},
+			
+		}
+		
+		
+		//人员类
+		function Person(name){
+			this.name = name;
+		};
+		Person.prototype = {
+			constructor : Person,
+			hardWork :function(){
+				alert(this.name+"  is working...!");
+			},
+			sleep : function(){
+				alert(this.name+"  is sleeping...!");
+			}
+		}
+		
+		
+		//构建一个实例化的公司，包括有哪些部门，部门又有哪些人员
+		var p1 = new Person('销售员1');
+		var p2 = new Person('销售员2');
+		var p3 = new Person('开发员1');
+		var p4 = new Person('开发员2');
+		
+		var d1 = new Dept('销售部');
+		d1.addPerson(p1).addPerson(p2);
+		var d2 = new Dept('开发部');
+		d2.addPerson(p3).addPerson(p4);
+		
+		var c = new Com('LXK');
+		c.addDept(d1).addDept(d2);
+		
+		
+		//对这个公司进行遍历，从公司到部门，再到每个人，然后执行人可以做的事情
+		for(var i = 0, depts = c.getDepts(); i < depts.length; i++){
+			for(var j = 0, persons = depts[i].getPersons(); j < persons.length; j++){
+				if(persons[j].name === '开发员1'){
+				   persons[j].hardWork();
+				}
+			}	
+		}
+		
+	
+		</script>
+</body>
+</html>

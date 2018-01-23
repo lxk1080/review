@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>无标题文档</title>
+</head>
+
+<body>
+
+<script>
+
+  // 原型 ：原型对象内的属性和方法，被其对应的所有实例对象所共享
+
+  function Person() {
+
+  }
+
+  Person.prototype = {
+    construvtor: Person,
+    name: 'z3',
+    age: '18',
+    friend: ['z4', 'z5'],
+    sayHello: function () {
+      alert('hello');
+    }
+  };
+
+  var p1 = new Person();
+  var p2 = new Person();
+
+  p1.friend.push('z6');  //这里实际上修改的是 原型对象 上的属性，并不是p1
+
+  alert(p1.friend);  //val="z4,z5,z6"
+  alert(p2.friend);  //val="z4,z5,z6"，p1 加的属性也被 p2 共享了，这是原型对象的弊端
+
+
+  //01___________________________________组合使用原型和构造函数式（最常用的方式）
+
+  function Person(name, age, friends) {
+    this.name = name;
+    this.age = age;
+    this.friends = friends;
+  }
+
+  Person.prototype = {
+    constructor: Person,
+    sayName: function () {
+      alert(this.name)
+    }
+  };
+
+  var p3 = new Person('x1', 12);
+  var p4 = new Person('x2', 16);
+
+  //02____________________________________动态原型模式（把代码封装到一起）
+
+  function Person(name, age) {
+    this.name = name;
+    this.age = age;
+
+    //动态原型方法
+    //如果 sayName 方法没被建立，则建立 sayName 方法，下次再访问就不用再次建立了
+    //只用构造一次此方法
+    if (typeof this.sayName != 'function') {
+      Person.prototype.sayName = function () {
+        alert(this.name);
+      }
+    }
+  }
+
+
+  //03________________________________________稳妥构造函数式（非常安全的环境）
+
+  // 1.没有公共属性   2.不能使用this对象  3.只能使用方法访问属性，私有属性非常安全
+
+  function Person(name, age) {
+
+    var name = name;
+    var age = age;
+
+    var obj = new Object();
+
+    obj.sayName = function () {
+      alert(name);
+    }
+
+    return obj;
+  }
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,119 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>无标题文档</title>
+</head>
+
+<body>
+
+<script>
+
+
+  ////01字符串。。。。。
+  /*
+   var a = "abcde";
+
+   a.length = 3;  //这句代码的运行原理是：找到a变量，然后调用a变量的length属性，得到的值是5；然后给a.length赋值为3，那么此时a.length等于3；但是a变量本身的值没变，所以下面写的a.length还是5；这个赋值语句仅仅是赋值，没有任何效果
+
+   alert(a.length); //val="5",这句代码的运行原理是：找到a变量，然后调用a变量的length属性，得到的值是5
+   */
+
+
+
+
+
+  ////02数组 。。。。。。
+
+  /*
+   var arr2 = [1,2,true,'abc',new Date()];
+
+   arr2.length = 3;
+
+   alert(arr2);  //val="1,2,true",arr2 是一个数组，数组本身就可以定义长度，所以arr2.length的赋值是有效的，数组也是一个对象，应该弹出的是[Object Object]，因为alert方法默认弹出字符串，这里是隐式调用toString()方法自动转换成字符串，相当于alert(arr2.toString())
+   */
+
+
+
+
+
+  //2.1.........数组元素的添加和删除
+  /*
+   var arr = new Array();
+
+   var res = arr.push(1,2,5,false);  //向数组添加值
+
+   alert(arr);  //val="1,2,5,false"
+   alert(res);  //val="4",返回的是新数组的长度
+
+   var res2 = arr.pop();  //从数组的尾部移除一个元素,返回值为移除的元素
+
+   var res3 = arr.shift();  //从头部移除一个元素，返回值为移除的元素
+
+   var res4 = arr.unshift(10,false); //从头部插入多个元素，返回值为新数组的长度
+   */
+
+
+
+
+  //2.2...........splice和slice
+  /*
+   var array = [1,2,3,4,5];
+
+   array.splice(1,2,3,4,5);
+   //splice: 第一个参数：起始位置
+   //		  第二个参数：截取的个数
+   //        第三个参数以后：截取位置插入的元素
+   //splice可以直接操作数组本身,没有返回值
+   alert(array); //val="134545",截取替换方法
+
+
+   var result = array.slice(2,4);  // 2<=截取值的下标<4，左闭右开
+   alert(result);  //slice不可以直接操作数组本身，所以用一个变量接收返回值
+   */
+
+
+
+
+
+  //2.3............concat,join
+  /*
+   var arr11 = [1,2,3];
+   var arr22 = [4,5,6];
+
+   var r = arr11.concat(arr22);  //连接字符串，不操作数组本身
+   alert(r);
+
+   var r2 = arr11.join("-");   //添加连接符，不操作数组本身
+   alert(r2);
+   */
+
+
+
+
+
+  //2.4...............sort,reverse
+  var arr1 = [5, 2, 1, 4, 3];
+  var arr2 = [10, 2, 4, 1, 7];
+
+  arr1.sort();  //val="1,2,3,4,5"，升序排序
+  arr1.reverse();  //val="3,4,1,2,5"，按照集合的位置倒序排列
+
+  arr2.sort();
+  alert(arr2);  //val="1 10 2 4 7"，这个sort()它是把数字按位比较的，当10和7比较时，系统先把10中的1取出来和7比较；7比较大，当10和1比较时，1和1相等，但10后面还有个0，所以认为10比1大
+
+
+  //写一个比较的方法辅助sort(),想要倒序的话只需要把1和-1的位置交换即可
+  function compare(value1, value2) {
+    return value1 - value2
+  }
+
+  arr2.sort(compare); //val="1,2,4,7,10"
+  alert(arr2);
+
+
+</script>
+
+
+</body>
+</html>

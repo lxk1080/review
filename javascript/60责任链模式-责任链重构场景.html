@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+
+		<script>
+		
+		//责任链模式：发出者 和 接收者之间的耦合
+		/*
+		发送者知道链中第一个接受者，向接收者发送请求
+		每一个接受者都对请求进行分析，要么处理，要么继续向下传递
+		每一个接受者知道的其他对象只有一个，它的下家对象
+		如果没有接受者处理请求，请求将从链上离开，不同的实现对此有不同的反应		
+		*/
+		//发送任务 -->  接收任务 -->  处理任务
+		
+		//发送任务的人
+		var Assign = function(task){
+			this.task = task;	
+		}
+		
+		//接受任务的人
+		var WorkFlow = function(assign){
+			this.assign = assign;	
+		}
+		WorkFlow.prototype = {
+			constructor :WorkFlow,
+			filterHandler : function(executor){  
+				if(this.assign.task === executor.cando){
+					executor.todo();	
+				} else {
+					//判断是否有下一个接受者
+					if(executor.successor){
+					//arguments.callee(executor.successor);//每次递归调用时，this发生了改变
+					//可以用call apply	
+					arguments.callee.call(this,executor.successor);
+					} else {
+						alert('这个任务太难了！都不会做0_0!');	
+					}
+				}
+			},
+		}
+		
+		
+		//处理任务的人
+		var Executor = function(name,cando){
+			this.name = name;
+			this.cando = cando;
+			this.successor = null;  //要传递给的下一个接受者
+		}
+		Executor.prototype = {
+			constructor : Executor,
+			todo : function(){
+				document.write(this.name +"可以做"+this.cando);	
+			},
+			setNext : function(successor){
+				this.successor = successor;	
+			}
+		} 
+		
+		
+		
+		var assign = new Assign('c样式');  //发送任务
+		
+		var workflow = new WorkFlow(assign);  //接收任务
+		
+		var e1 = new Executor('飞机','java开发');
+		var e2 = new Executor('青苗','js开发');
+		var e3= new Executor('洛克','sql语句');
+		var e4 = new Executor('古尔丹','css样式');
+		e1.setNext(e2);
+		e2.setNext(e3);
+		e3.setNext(e4);
+		
+		workflow.filterHandler(e1);  
+		
+		
+		
+		
+		
+		</script>
+
+
+</body>
+</html>

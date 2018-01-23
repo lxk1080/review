@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>无标题文档</title>
+</head>
+
+<body>
+
+<script>
+
+  //函数的入口是参数
+
+  function test(a, b) {
+
+    return a + b;
+
+    alert("dfsdf");  //return是函数出口， 之后的语句不执行
+
+  }
+
+  test();
+
+  //函数可以作为参数
+
+  function test2(fn) {
+    fn();
+  }
+
+  function aa() {
+    alert('hello');
+  }
+
+  test2(aa);
+
+
+  //函数可以嵌套，但不建议嵌套
+
+  function test3() {
+
+    function test4() {
+      alert("test4");
+    }
+
+    test4();
+
+  }
+
+  test3();
+
+
+</script>
+
+
+</body>
+</html>

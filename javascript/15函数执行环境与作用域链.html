@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+
+
+		<script>
+		
+		// 1 window对象，最上层的执行环境
+		
+		var color1 = 'red';
+		
+		function change(){   //每一个函数都有一个执行环境（变量对象）
+			
+				var color2 = 'blue';
+				
+				function swap(){   //变量对象用代码不能访问，js解析器在后台运行
+						
+						var color3 = color2;
+						
+						color2 = color1;
+						
+						color1 = color3;
+						
+						//这个函数作用域可以访问color1 color2 color3
+						
+					}
+				
+				swap();  //这个函数作用域可访问color1 color2
+				
+			}
+			
+			change();    //这个函数作用只可访问color1
+	
+			//环境变量  一层一层向上追溯 ，可访问它的上级环境 （变量和函数）
+		
+			// 由于是一层一层向上追溯 ，所以一般不使用全局变量 ， 会降低效率
+		
+		
+		
+		</script>
+
+
+</body>
+</html>

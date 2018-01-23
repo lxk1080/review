@@ -1,0 +1,58 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>无标题文档</title>
+</head>
+
+<body>
+
+<script>
+
+  //var obj = new Object();
+  var obj = {};
+
+  obj.name = "校长";
+  obj.age = 12;
+  obj.say = function () {
+    alert("hello world ");
+  }
+
+
+  //删除对象属性
+  delete obj.name;
+
+
+  //对象方法的调用
+  obj.say();
+  obj["say"]();
+
+
+  //对象属性遍历
+  for (var i in obj) {
+
+    alert(i + ":" + obj[i]);
+
+  }
+
+
+  //constructor 保存着对象的构造函数
+  alert(obj.constructor);
+
+
+  //hasOwnProperty用于检测对象本身中是否存在这个属性
+  alert(obj.hasOwnProperty('name'));
+
+
+  //isPrototypeof(Object)  检查传入的对象是否是另一个对象的原型
+
+
+  //propertyIsEnumerable 用于检查属性是否可以被枚举
+  alert(obj.propertyIsEnumerable('age'));
+
+
+</script>
+
+
+</body>
+</html>

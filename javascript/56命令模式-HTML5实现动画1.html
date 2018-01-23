@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+		<script src="接口类-鸭式辨型.js"></script>
+		<script>
+		
+		//用命令模式实现的简单的小游戏（移动方块）
+		
+		//有一个接口，实现两个方法，一个执行命令，一个回退命令
+		var RCInterface = new LXK.Interface(RCInterface,['execute','undo']);
+		
+		//命令对象的类（参数是接受者），命令实例对象是调用者
+		
+		//上移
+		var MoveUp = function(cursor){
+			this.cursor = cursor;	
+		};
+		MoveUp.prototype = {
+			constructor : MoveUp,
+			execute : function(){
+				this.cursor.move(0,-10);	
+			},
+			undo : function(){
+				this.cursor.move(0,10);	
+			}	
+		};
+		//下移
+		var MoveDown = function(cursor){
+			this.cursor = cursor;	
+		};
+		MoveDown.prototype = {
+			constructor : MoveDown,
+			execute : function(){
+				this.cursor.move(0,10);	
+			},
+			undo : function(){
+				this.cursor.move(0,-10);	
+			}	
+		};
+		//左移
+		var MoveLeft = function(cursor){
+			this.cursor = cursor;	
+		};
+		MoveLeft.prototype = {
+			constructor : MoveLeft,
+			execute : function(){
+				this.cursor.move(-10,0);	
+			},
+			undo : function(){
+				this.cursor.move(10,0);	
+			}	
+		};
+		//右移
+		var MoveRight = function(cursor){
+			this.cursor = cursor;	
+		};
+		MoveRight.prototype = {
+			constructor : MoveRight,
+			execute : function(){
+				this.cursor.move(10,0);	
+			},
+			undo : function(){
+				this.cursor.move(-10,0);	
+			}	
+		};
+		
+		
+		//接受者（具体操作方法的对象）  //HTML5 + ECMA5
+		
+		var Cursor = function(width,height,parent){
+			//宽高代表外层的div（canvas画布）
+			this.width = width;
+			this.height = height;
+			//移动的元素的具体位置
+			this.position = {
+				x: width/2,
+				y: height/2	
+			}
+			
+			//HTML5新特性
+			//创建一个画布，定义画布的宽高
+			this.canvas = document.createElement('canvas');
+			this.canvas.width = this.width;
+			this.canvas.height = this.height;
+			parent.appendChild(this.canvas);
+			
+			//canvas上下文元素（画布的核心元素）
+			this.cxt = this.canvas.getContext('2d');  //画笔
+			this.cxt.fillStyle = 'red';  //给画笔填充颜色
+			this.move(0,0);   //初始化位置
+		};
+		
+		Cursor.prototype = {
+			constructor : Cursor,
+			move : function(){
+				this.position.x += x;
+				this.position.y += y;
+				this.cxt.clearRect(0,0,this.width,this.height);  //每次重画之前清空画布
+				this.cxt.fillRect(this.position.x,this.position.y,20,20); //画出方块	 
+			}	
+		}
+		
+		
+		
+		</script>
+
+
+</body>
+</html>

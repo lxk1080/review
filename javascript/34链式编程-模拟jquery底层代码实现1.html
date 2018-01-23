@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+
+		<script>
+		
+		//模拟jquery底层代码实现链式编程
+		
+		//块级作用域
+		//1.程序启动，代码直接执行
+		//2.内部成员变量外部无法访问
+		
+		(function(window,undefined){
+			
+			// $ 最常用的对象  返回给外界  大型程序开发一般使用"_"作为私用的对象（规范）
+			function _$(arguments){
+				//实现各种方法的代码
+			}
+			
+			// 在Function类上扩展一个可以实现链式编程的方法（待续）
+			/*Function.prototype.method = function(methodName , fn){
+					this.prototype[methodName] = fn;
+					return this;  //链式编程的关键
+				}*/
+			
+			
+			//在_$的原型对象上加一些公共的方法
+			_$.prototype = {	
+					constructor : _$,
+					addEvent : function(){alert('woshi addEvent'); return this},
+					setStyle : function(){alert('woshi addStyle'); return this}
+				};
+				
+				
+				
+				
+			//window上先注册一个全局变量，与外界产生关系，可以在全局作用域中使用
+			window.$ = _$;  
+			
+			
+			
+			//写一个准备的方法
+			_$.onReady = function(fn){
+					//1.使用$()实例化对象_$,真正的注册到window上
+					window.$ = function(){
+							return new _$(arguments);
+						}
+						
+					//2.执行传入进来的代码
+					fn();
+					
+					//3.实现链式编程（待续）
+					//_$.method('addEvent',function(){}).method('addStyle',function(){});
+						
+				};
+
+			})(window);  //程序的入口，window传入到作用域内
+		
+					
+					
+			$.onReady(function(){
+				$().addEvent().setStyle();
+			})
+		
+		
+		</script>
+
+
+
+
+</body>
+</html>

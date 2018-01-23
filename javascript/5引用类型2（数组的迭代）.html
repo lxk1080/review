@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>无标题文档</title>
+</head>
+
+<body>
+
+<script>
+
+  // 01______________________________________________________indexOf和lastIndexOf（查找时从后往前找）
+  /*
+   var arr = [1,2,3,4,'4',5,4,3,2,1];
+
+   var index = arr.indexOf(4);  //查找4的索引
+
+   var index = arr.indexOf(4,4);   //起始位置从4开始，查找4的索引
+
+   //查找的方式是 ‘===’ 例如查找字符串'4'时写成arr.indexOf('4');
+   alert(index);
+   */
+
+
+
+
+  // 02__________________________________________________________5个新增迭代方法
+
+  var arr = [1, 2, 3, 4, 5, 4, 3, 2, 1];
+
+  //every: 对于数组的每一个元素进行函数的运行，如果都返回true，则返回true，如果有一个返回false，则返回false
+  /*
+   var res = arr.every(function(item , index , array){   //这三个参数是固定的
+   return item > 0;
+   });
+   alert(res);  //val="true"
+   */
+
+
+  //filter：返回过滤后的结果
+  /*
+   var res = arr.filter( function(item , index , array){
+   return item > 2;
+   });
+   alert(res);
+   */
+
+  //forEach:循环遍历,并执行一个方法
+  /*
+   arr.forEach(function(item , index , array){
+   return item;
+   });
+   */
+
+  //map:对于数组的每一个元素进行函数运行，运行完毕后，返回新的结果
+  /*
+   var res = arr.map(function(item , index , array){
+   return item * 2;
+   });
+   alert(res);
+   */
+
+  //some：与every相反，有一个true，则返回true，全部返回false，则返回false
+  /*
+   var res = arr.some(function( item , index , array){
+   return item > 4;
+   });
+   alert(res);
+   */
+
+
+  //03_________________________________________________________________reduce和reduceRight
+
+  //  先进行遍历之后返回一个特定的结果
+  //  reduceRight是从右开始遍历
+  //  参数意义：前一个值，当前值，索引，数组array
+  /*
+   var res = arr.reduce(function( prev , cur , index , array){
+   return prev + cur;   //遍历时返回前一个值加上当前值
+   });
+   alert(res);
+   */
+
+
+</script>
+
+
+</body>
+</html>

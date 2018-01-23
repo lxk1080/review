@@ -1,0 +1,80 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>无标题文档</title>
+</head>
+
+<body>
+
+<script>
+
+  //string  number  boolean  undefined  null,下述注释中的 val 代表弹出窗口时的值
+
+  //全局变量。。。。。。。。。。
+
+  var a = 5;
+
+  function test() {
+
+    c = 5;  //全局变量
+
+    alert(6);
+
+  }
+
+  alert(c);   //test() 并未执行，不会弹出c的值
+
+
+  //Number类型整数和小数。。。。。。。。。。
+
+  var a0 = NaN;  //not a number
+  var a00 = parseInt("fssfsf");  //val="NaN"
+  var a000 = parseInt("12asdad")  //val="12"
+
+  var a1 = 1 / 0;
+  <!--正无穷 val="Infinity"-->
+
+  var a2 = 070;  //8进制和16进制(0xA),val=56
+
+  var a3 = 0.1;
+
+  var a4 = 0.2;
+
+  //在 小数+小数 == 小数 的情况下不能用于判断！！！
+  if (a3 + a4 == 0.3) {  //不能用于判断，小数为浮点型，精度为17位，val="0.300000000000000004"，在0.3后还有17位
+    alert("=0.3")
+  } else {
+    alert("!=0.3")  //val=="!=0.3"
+  }
+
+  var a5;  //val="undefined",undefined 变量声明没有赋值
+
+  var a6 = null; //val="null",空值也是值
+
+
+  //引用类型Object。。。。。。。。
+
+  var arr = ['1', '2'];
+
+  var date = new Date();
+
+  var obj = {};
+
+
+  //typeof 操作符。。。。。。。。。
+
+  var c = 55;
+
+  var d = null;  //null表示一个空对象的引用,空对象是引用类型Object
+
+  alert(typeof c);  //val="number"
+
+  alert(typeof d);  //val="Object"
+
+
+</script>
+
+
+</body>
+</html>

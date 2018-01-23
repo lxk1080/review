@@ -1,0 +1,83 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+	
+		<script>
+		
+		//门面模式：简化API接口  最经典的就是事件
+		
+		//_____________________________________________做一件事情  必须调用两个函数 a ，b
+		
+		function a(x){
+			
+		}
+		function b(y){
+			
+		}
+		
+		//门面
+		function ab(x,y){
+			a(x);
+			b(y);
+		}
+		
+		
+		//____________________________________________________设置css属性
+		
+		//在文档元素加载完成后执行
+		
+		window.onload = function(){    
+			//var ele = document.getElementById('d1');
+			//ele.style.color = 'red';
+			
+			setStyle(['d1','d2','d3'],'color','red');
+			
+			setCss(['d1','d2','d3'],{
+				fontSize : '20px',
+				margin : '10px',
+				background : 'yellow'	
+			});
+		}
+		
+		//给多个元素设置一个属性
+		var setStyle = function(elements,attr,val){
+			 for(var i = 0; i < elements.length; i++){
+			  	document.getElementById(elements[i]).style[attr] = val;	 
+			 }
+		}
+		
+		//给多个元素设置多个属性
+		var setCss = function(elements,options){
+			 for(var attr in options){
+					 setStyle(elements,attr,options[attr]);
+				}
+		}
+		
+
+		//用对象调用方法的形式
+		//给一个元素设置一个属性
+		Object.prototype.setCss = function(attr,val){	 
+			  this.style[attr] = val;	 
+		}	
+		//给一个元素设置多个属性
+		Object.prototype.setStyle = function(options){
+			 for(var attr in options){
+				 this.setCss(attr,options[attr]);
+			 }
+		}
+
+
+
+		</script>
+
+    <div id="d1">我是第1个</div>
+    <div id="d2">我是第2个</div>
+    <div id="d3">我是第3个</div>
+  
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+
+		<script>
+		
+		var arr = [2,1,9,7,2,4,4,1,7,6];
+		
+		// js对象特性：在js对象中的key是永远不会重复的（重要的特性）
+		/*
+		var obj = new Object();
+		
+		obj.name = 'z3' ;
+		
+		obj.name = 'w5' ;
+		
+		alert(obj.name);
+		*/
+		
+		
+		// 1 把数组转换成一个对象
+		// 2 把数组中的值转换成js对象中的key
+		// 3 把对象中的key转换成数组中的值
+		
+		
+		//把数组转换成对象,并把值转换成对象中的key
+		
+		var toObject = function(arr){
+				
+				var obj = {};
+				var j;
+				
+				for( var i = 0 , j=arr.length; i<j ; i++ ){
+						obj[arr[i]] = true;
+					}
+				
+				return obj;
+			}
+		
+		//把对象转换成数组
+
+		var toArray = function(obj){
+				
+				var arr = [];
+			
+				for(var i in obj){
+					if(obj.hasOwnProperty(i)){   //YUI底层代码
+							arr.push(i);
+						}
+					}
+						
+				return arr;
+			}
+		
+		//综合方法,去掉数组重复项
+		
+		var uniq = function(arr){
+				return toArray(toObject(arr));
+			}
+		
+		
+		alert(uniq(arr));   //去掉重复项后，浏览器会根据大小自动排序
+		
+		
+
+
+		</script>
+
+
+
+
+</body>
+</html>

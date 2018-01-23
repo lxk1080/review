@@ -1,0 +1,114 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+
+		<script>
+        
+		function Person(){
+			
+			}
+        
+		var k = Person.prototype;
+		
+		k.name = 'z3';
+		k.age = 15;
+		k.sayHello = function(){alert('dasdad')};
+
+		var p1 = new Person();
+		
+		//Object.getPrototypeOf()获取实例对象的原型对象
+		
+		// alert(Object.getPrototypeOf(p1) == Person.prototype);  //val="true"
+		
+		//_________________________________________________________________________
+		
+		//js解析器读取对象的属性时，首先搜索实例对象的name属性，如果没有，再去搜索原型对象的name属性
+		//如果还是没有，就返回undefined
+		
+		var p2 = new Person();
+		
+		p2.name = 'w5';
+		
+		// alert(p2.name);  //val="w5"
+		
+        //_____________________________________________________________________
+        
+        //判断一个属性是否属于实例对象
+		
+		var p3 = new Person();
+
+		// alert(p3.hasOwnProperty('name'));  //val="false"
+        
+        //__________________________________________________________________
+		
+		//in 操作符
+		
+		var p4 = new Person();
+		
+		'name' in p4;   //val="true"，原型对象中的属性也属于实例对象
+		
+		p4.name = 'x2';
+		
+		'name' in p4;   //val="true"，实例对象中的属性肯定属于实例对象
+		
+		
+		
+		// 写一个方法，判断一个属性是否存在于原型对象，如果不存在，则属于实例对象
+		// 参数：当前实例对象 ，属性
+		// 如果属性不属于对象本身，但是属性存在于对象中，那么这个属性就属于原型对象
+		// 返回true属于原型对象，返回false属于实例对象
+		
+		function pp(obj,attr){
+			
+				return !obj.hasOwnProperty(attr) && attr in obj;
+			
+			} 
+        
+		var p4 = new Person();
+		
+		pp(p4,'name'); //val="true"
+		
+		p4.name = 'xa';
+		
+		pp(p4,'name');  //val="false"
+        
+        //____________________________________________________________
+		
+		// ECMA5新特性 Object.keys() 接收对象中所有的keys返回一个数组
+		
+		var p5 = new Person();
+		
+		p5.name = 'name';
+		p5.birthday = '1206';
+		
+		var arr = Object.keys(p5);
+
+		// alert(arr);   //val="name,birthday"
+		
+		var arr2 = Object.keys(Person.prototype);
+		
+		// alert(arr2);    //val="name,age,sayHello"
+		
+		
+ 		
+        	// constructor 该属性不可被枚举，默认值为false
+		// 使用 简单原型 的时候，没有constructor属性，需要自己构建
+		// Object.getOwnPropertyNames()枚举对象所有属性，不管该属性能否被枚举
+
+		var arr3 = Object.getOwnPropertyNames(Person.prototype);
+        
+        alert(arr3);
+		
+		
+		
+        </script>
+
+
+
+</body>
+</html>

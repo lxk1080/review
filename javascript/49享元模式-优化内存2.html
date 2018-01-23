@@ -1,0 +1,91 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+
+		<script>
+		
+		//享元模式：优化的设计模式（优化：时间【代码的运行时间】，空间【浏览器运行内存】）
+		//思想：1.尽可能的创建最少的对象实例 2.把静态不变的属性包装起来二次利用
+		//内在数据static（车名、型号）  外在数据（车牌号、登记日期）
+		
+		//车名、型号
+		function Car(name,model){
+			this.name = name;
+			this.model = model;
+		}
+		Car.prototype = {
+			constructor : Car,
+			getName : function(){
+				return this.name;	
+			},
+			getModel : function(){
+				return this.model;	
+			}
+		}
+		
+		//工厂模式（闭包工厂）
+		var CarFactory = (function(){
+			//用于承装已经生产好的car
+			var createdCars = {};
+			return{
+				createCar : function(name,model){
+					//如果createdCars对象里已经存在了name,model这些静态属性，就直接返回
+					var static = name + model;
+					if(createdCars[static]){   //属性static对应的值是name、model这些静态属性的实例对象
+						return createdCars[static];	
+					} else {
+						//只在第一次调用这个方法的时候需要实例化对象，保存这些静态的属性
+						var car = new Car(name,model);
+						createdCars[static] = car;
+						return createdCars[static];
+					}
+				}	
+			}
+		})();
+		
+		//单体模式（外在的数据和内在的数据结合在一起）
+		var carRecordManager = (function(){
+			//把登记好的车放到这个对象
+			var carRecordData = {};
+			return {
+				addCarRecode : function(name,model,num,dater){
+					var car = CarFactory.createCar(name,model);
+					carRecordData[num] = { //以车牌号作为车的标识
+						dater : dater,
+						car : car     //把静态属性传进来
+					}
+				},
+				addNewRecode : function(num,newDate){
+					carRecordData[num].dater = newDate;	
+				}	
+			}	
+		})()
+		
+		
+		//测试
+		var arr = [];	
+		var s = new Date().getTime();	
+		for(var i = 0; i < 5000000; i++){
+			
+			//arr.push(new Car('Audi','Audi-300','DZ-500','2016-03-02'));	
+			
+			//享元模式测试
+			arr.push(carRecordManager.addCarRecode('Audi','Audi-300','DZ-500','2016-03-02'));
+		}
+		var e = new Date().getTime();
+		alert(e - s);  
+		//时间：2057ms  空间：378MB（资源管理器）  //FF原始
+		//时间：2843ms  空间：221MB（资源管理器）  //FF享元
+		// 时间多了40%，空间少了40%
+  
+		</script>
+
+
+
+</body>
+</html>

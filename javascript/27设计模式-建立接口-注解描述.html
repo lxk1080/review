@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+
+		<script>
+		
+		//实现接口
+		
+		//注解描述的方式
+		
+		//优点：程序员有一个参考
+		//缺点：属于文档的范畴， 方式松散，没有检查接口的方法是否完全实现 
+		
+	   /**
+		*	interface Composite{
+		*		function add(obj);
+		*		function remove(obj);
+		* 		function update(obj);
+		*	}
+		*/
+		
+		//CompositeImpl implements Composite
+		var CompositeImpl = function(){
+			
+			}
+			
+		CompositeImpl.prototype.add = function(obj){
+					//do something
+			}
+		CompositeImpl.prototype.remove = function(obj){
+					//do something
+			}
+		CompositeImpl.prototype.update = function(obj){
+					//do something
+			}
+		
+		var c1 = new CompositeImpl();
+		var c2 = new CompositeImpl();
+		
+		alert(c1.add == c2.add);
+		
+		
+		
+		
+		</script>
+
+
+</body>
+</html>

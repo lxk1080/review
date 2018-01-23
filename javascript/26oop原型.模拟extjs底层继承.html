@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>无标题文档</title>
+</head>
+
+<body>
+
+<script>
+
+  //实现只继承父类的原型对象
+
+  function extend(sub, sup) {
+
+    var F = new Function();  //创建一个空函数进行中转
+
+    F.prototype = sup.prototype;
+
+    sub.prototype = new F();  //原型继承
+
+    sub.prototype.constructor = sub;  //还原子类的构造器
+
+    //保存父类的原型对象，一方面方便解耦，另一方面方便获得父类的原型对象
+    sub.superClass = sup.prototype;  //自定义子类静态属性，接收父类的原型对象
+
+    //判断父类原型对象的构造器并还原
+    if (sup.prototype.constructor == Object.prototype.constructor) {
+      sup.prototype.constructor = sup;
+    }
+  }
+
+
+  function Person(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+
+  Person.prototype = {
+    constructor: Person,
+    sayHello: function () {
+      alert('hello Person')
+    }
+  }
+
+  function Boy(name, age, sex) {
+
+    //借用构造函数继承，只复制父类的构造器模板
+    //Boy.superClass属性已经定义为父类的原型对象（解耦）
+    Boy.superClass.constructor.call(this, name, age);
+    this.sex = sex;
+  }
+
+  //即继承了父类的模板，也继承了父类的原型对象
+  //Boy.prototype = new Person();
+
+  //只继承父类的原型对象
+  extend(Boy, Person);
+
+  //重载sayHello方法，会将父类中的同名方法覆盖
+  Boy.prototype.sayHello = function () {
+    alert('hello Boy')
+  };
+
+  var b = new Boy('z3', 15, '男');
+
+  alert(b.name);
+  alert(b.sex);
+  b.sayHello();
+
+  Boy.superClass.sayHello.call(b);  //绑定父类原型对象的方法到实例对象b并执行
+
+</script>
+
+</body>
+</html>

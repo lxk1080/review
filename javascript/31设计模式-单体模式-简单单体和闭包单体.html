@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+
+		<script>
+		
+		//_______________________________________________简单单体
+		
+		//单独的一个对象
+		var o = {
+				attr1 : true,
+				method1 : function(){alert('m1')}
+			};
+			
+		
+		//划分命名空间
+		var Space = {};
+		
+		Space.sing = {
+				attr1 : true,
+				method1 : function(){alert('m1')}	
+			};
+			
+		//Space.sing.method1();
+		
+		//_______________________________________________闭包单体（保护数据）
+		
+		//命名空间
+		var Space = {};
+		
+		Space.sing = (function(){
+			
+				//添加自己的私有成员
+				var a1 = true;
+				var f1 = function(){
+						alert('f1');
+					}
+					
+				//把块级作用域结果返回给单体对象Space.sing
+				return {	
+					attr1 : a1,
+					method1 : function(){
+							return f1();
+						}		
+					};
+			})();
+		
+		alert(Space.sing.attr1);
+		Space.sing.method1();
+			
+		</script>
+
+
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+		<script src="接口类-鸭式辨型.js"></script>
+        <script src="原型对象继承.js"></script>
+		<script>
+		
+		//装饰者模式（包装对象）：在原有对象不改变的基础上，去扩展一些想要的方法或需求
+		// 需要有子类
+		// 实现同样的接口
+		
+		var carInterface = new LXK.Interface(carInterface,['getPrice','assemble']);
+		
+		//父类（一辆车）
+		function Car(car){	
+			//这两个语句，就是为了让子类去继承的
+			this.car = car;//让子类引用父类的实例对象		
+			LXK.Interface.ensureImplements(this,carInterface);//检测实例对象的接口是否实现
+		}
+		Car.prototype = {
+			constructor : Car,
+			getPrice : function(){
+				return 200;		
+			},	
+			assemble : function(){
+				document.write('组装的汽车...');
+			}		
+		}
+	
+	
+		//子类（在车的原有基础上加一个车灯，车灯装饰）
+		function LightDecorator(car){   //这个参数是原始的车的一个实例对象，传递这个对象进行包装
+		
+			//Car.call(this,car);  //借用构造函数继承，模板继承
+			LightDecorator.superClass.constructor.call(this,car);
+		}	
+		LXK.extend(LightDecorator,Car);  //原型对象继承
+		//加了车灯后，车的价钱方法需要重写
+		LightDecorator.prototype = {
+			constructor : LightDecorator,
+			getPrice : function(){
+				//this.car是传进来的原始的车的实例对象，可以调用原始的车的getPrice()方法，再加上车灯的价钱
+				return this.car.getPrice()+10; 	
+			},	
+			assemble : function(){
+				document.write('加了一个灯...');
+			}
+		}
+		
+		//子类（在车的原有基础上加一个车载冰箱）
+		function iceDecorator(car){   
+			iceDecorator.superClass.constructor.call(this,car);
+		}	
+		LXK.extend(iceDecorator,Car);  
+		iceDecorator.prototype = {
+			constructor : iceDecorator,
+			getPrice : function(){
+				//this.car是原始的车的实例对象
+				return this.car.getPrice()+20; 	
+			},	
+			assemble : function(){
+				document.write('加了一个车载冰箱...');
+			}
+		}
+		
+		
+		//测试代码
+		
+		//一辆车
+		var car1 = new Car();
+		alert(car1.getPrice());
+		car1.assemble();
+		//加个车灯后的车
+		var car2 = new LightDecorator(car1);
+		alert(car2.getPrice());
+		car2.assemble();
+		//又加了一个车载冰箱
+		var car3 = new iceDecorator(car2);
+		alert(car3.getPrice());
+		car3.assemble();
+		
+		
+		//装饰者模式还可以用在函数上
+		
+		//全部转化成大写
+		function getDate(){
+			return (new Date()).toString();	
+		}
+		
+		function dateDecorator(fn){  //传递一个函数进行处理、加工（全部转换成大写）
+			return fn.call(this,arguments).toUpperCase();
+		}
+		
+		alert(getDate());
+		alert(dateDecorator(getDate));
+		
+		</script>
+
+</body>
+</html>

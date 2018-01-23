@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>     
+		<script src="jquery-1.9.1.min.js"></script>
+		<script src="区分浏览器绑定事件.js"></script>
+        
+		<script>
+		
+			//__________________________________________________桥接模式
+			
+			//桥接模式：把抽象和现实分离开来，是他们可以完全独立变化
+			
+			//引用场景：事件监听回调机制（用户点击一个按钮，向服务器发送一条信息）
+			//注：这里的前后台都是前台代码
+			$(function(){
+			
+			//前台事件逻辑
+			var btn = document.getElementById('btn');
+			
+			LXK.EventUtil.addHandler(btn , 'click' , bridgeHandler );
+			
+			
+			//利用桥模式分开（前和后成为两个完全独立的单元）
+			function bridgeHandler(){
+					var msg = this.value;
+					sendReq(msg);
+				}
+			
+			
+			//后台请求逻辑
+			function sendReq(msg){
+					/*
+					$.post('url',{message:msg},function(data){
+							//...
+						})
+					*/
+					alert('发送出去的数据：'+msg);
+				}
+			
+			
+			//后台请求逻辑可以单独执行
+			sendReq(' 测试数据');
+			
+			})
+		
+		
+		//__________________________________________________________传统模式
+		
+			$(function(){
+			
+			//前与后通过sendReq紧密耦合，两者不独立，因为后台的this.value要通过前台获得（this代表点击的按钮元素）
+			
+			//前台事件逻辑
+			var btn = document.getElementById('btn');
+			
+			LXK.EventUtil.addHandler(btn , 'click' , sendReq );
+			
+			//后台请求逻辑
+			function sendReq(){
+					/*
+					$.post('url',{msg:this.value},function(data){
+							//...
+						})
+					*/
+					alert('发送出去的数据：'+this.value);
+				}
+			})
+		
+		
+		
+		</script>
+
+
+	<input type="button" value="小小数据" id="btn">
+    
+</body>
+</html>

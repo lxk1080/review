@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+
+		<script>
+		
+		function PublicClass(){
+				
+				//私有方法（独立化的单元，可以独立的去测试这个方法）
+				var privateMethod = function(){
+						alert('我是私有方法');
+					};
+					
+				//外部通过 特权函数（桥） 访问这个私有方法
+				this.bridgeMethod = function(){
+						return privateMethod();
+					}
+				
+			}
+		
+		var c = new PublicClass();
+		
+		c.bridgeMethod();
+		
+		//___________________________________________________________________
+		
+		//桥模式：用桥把多个单体组织到一起
+		//使每个单元都能独立化，实现自己的变化
+		
+		function Class1(a,b,c){
+				this.a = a;
+				this.b = b;
+				this.c = c;
+			}
+		
+		function Class2(d,e){
+				this.d = d;
+				this.e = e;
+			}
+		
+		function BridgeClass(a,b,c,d,e){
+				this.class1 = new Class1(a,b,c);
+				this.class2 = new Class2(d,e);
+			}
+		
+		</script>
+
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+
+		<script>
+		
+		//父类构造函数（模版）
+		function Sup(name){
+				this.name = name;
+			}
+			
+		//父类原型对象	
+		Sup.prototype = {
+				constructor:Sup,
+				sayName : function(){
+						alert(this.name);
+					}
+			}
+		
+		//子类构造函数
+		function Sub(age){
+				this.age = age;
+			}
+		
+		//将父类的实例对象赋值给子类的原型对象
+		//那么父类实例对象的原型对象和构造器模版也就赋给了子类的原型对象
+		//从而实现了原型的继承
+		Sub.prototype = new Sup('z3');
+		
+		var s = new Sub();
+		
+		s.sayName();
+		
+	
+		</script>
+
+
+</body>
+</html>

@@ -1,0 +1,189 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+		<!--引入接口类-->
+		<script src="接口类-鸭式辨型.js"></script>
+        <script src="原型对象继承.js"></script>
+        
+		<script>
+		
+		// 细粒度  和  粗粒度
+		// 万事万物皆对象： 买什么车---> 卖车的商店 ---> 卖车， 工厂---> 生产车
+		
+		//________________________________________________________________________
+		
+		//构建车店抽象类（抽象类只可被继承，不可被实例化）
+		function CarShop(){};
+		CarShop.prototype = { 		
+				constructor : CarShop,   //还原构造器
+				sellCar : function(type){  //卖车的类型
+				
+					    //实例对象调用此方法时，弹出不卖车
+						this.abstractSellCar();   //只能以这种方式调用同一个对象里的方法..
+					},
+				abstractSellCar: function(){
+						alert('抽象商店不卖车');
+					}	
+			};
+		
+		
+		//________________________________________________________________________________
+		
+		//奔驰车店
+		function BenzCarShop(){}
+		
+		//继承抽象类
+		LXK.extend(BenzCarShop,CarShop);
+		
+		//奔驰车店的 卖车 方法
+		BenzCarShop.prototype = {
+				constructor : BenzCarShop,
+				sellCar : function(type){
+						var car;
+						var flag = 0;  //一个标记
+						var types = ['Benz','Benz-300'];
+						for(var i in types){  
+								if(types[i] === type){    //如果有这种型号，则卖出
+										car = CarFactory.createCar('Benz');
+										flag = 1;
+										alert('购买成功');
+										break;	
+									} 
+							}
+							
+						if(flag == 0){  //如果没有这种型号，抛异常，代码停止执行
+							alert('没有"'+type+'"这种型号的车');
+							throw new Error('没有"'+type+'"这种型号的车')
+						}
+						
+						return car;
+					} 
+			}
+		
+		//_________________________________________________________________________________
+		
+		//宝马车店
+		function BmwCarShop(){}
+		
+		LXK.extend(BmwCarShop,CarShop);
+		
+		BmwCarShop.prototype = {
+				constructor : BmwCarShop,
+				sellCar : function(type){
+						var car;
+						var flag = 0;
+						var types = ['Bmw','Bmw-300'];
+						for(var i in types){
+								if(types[i] === type){
+										car = CarFactory.createCar('Bmw');
+										flag = 1;
+										alert('购买成功');
+										break;	
+									} 
+							}
+							
+						if(flag == 0){
+							alert('没有"'+type+'"这种型号的车');
+							throw new Error('没有"'+type+'"这种型号的车')
+						}
+						
+						return car;
+					} 
+			}
+			
+			
+		//______________________________________________________________________________________
+			
+		//奥迪车店
+		function AudiCarShop(){}
+		
+		LXK.extend(AudiCarShop,CarShop);
+		
+		AudiCarShop.prototype = {
+				 constructor : AudiCarShop,
+				 sellCar : function(type){
+						var car;
+						var flag = 0;
+						var types = ['Audi','Audi-300'];
+						for(var i in types){
+								if(types[i] === type){
+										car = CarFactory.createCar('Audi');
+										flag = 1;
+										alert('购买成功');
+										break;	
+									} 
+							}
+							
+						if(flag == 0){
+							alert('没有"'+type+'"这种型号的车');
+							throw new Error('没有"'+type+'"这种型号的车')
+						}
+						
+						return car;
+					} 
+		}
+		
+		//_________________________________________________________________________________________
+		
+		//生产车的动态工厂
+		var CarFactory = {
+			createCar : function(type){
+					//直接以这种方式实例化对象，不需要用switch判断
+					var car = eval('new '+type+'()');
+								
+					//检验车合不合格，不合格会抛出异常
+					LXK.Interface.ensureImplements(car,carInterface); //确定实例对象实现了这个接口
+					
+					//合格时出厂这个车
+					return car;
+				}
+			}
+		
+		//______________________________________________________________________________________
+		
+		//车的接口和接口里包含的方法（引用接口类js文件）
+		var carInterface = new LXK.Interface(carInterface,['start','run']);
+		
+		//所有车的父类（要实现接口中的方法）
+		function BaseCar(){};
+		BaseCar.prototype = {
+				constructor : BaseCar,
+				start : function(){alert(this.constructor.name+' is start..')},
+				run : function(){alert(this.constructor.name+' is run..')}
+			}
+		
+		//每种车都要实现这两个方法（引用原型对象继承的js文件）
+		function Benz(){}
+		LXK.extend(Benz,BaseCar); 
+		
+		function Bmw(){}
+		LXK.extend(Bmw,BaseCar);
+		
+		function Audi(){}
+		LXK.extend(Audi,BaseCar);
+ 		
+		
+		//___________________________________________________________________________________
+		
+		//测试代码
+			
+		var shop = new AudiCarShop();  //实例化一个奥迪车店
+		
+		var car = shop.sellCar('Audi-300');  //从车店中购买一辆车
+
+		car.start();  //看看这个车的能否启动
+		
+		
+		
+		</script>
+        
+
+
+
+</body>
+</html>

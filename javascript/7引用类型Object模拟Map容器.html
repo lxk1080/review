@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>无标题文档</title>
+</head>
+
+<body>
+
+<script>
+
+  //______________________________模拟Java中的Map容器
+
+  //构造函数，相当于Java中的类
+
+  function Map() {
+
+    //建立一个对象模拟Map容器
+    var Map = {};
+
+    //put方法
+    this.put = function (key, value) {
+      Map[key] = value;
+    }
+
+    //获取map容器内键值对个数
+    this.size = function () {
+      var count = 0;
+      for (var i in Map) {
+        count++;
+      }
+      return count;
+    }
+
+    //获取键对应的值
+    this.get = function (key) {
+      if (Map[key] || Map[key] === 0 || Map[key] === false) {
+        return Map[key];
+      } else {
+        return null;
+      }
+    }
+
+    //删除一个键值对
+    this.remove = function (key) {
+      if (Map[key] || Map[key] === 0 || Map[key] === false) {
+        delete Map[key];
+      }
+    }
+
+    //遍历容器里的键值对
+    this.eachMap = function (fn) {  //此参数是一个函数
+      for (var key in Map) {
+        fn(key, Map[key]);
+      }
+    }
+
+
+  }
+
+
+  var map = new Map();
+
+  map.put('01', 12);
+  map.put('02', 'abc');
+  map.put('03', false);
+  map.put('04', new Date().toLocaleString());
+
+  alert(map.size());
+
+  alert(map.get('01'));
+
+  map.remove('01');
+
+
+  map.eachMap(function (key, value) {
+    alert(key + " : " + value);
+  });
+
+
+</script>
+
+
+</body>
+</html>

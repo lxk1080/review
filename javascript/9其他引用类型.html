@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+
+	<script>
+	
+	// Global 全局的 终极的 最上层的 对象  （不存在的，无形的对象）
+	// 是所有全局变量、全局函数、全局作用域的基础，但是不存在
+	
+	//01____________________________________________编码和解码
+	var uri = "http://www.baidu.com cn";
+	
+	//uri编码
+	var str1 = encodeURI(uri);   //对于uri中的 ://不会编码,空格是%20
+	
+	var str2 = encodeURIComponent(uri);  //常用的方法（任何不标准的文字都会编码）
+	
+	//uri解码
+	var str3 = decodeURI(uri);
+	
+	var str4 = decodeURIComponent(uri);
+	
+	
+	
+	
+	//02__________________________________________________eval  将字符串转换成js代码
+	
+	//字符串数组 直接使用：eval(stringarr)
+	
+	//处理对象
+	var strobj = "{name:'z3' , age:15}";
+	var obj = eval('('+strobj+')');
+	
+		
+	//03________________________________________________parseInt  parseFloat
+	
+	var str1 = parseInt('20');
+	var str2 = parseFloat('20.5');
+	//转化后都是number类型的
+	
+	//04__________________________________________________escape和unescape，URI编码解码，针对中文字符串
+	
+	var str1 ="你好 世界";
+	
+	var str2 = escape(str1);
+	
+	var str3 = unescape(str2); 
+	
+	//05_________________________________________________isNaN 不是number类型--true  是number类型--false
+	
+	var num1 = 20;
+	var num2 = 'qwer';
+	
+	isNaN(num1);  //val="false",就是说："num1不是一个数"这句话是false
+	
+	
+	//06______________________________________________________Date()对象  Math()对象
+	
+	var date = new Date();
+	
+	var year = date.getFullYear();
+	
+	var month = date.getMonth() + 1;
+	
+	document.write("今天是"+year+"年"+month+"月"+" "+Math.random());
+	
+	
+	</script>
+
+
+
+
+</body>
+</html>

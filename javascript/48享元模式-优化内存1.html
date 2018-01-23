@@ -1,0 +1,54 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+
+		<script>
+		
+		//享元模式：优化的设计模式（优化：时间【代码的运行时间】，空间【浏览器运行内存】）
+		//思想：1.尽可能的创建最少的对象实例 2.把静态不变的属性包装起来二次利用
+		//内在数据static（车名、型号）  外在数据（车牌号、登记日期）
+		
+		//车名、型号、车牌号、登记日期
+		function Car(name,model,num,dater){
+			this.name = name;
+			this.model = model;
+			this.num = num;
+			this.dater = dater;
+		}
+		Car.prototype = {
+			constructor : Car,
+			getName : function(){
+				return this.name;	
+			},
+			getModel : function(){
+				return this.model;	
+			},
+			getNum : function(){
+				return this.num;	
+			},
+			getDater : function(){
+				this.dater = newDater;	
+			}
+		}
+		var arr = [];	
+		var s = new Date().getTime();	
+		for(var i = 0; i < 5000000; i++){
+			arr.push(new Car('Audi','Audi-300','DZ-500','2016-03-02'));	
+		}
+		var e = new Date().getTime();
+		alert(e - s);  //时间：2057ms  空间：378MB（资源管理器）
+		
+				
+		
+		
+		</script>
+
+
+
+</body>
+</html>

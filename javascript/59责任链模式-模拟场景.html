@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+
+		<script>
+		
+		//责任链模式：发出者 和 接收者之间的耦合
+		/*
+		发送者知道链中第一个接受者，向接收者发送请求
+		每一个接受者都对请求进行分析，要么处理，要么继续向下传递
+		每一个接受者知道的其他对象只有一个，它的下家对象
+		如果没有接受者处理请求，请求将从链上离开，不同的实现对此有不同的反应		
+		*/
+		//发送任务 -->  接收任务 -->  处理任务
+		
+		//发送任务的人
+		var Assign = function(task){
+			this.task = task;	
+		}
+		
+		//接受任务的人
+		var workFlow = function(assign){
+			this.assign = assign;	
+		}
+		workFlow.prototype = {
+			constructor :workFlow,
+			filterHandler : function(executors){   //executors是一个数组
+				for(var i = 0, len = executors.length; i < len; i++){
+					if(this.assign.task === executors[i].cando){
+						executors[i].todo();
+					}	
+				}
+			},
+		}
+		
+		
+		//处理任务的人
+		var executor = function(name,cando){
+			this.name = name;
+			this.cando = cando;
+		}
+		executor.prototype = {
+			constructor : executor,
+			todo : function(){
+				document.write(this.name +"可以做"+this.cando);	
+			}	
+		} 
+		
+		
+		
+		var assign = new Assign('css样式');  //发送任务
+		
+		var workflow = new workFlow(assign);  //接收任务
+		
+		var e1 = new executor('飞机','java开发');
+		var e2 = new executor('青苗','js开发');
+		var e3= new executor('洛克','sql语句');
+		var e4 = new executor('古尔丹','css样式');
+		
+		workflow.filterHandler([e1,e2,e3,e4]);  //选择一个人处理任务
+		
+		
+		
+		
+		
+		</script>
+
+
+</body>
+</html>

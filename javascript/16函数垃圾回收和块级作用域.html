@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+		
+        <script>
+		
+		//离开作用域的值将自动标记为可以回收，不用担心内存分配的问题
+		
+		//垃圾回收方法：1.标记方法（标记一个变量在函数作用域内使用情况）  2.引用计数法
+		
+		
+		
+		//块级作用域
+		//js没有块级作用域 ，使用for和if语句时要注意
+		
+		function test(){
+			
+				for(var i =0 ; i<5 ; i++){
+						alert(i);  //val="0 1 2 3 4"
+					}
+					
+				alert(i);  //val="5" ，for循环中的 i 等于 5 时跳出循环，但 i 还在作用域内，并没有被回收
+			}
+		
+		test();
+		
+		
+		//模拟 块级作用域
+		
+		function test(){
+				
+			(function(){                  
+				for(var i =0 ; i<5 ; i++){
+						alert(i);  
+					}
+				})();    //单独创建一个函数作用域  并执行 ，括号里面是一个单独的作用域 ，() 代表执行这个作用域里的语句
+				
+				alert(i);  //此时的 i 未定义，i 在上面的作用域内使用完后被回收
+			}
+		
+		test();
+		
+		
+		
+		
+		</script>
+        
+ 
+        
+</body>
+</html>

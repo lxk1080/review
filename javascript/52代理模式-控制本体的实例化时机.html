@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+		<script src="接口类-鸭式辨型.js"></script>
+		<script>
+		
+		//代理模式：代理也是对象，目的是为了节制对本体对象的访问（节省不必要占用的资源）
+		
+		var libraryInterface = new LXK.Interface(libraryInterface,['addBook','findBook','sendBook','returnBook']);
+		
+		//书对象
+		function Book(id, name ,author){
+			this.id = id;
+			this.name = name; 
+			this.author = author;
+		}
+		
+		//图书馆对象（本体对象）
+		function Library(book){
+			this.books = book;	
+		}
+		Library.prototype = {
+			constructor : Library,
+			addBook : function(book){   //添加书
+				this.books[book.id] = book; 
+			},
+			findBook : function(id){  //找书
+				if(this.books[id])
+				return this.books[id];
+				return null;
+			},
+			sendBook : function(id){   //借书
+				return this.findBook[id];
+			},
+			returnBook : function(book){   //还书
+				this.books[book.id] = book; 
+			},
+		}
+		
+		
+		//代理对象
+		function libraryProxy(book){
+			this.books = book;	
+			this.library = null;
+		}
+		libraryProxy.prototype = {
+			constructor : libraryProxy,
+			
+			initLibrary : function(){    //控制实例化的时机，在真正用到图书馆方法的时候才实例化
+				if(this.library == null){
+					this.library = new Library(this.books);
+					LXK.Interface.ensureImplements(this.library,libraryInterface);
+				}	
+			},
+			
+			addBook : function(book){
+				this.initLibrary();     //调用方法时，才实例化具体的图书馆对象
+				this.library.books[book.id] = book;    //使用本体对象的方法
+			},
+			findBook : function(id){
+				this.initLibrary();
+				if(this.library.books[id]){
+				return this.library.books[id].name;
+				}
+				return null;
+			},
+			sendBook : function(id){
+				this.initLibrary();
+				return this.library.findBook[id];
+			},
+			returnBook : function(book){
+				this.initLibrary();
+				this.library.books[book.id] = book; 
+			},	
+		}
+		
+		
+		//测试代码
+		
+		//实例化代理图书馆，推迟本体图书馆实例化的时间，什么时候具体的做事情，再去实例化它
+		
+		var lib = new libraryProxy({  				
+			'01' : new Book('01','java','sun'),
+			'02' : new Book('02','js','briz'),
+			'03' : new Book('03','C#','lzib'),	
+		});
+		
+		lib.addBook(new Book('04','C++','kurtyis'));
+		
+		var b = lib.findBook('04');
+		alert(b);
+		
+		
+		</script>
+
+
+
+</body>
+</html>

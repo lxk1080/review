@@ -1,0 +1,40 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+
+	<script>
+	
+	//3种函数定义方式
+	
+	//function语句式
+	//静态，解析一次后放入内存，无需再次解析（效率高，占内存）
+	//优先解析（全局函数，会被js解释器优先提出来）
+	//函数作用域
+	function func(){}
+	
+	
+	//构造函数
+	//动态，每次使用时解析，使用后销毁（效率低，不占内存）
+	//顺序执行
+	//顶级作用域（使用最顶层的全局变量）
+	var func = new Function("a","b","return a+b");
+	
+	
+	//函数的直接量 ECMAScript推荐方式
+	//静态，效率和function语句式相同
+	//顺序解析（表示变量声明了，但没有赋值）
+	//函数作用域
+	var func = function(){}
+	
+	
+	</script>
+	
+
+
+</body>
+</html>

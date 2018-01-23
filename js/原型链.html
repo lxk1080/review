@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>proto</title>
+</head>
+<body>
+    <script>
+        var o1 = {name: 'o1'};
+        var o2 = new Object({name: 'o2'});
+
+        var M = function (name) {this.name = name}
+        var o3 = new M('o3');
+
+        var P = {name: 'p'};
+        var o4 = Object.create(P);
+
+        // 模拟new运算符
+        var new2 = function(func, args) {
+          // 新建一个新的对象，继承func.prototype
+          var o = Object.create(func.prototype);
+          // 执行构造函数，并将this上下文指定为o
+          var k = func.apply(o, args);
+          // 如果构造函数执行后返回了一个对象，则最终返回这个对象，否则返回新建的这个对象
+          if (typeof k === 'object') {
+            return k
+          } else {
+            return o
+          }
+        };
+        var o5 = new2(M, ['o5']);
+        console.log(o5.name);
+
+
+    </script>
+</body>
+</html>

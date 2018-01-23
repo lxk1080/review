@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+		<div id="inp1">一个元素</div>
+        <div id="inp2">二个元素</div>
+        
+		<script>
+		
+		//适配器：把一个接口转化成另一个接口
+		
+		//旧电脑：鼠标键盘---> PS2圆口
+		//新电脑：鼠标键盘---> USB接口
+		//将圆口的鼠标键盘应用到新电脑上...就要用 适配器 中转一下
+		//适配器：PS2圆口--->USB接口
+		
+		var oldComputer = { 接口 : 'PS2'}
+		
+		var newComputer = { 接口 : 'USB'}
+		
+		//适配器函数
+		function oldToNew(oldComputer,newComputer){
+				var mid = oldComputer.接口;
+				//mid...中间mid进行中转
+				newComputer.接口 = mid;
+		}
+		
+		//_____________________________________________________________________
+		
+		//企业开发中
+		//Prototype
+		//YAHOO（用雅虎的框架，但是prototype程序员照常写代码）
+		
+		//模拟：根据id获得指定的元素
+		
+		//Prototype  $ function  （不需要任何的形参）（Prototype底层代码）
+		function $(){	
+			var elements = [];
+			for(var i = 0; i < arguments.length; i++){
+				var element = arguments[i];				 
+				if( typeof element == 'string'){  //id名必须是字符串的形式
+					element = document.getElementById(element);	
+				}
+			    if(arguments.length == 1){  //如果长度为1，就不用装在elements里了，直接返回，节省内存空间
+					return element;
+				}
+				elements.push(element);
+			}
+			return elements;
+		}
+		
+		
+		//YAHOO  get function  （传递一个参数）（YUI底层代码）
+		var YAHOO = {};
+		YAHOO.get = function(el){
+			if(typeof el == 'string'){
+				return document.getElementById(el);
+			}
+			if(el instanceof Array){  //类型只有6种，Array是Object型，判断是否是数组采用这种形式
+				var elements = [];
+				for(var i = 0; i < el.length; i++){
+					//var element = YAHOO.get(el[i]);	
+					//elements.push(element);
+					elements[elements.length] = YAHOO.get(el[i]); //用自身的长作为索引（巧妙运用），节省内存空间
+				}
+				return elements;
+			}
+			if(el){
+				return el;	
+			}
+			return null;
+		}
+		
+		
+		
+		//写一个适配器进行中转（将YUI的YAHOO.get()转换成Prototype的$()方法）
+		
+		YAHOO.get = YUIToPrototype;
+				
+		function YUIToPrototype(){		
+			//对于YUI程序员，永远只传一个参数（可能是字符串或数组，如果是字符串则转换成数组形式）
+			if(arguments.length == 1){
+				var e = arguments[0];
+				return $.apply(window,e instanceof Array?e:[e]); 
+			} else {
+				return $.apply(window,arguments);	
+			}
+			
+		}
+	
+		
+		//测试代码
+		
+		window.onload = function(){
+			
+				//Prototype开发人员写法
+				//var Prototype = $('inp1','inp2');
+				//alert(Prototype);
+				
+				//YUI开发人员写法
+				//var yui = YAHOO.get(['inp1','inp2']);
+				//alert(yui);
+				
+				
+				//Prototype开发人员写YUI程序代码
+				var py = YAHOO.get('inp1','inp2');
+				alert(py);
+				
+		}
+		
+		
+		</script>
+
+</body>
+</html>

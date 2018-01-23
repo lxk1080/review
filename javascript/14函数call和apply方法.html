@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>无标题文档</title>
+</head>
+
+<body>
+
+<script>
+
+  //01______________________________call和apply
+
+  // call和apply都用于绑定函数作用域，call传递参数，apply传递数组
+//  function sum(x, y) {
+//    return x + y;
+//  }
+//
+//  function call1(sum1, sum2) {
+//    return sum.call(this, sum1, sum2);
+//  }
+//
+//  function apply1(sum1, sum2) {
+//    return sum.apply(this, [sum1, sum2]);
+//  }
+//
+//  call1(10, 20);
+//  apply1(10, 20);
+
+
+  //02______________________________________扩充作用域
+
+//  window.color = 'red';
+//
+//  var obj = {color: 'blue'};
+//
+//  function show() {
+//    alert(this.color);
+//  }
+//
+//  show.call(window);
+//  show.call(this);  //val="red"，this相当于window
+//
+//  show.call(obj);   //val="blue"
+
+
+  //03____________________________________________call方法的简单模拟和实现
+
+  function test(a, b) {
+    return a + b;
+  }
+
+  function Obj(x, y) {  //构造函数，首字母大写
+    this.x = x;
+    this.y = y;
+    return x * y;
+  }
+
+  var o = new Obj(20, 30);
+
+  //call方法
+  alert(test.call(o, o.x, o.y));
+
+  //模拟call方法
+  o.method = test;  //新添加一个方法
+  alert(o.method(o.x, o.y));  //调用方法
+  delete o.method;  //删除方法
+
+  //call方法就是临时改变某一个函数的作用域
+
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+
+		<script>
+		
+		//简单函数链式调用
+		
+		function Dog(){
+				
+				this.run = function(){alert('dog is run..'); return this};
+				
+				this.eat = function(){alert('dog is eat..'); return this};
+				
+				this.sleep = function(){alert('dog is sleep'); return this}
+			}
+		
+		var d = new Dog();
+		
+		d.run().eat().sleep();
+		
+		
+		</script>
+
+
+
+</body>
+</html>

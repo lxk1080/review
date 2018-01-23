@@ -1,0 +1,179 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+<body>
+
+<div class="cc"></div>
+
+<button id="id" >按钮</button>
+
+<a href="javascript:var a=1;var b=2;alert(a+b)">js协议</a> <!--执行JavaScript语句-->
+
+<ul>
+<li>1</li>
+<li>2</li>
+<li>3</li>
+<li>4</li>
+</ul>
+
+<input type="checkbox" value="check1">check1
+<input type="checkbox" value="check2">check2
+<input type="checkbox" value="check3">check3
+
+<select>
+<option value="op1">0011</option>
+<option value="op2">0022</option>
+<option value="op3">0033</option>
+<option value="op4">0044</option>
+</select>
+
+<div id="res"></div>
+
+<a href="javascript:void(0)">事件</a> <!--void()是一个操作符，计算表达式，但不返回值，是一个死链接，这样的写法主要是为了防止<a>标签的默认行为,‘#’是一个空连接，默认的锚是#top,会返回到页面的顶部-->
+
+</body>
+</html>
+<script src="jquery.min.js"></script>
+<script>
+
+/*01
+function a(){alert("1")}
+function b(){alert("2")}
+id.onclick=a;
+id.onclick=b; //输出b函数
+*/
+
+/*02
+var a = 10;
+var b = 20;
+var c = a+b;
+alert("a+b="+a+b); //字符串+数字+数字=字符串
+*/
+
+/*03
+alert(typeof 4.5); //自识别类型
+*/
+
+/*04
+confirm("确认？")
+prompt("???","..") 
+*/
+
+
+/*05
+for(var i=0; i<20; i++);  //循环体为空，单分号空语句
+*/
+
+
+/*06
+var q; //弱类型，没有赋值时，就是不明确的，q==undefined
+alert("1","2"); //返回1，alert只接受一个参数
+alert(20*null); //0
+alert(20+null); //20
+alert(20+q); //q是undefined，20+q=NaN
+alert(q==null); //true,null只和undefined相等，反之亦然，null和undefined不与任何其他类型相等,本质是false的衍生体
+alert(""==0 && false==0); //true
+var cc=20+q;  //cc等于NaN
+alert(cc&&5);  //NaN
+alert(!cc==true);  //true,NaN的本质是false，遇逻辑运算符"非"会变成true
+alert(cc==false); //false,NaN既不是true也不是false，NaN不等于任何物质,它是由false衍生而来的进化体，但又不是false
+alert(cc+5); //NaN对于所有算术运算符都是NaN
+alert(cc==cc);//false，NaN不是任何物质，就连自己也不等于自己
+alert("字符"+null); //"字符null",null会转换成字符串
+alert("字符"*null); //NaN
+alert("字符"*5); //NaN
+//精确比较（===）下，不仅比较值的大小，还比较字符类型是否相同false===0-->false,"5"===5-->false,null===undefined-->false
+//强度 NaN > undefined > null > number > string
+*/
+
+
+/*07
+var a="123aa";
+alert(parseInt(a)); //123
+var a="aa123";
+alert(parseInt(a)); //NaN
+*/
+
+/*08
+var d="asdfgh";
+var str=d.slice(2,5); //从开始位置开始到结束位置之前,
+var str1=d.substr(2,3); //从开始位置开始，取出指定长度的字符
+var str2=d.substring(2,5); //与slice相同
+alert(str);  //dfg
+alert(str1); //dfg
+alert(str2); //dfg
+////上述方法若只有一个参数则返回开始位置及之后的所有字符，若没有参数，则是整个字符串
+*/
+
+/*09
+var x=16;
+var y="qwer";
+alert(x.toString(16)); //10,十进制转换十六进制,转换成某种格式的字符串，本质是"字符串"
+alert(y.toString(10)); //qwer,字符串不变
+*/
+
+
+
+
+$(document).ready(function(e){  
+                                               
+	//选择器从1开始
+	$("ul li:nth-child(n)").css("color","red"); 
+	
+	
+	//复制节点
+	$("ul li").css("cursor","pointer").click(function(){
+			$(this).clone(true).appendTo("ul");  //如果是clone(),则复制节点和样式，不复制行为(单击事件)
+		}); 
+	
+		
+	//替换元素
+	$("ul li:nth-child(1)").replaceWith("<em>1</em>"); 
+	
+	
+	//<li>被包裹
+	$("ul li").wrap("<p></p>"); //一个个的包
+	$("ul li").wrapAll("<p></p>"); //所有<li>一起包
+	//<li>包裹<p>
+	$("ul li").wrapInner("<p></p>");
+	
+	
+	//对checkbox元素执行选中操作,select元素同理
+	$(":checkbox").val(["check1","check3"]); //选中值为check1和check3的checkbox元素
+	$("select").val(["op3"]); //选中值为op3的option元素
+	
+	
+	//元素在客户端视窗的相对偏移
+	var offsetLeft = $("ul li:first-child").offset().left;
+	var offsetTop = $("ul li:first-child").offset().top;
+	
+	
+	//停止事件冒泡
+	//event.StopPropagation();
+	//event.preventDefault();
+	//return false;
+	
+	
+	//鼠标位置
+	$(document).mousemove(function(){
+			$("#res").html(event.pageX+":"+event.pageY);
+		})
+		
+		
+	//键盘unicode
+	$(document).keyup(function(){  //可换mousedown,鼠标unicode
+			$("#res").text(event.which);
+		})
+		
+	
+	//on事件方法，delegate事件委托,this代表document对象,引号都不可少
+	$(document).on('click','a',function(){alert('on')});
+	$(document).delegate('a','click',function(){alert('delegate')});
+	$(this).on('click','a',function(){alert('this')});
+	
+});
+
+</script>

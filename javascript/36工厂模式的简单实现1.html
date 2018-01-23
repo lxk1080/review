@@ -1,0 +1,70 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+		<!--引入接口类-->
+		<script src="接口类-鸭式辨型.js"></script>
+        
+		<script>
+		
+		//构建一个卖车的工厂类
+		function CarShop(){};
+		
+		CarShop.prototype = { 		
+				constructor : CarShop,   //还原构造器
+				sellCar : function(type){  //卖车的类型
+						var car ;
+						switch(type){
+								case 'Benz': car = new Benz(); break; 
+								case 'Bmw':  car = new Bmw(); break; 
+								case 'Audi': car = new Audi(); break; 
+								default : alert('抱歉，本店不卖"'+type+'"这种车'); 
+										  console.log('抱歉，本店不卖"'+type+'"这种车');
+										  break;
+								}
+								
+						//检验车合不合格
+						LXK.Interface.ensureImplements(car,carInterface); //确定实例对象实现了这个接口
+						
+						//检验不成功时会抛出异常停止运行，成功则弹出购买成功
+						alert('购买成功');
+						
+						return car;  //返回这个车
+					}			
+			};
+			
+		//车的接口和接口里包含的方法
+		var carInterface = new LXK.Interface(carInterface,['start','run']);
+		
+		
+		//每种车都要实现这两个方法
+		function Benz(){}
+		Benz.prototype.start = function(){alert('benz is start..')}
+		Benz.prototype.run = function(){alert('benz is run..')}
+		
+		function Bmw(){}
+		Bmw.prototype.start = function(){alert('Bmw is start..')}
+		Bmw.prototype.run = function(){alert('Bmw is run..')}
+		
+		function Audi(){}
+		Audi.prototype.start = function(){alert('Audi is start..')}
+		Audi.prototype.run = function(){alert('Audi is run..')}
+ 		
+			
+		var shop = new CarShop();  //实例化一个工厂
+		
+		var car = shop.sellCar('Bmw');  //从工厂中购买一辆车
+		
+		car.start();  //看看这个车的能否启动
+		
+		</script>
+        
+
+
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+
+		<script>
+		
+		//简单原型
+		
+		function Person(){
+			
+			}
+		
+		//这种形式重写了原型对象里的属性和方法
+		Person.prototype = {
+				//constructor : Person,   //这样形式的 constructor 是可以被枚举的
+				name : "z3",
+				age : "23",
+				say : function(){alert('hello world')}
+			}
+		
+		// ECMA5 给原型对象重新设置构造器的方法 Object.definePrototype()
+		// ff4+  ie8+
+		// 参数1：要重设构造器的对象  参数2：要设置的属性  参数3：options配置项
+		
+		Object.defineProperty(Person.prototype , 'constructor' , {
+				enumerable : false ,   //不可被枚举
+				value : Person   //重设构造器为Person
+			});
+		
+		var p = new Person();
+		
+		alert(Person.prototype.constructor);  //val="Person"
+		
+		
+		//_____________________________________________________________
+		
+		//原型的动态特性
+		/*
+		function Person(){
+			
+			}
+			
+		var p = new Person();
+		
+		//原型对象的构造器默认为Person，后面也没有改变
+		
+		Person.prototype.say = function(){
+				alert('你好');
+			} 
+		p.say();  //val="你好"
+		*/
+		
+		function Person(){
+			
+			}
+		
+		var p = new Person();
+		
+		//原型对象的构造器默认为Person，但是后面改变了构造器（Object），导致了后面的属性、方法不能被读取
+		//所以在用 简单原型 时，原型对象 一定要紧跟在构造函数后
+		
+		Person.prototype = { speak : function(){alert('你好 2')}}
+		
+		p.speak();   //error
+		
+		
+		</script>
+
+
+</body>
+</html>

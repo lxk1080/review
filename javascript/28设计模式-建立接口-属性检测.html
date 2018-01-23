@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+
+		<script>
+		
+		//属性检测的方式 实现接口
+		//只能检测接口是否实现，不能检测接口中的方法是否实现
+		
+		/**
+		*	interface Composite{
+		*		function add(obj);
+		*		function remove(obj);
+		* 		function update(obj);
+		*	}
+		*
+		*	interface FormItem{
+		*		function select(obj);
+		*	}
+		*/
+		
+		
+		//CompositeImpl implements Composite , FormItem（实现接口的类）
+		
+		var CompositeImpl = function(){
+				//显示在类的内部 ，接收所实现的接口
+				//在类的内部定义一个数组（数组名字要固定）
+				this.implementsInterface = ['Composite','FormItem'];
+			}
+			
+			
+		CompositeImpl.prototype.add = function(obj){
+					//do something
+					alert('add...');
+			}
+		CompositeImpl.prototype.remove = function(obj){
+					//do something
+			}
+		CompositeImpl.prototype.update = function(obj){
+					//do something
+			}
+		CompositeImpl.prototype.select = function(obj){
+					//do something
+			}
+		
+		//检测是否实现所有接口
+		function CheckCompositeImpl(instance){
+			
+				//判断当前的 实例对象 是否实现了所有的接口（实例对象后面的参数就是应该要实现的接口）
+				
+				if(!IsImplements(instance,'Composite','FormItem')){
+						throw new Error('存在没有实现的接口');  //抛出异常时js代码终止执行
+					}
+			}
+		
+		//公用的具体检测方法（核心方法），返回类型boolean
+		//判断 实例对象 有没有实现相关的接口
+		function IsImplements(object){
+				
+				//arguments对象 获得函数的实际参数
+				//接口是从第二个参数开始写的
+				for(var i = 1; i<arguments.length ; i++){  
+					
+						//接收要实现的每一个接口的名字
+						var interfaceName = arguments[i];
+						
+						//判断此接口是否实现的标记
+						var interfaceFound = false;
+						
+						//判断 接口 是否在类函数中实现
+						//遍历数组看是否存在，如果存在则标记为true，说明实现，跳出for循环，判断下一个接口是否实现
+						for(var j = 0; j<object.implementsInterface.length ;j++){
+								if(object.implementsInterface[j] == interfaceName){
+										interfaceFound = true;
+										break;
+									}
+							} 
+						if(!interfaceFound){
+								return false;
+							}	
+						}
+						return true;	
+			}
+		
+		
+		var c1 = new CompositeImpl();
+		
+		CheckCompositeImpl(c1);  //判断是否实现了所有的接口，如果没有就抛出异常，停止运行
+		
+		c1.add();
+		
+		
+		
+		
+		
+		</script>
+
+
+</body>
+</html>

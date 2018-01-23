@@ -1,0 +1,204 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+		<script src="接口类-鸭式辨型.js"></script>
+		<script>
+		
+		//用命令模式实现的简单的小游戏（移动方块）
+		
+		//有一个接口，实现两个方法，一个执行命令，一个回退命令
+		var RCInterface = new LXK.Interface(RCInterface,['execute']);
+		
+		//____________________________命令对象的类（调用者），命令实例对象是调用者
+		
+		//上移命令类（接受者cursor）
+		var MoveUp = function(cursor){
+			this.cursor = cursor;	
+		};
+		MoveUp.prototype = {
+			constructor : MoveUp,
+			execute : function(){
+				this.cursor.move(0,-10);	
+			},	
+		};
+		//下移
+		var MoveDown = function(cursor){
+			this.cursor = cursor;	
+		};
+		MoveDown.prototype = {
+			constructor : MoveDown,
+			execute : function(){
+				this.cursor.move(0,10);	
+			},	
+		};
+		//左移
+		var MoveLeft = function(cursor){
+			this.cursor = cursor;	
+		};
+		MoveLeft.prototype = {
+			constructor : MoveLeft,
+			execute : function(){
+				this.cursor.move(-10,0);	
+			},
+		};
+		//右移
+		var MoveRight = function(cursor){
+			this.cursor = cursor;	
+		};
+		MoveRight.prototype = {
+			constructor : MoveRight,
+			execute : function(){
+				this.cursor.move(10,0);	
+			},	
+		};
+		
+		
+		
+		
+		//______________接受者（具体操作方法的对象）  //HTML5 + ECMA5
+		
+		var Cursor = function(width,height,parent){
+			//宽高代表外层的div（canvas画布）
+			this.width = width;
+			this.height = height;
+			//移动的元素的开始位置
+			this.commandStack = [];
+			
+			//HTML5新特性
+			//创建一个画布，定义画布的宽高
+			this.canvas = document.createElement('canvas');
+			this.canvas.width = this.width;
+			this.canvas.height = this.height;
+			parent.appendChild(this.canvas);
+			
+			//canvas上下文元素（画布的核心元素）
+			this.ctx = this.canvas.getContext('2d');  //画笔
+			this.ctx.strokeStyle = 'red';  //给画线填充颜色
+			this.move(0,0);   //初始化位置
+		};
+		
+		Cursor.prototype = {
+			constructor : Cursor,
+			move : function(x,y){
+				var that = this;
+				this.commandStack.push(function(){that.lineTo(x,y)});
+				this.executeCommands();
+			},
+			//画线方法
+			lineTo : function(x,y){
+				this.position.x += x;
+				this.position.y += y;
+				this.ctx.lineTo(this.position.x,this.position.y);
+			},
+			//执行命令集合的方法
+			executeCommands : function(){
+				//确定当前的原始位置
+				this.position = {
+					x : this.width/2,
+					y : this.height/2	
+				};
+				//清空当前的画布
+				this.ctx.clearRect(0,0,this.width,this.height);
+				//开始绘画路径的方法
+				this.ctx.beginPath();
+				//确定当前画笔的位置
+				this.ctx.moveTo(this.position.x,this.position.y);
+				//循环遍历命令集合，每一个元素都是一个函数，都可以执行
+				for(var i = 0; i < this.commandStack.length; i++){
+					this.commandStack[i]();	//执行以前的命令
+				}
+				//描边方法
+				this.ctx.stroke();
+			},
+			undo : function(){
+				//移除最后一个命令函数即可
+				this.commandStack.pop();
+				//重新画出commandStack剩余的方法
+				this.executeCommands();	
+			}
+		}
+		
+		
+		
+		//有一个命令集合的数组，每执行一次这个命令，把该命令加入到集合中（push pop）
+		//也就是在原始的对象中加一些新的特性：装饰者模式
+		
+		//装饰命令对象类的两个实例  两个参数（原始的命令对象  命令集合【数组】）
+		/*
+		var UndoDercorator = function(command,undoStack){
+			this.command = command;
+			this.undoStack = undoStack;  //每次执行的命令放到这个数组
+		}		
+		UndoDercorator.prototype ={
+			constructor : UndoDercorator,
+			execute : function(){
+				this.undoStack.push(this.command);
+				this.command.execute();	
+			},
+			undo : function(){
+				this.command.undo();	
+			}
+		}
+		*/
+		
+		
+		
+		//完善一下HTML元素（五个按钮）
+		
+		//命令按钮类
+		var commandButton = function(label,command,parent){
+			LXK.Interface.ensureImplements(command,RCInterface);
+			//实例化按钮，放到父元素上
+			this.element = document.createElement('button');
+			this.element.innerHTML = label;
+			parent.appendChild(this.element);
+			//添加事件
+			this.element.onclick = function(){
+				command.execute();  //执行相应的命令	
+			}
+		}
+		//回退按钮类
+		var undoButton = function(label,parent,cursor){
+			this.element = document.createElement('button');
+			this.element.innerHTML = label;
+			parent.appendChild(this.element);
+			//添加事件
+			this.element.onclick = function(){
+				cursor.undo();
+			}
+		}
+		
+		
+		//_________________客户（创建命令）
+		
+		window.onload = function(){
+			
+			var body = document.getElementsByTagName('body')[0];
+			var cursor = new Cursor(400,400,body);  //接受者（实现命令）
+			
+			//创建命令（客户）
+			var upCommand = new MoveUp(cursor);
+			var downCommand = new MoveDown(cursor);
+			var leftCommand = new MoveLeft(cursor);
+			var rightCommand = new MoveRight(cursor);
+			
+			//创建按钮（调用者：调用命令，但不管命令怎么执行）
+			var upBtn = new commandButton('up',upCommand,body);
+			var downBtn = new commandButton('down',downCommand,body);
+			var leftBtn = new commandButton('left',leftCommand,body);
+			var rightBtn = new commandButton('right',rightCommand,body);
+			var undoBtn = new undoButton('undo',body,cursor);
+				
+		}
+		
+		
+		</script>
+
+
+</body>
+</html>

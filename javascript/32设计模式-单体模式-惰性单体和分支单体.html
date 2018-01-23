@@ -1,0 +1,80 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+
+		<script>
+
+		//_________________________________惰性单体（与闭包单体相似）（底层代码最常用）
+		
+		//命名空间
+		var Ext = {};
+		
+		Ext.base = (function(){
+				
+				//私有变量，控制返回的单体对象
+				var uniqInstance; 
+				
+				//需要一个构造器 init 初始化对象的方法
+				function init(){
+						//私有变量
+						var a1 = 10;
+						var a2 = true;
+						var f1 = function(){alert('woshi f1')}
+						return {
+								attr1 : a1,
+								attr2 : a2,
+								method1 : function(){return f1();}
+							}
+					}
+			
+				return {
+						getIntance : function(){
+								if(!uniqInstance){
+										uniqInstance = init(); //如果不存在，创建单体实例
+									}
+								return uniqInstance;
+							}
+					}
+				
+				
+				
+			})();
+		
+		alert(Ext.base.getIntance().attr1);
+		Ext.base.getIntance().method1();
+		
+		
+		//____________________________________________分支单体（浏览器差异的检测）
+		
+		var Ext = {};
+		
+		var def = true;  //这里判断浏览器类型
+		
+		Ext.More = (function(){
+				
+				var obj1 = {                 //火狐对象
+						attr1 : 'FF属性'
+					};
+					
+				var obj2 = {				//IE对象
+						attr1 : 'IE属性'
+					};
+				
+				return (def)?obj1:obj2;
+				
+			})();
+		
+		alert(Ext.More.attr1);
+		
+		</script>
+
+
+
+
+</body>
+</html>

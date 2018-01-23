@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>无标题文档</title>
+</head>
+
+<body>
+
+<script>
+
+  // prototype 每一个函数都有一个prototype属性，这个属性是一个指针，而这个指针指向一个对象
+  // 这个对象将特定的属性和方法包含在内，起到一个所有对象实例共享的作用
+
+  function Person() {
+  };
+
+  var obj = Person.prototype;  //Person.prototype是一个对象
+
+  obj.name = 'z3';
+  obj.age = '20';
+  obj.sayHello = function () {
+    alert("hello world");
+  }
+
+  var p1 = new Person();
+
+  p1.sayHello(); //val="hello world"
+
+
+  //构造函数--原型对象--实例对象 之间的关系
+
+  //构造函数.prototype = 原型对象
+
+  //原型对象.constructor = 构造函数
+  alert(obj.constructor);  //val='Person'
+
+  //实例对象.prototype = 原型对象
+  alert(obj.isPrototypeOf(p1));  //val='true'
+
+  //实例对象.constructor = 构造函数
+  alert(p1.constructor);
+
+
+</script>
+
+
+</body>
+</html>

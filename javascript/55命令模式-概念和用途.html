@@ -1,0 +1,79 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+		<script src="接口类-鸭式辨型.js"></script>
+		<script>
+		
+		//命令模式是一种封装方法调用的模式
+		//调用命令的调用者   执行命令的接受者
+		//执行一件事情：可能要用到 命令1 命令2 命令3
+		//命令模式必须实现接口execute
+		//命令模式的分类：简单命令模式、复杂命令模式、用闭包去封装命令模式（更加灵活的调用命令） 
+		
+		/*
+		//简单命令模式
+		
+		//建立接口
+		var commandInterface = new LXK.Interface(commandInterface,['execute']);
+		
+		//开始类
+		var StartCommand = function(obj){
+			this.ad = obj;	
+		}
+		StartCommand.prototype = {
+			constructor : StartCommand,
+			execute : function(){
+				this.ad.start();	
+			}
+		}
+		
+		//停止类
+		var StopCommand = function(obj){
+			this.ad = obj;	
+		}
+		StopCommand.prototype = {
+			constructor : StopCommand,
+			execute : function(){
+				this.ad.stop();	
+			}
+		}
+		
+		var stc = new StartCommand();
+		stc.execute();  //开始
+		var spc = new StopCommand();
+		spc.execute();  //停止
+		*/
+		
+		
+		//闭包命令模式
+		function MakeStart(obj){
+			return function(){
+				obj.start();	
+			}	
+		}
+		function MakeStop(){
+			return function(){
+				obj.stop();	
+			}	
+		}
+		
+		var mst = new MakeStart(obj);
+		mst();
+		var msp = new MakeStop(obj);
+		msp();
+		
+		//客户，调用者，接受者
+		// 客户：类（创建命令）
+		// 调用者：实例对象
+		// 接受者：参数obj
+		
+		</script>
+
+
+</body>
+</html>

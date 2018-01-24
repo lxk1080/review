@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+</head>
+<body>
+<h1><%= title %></h1>
+<p>Welcome to <%= title %></p>
+<p>
+    <%- xss %>
+</p>
+
+<textarea name="name" id="" cols="30" rows="10" id="txt"></textarea>
+
+<button type="button" id="btn">评论</button>
+<button type="button" id="get">获取评论</button>
+
+</body>
+</html>

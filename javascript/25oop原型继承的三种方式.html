@@ -1,91 +1,91 @@
 <!doctype html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>无标题文档</title>
+    <meta charset="utf-8">
+    <title>无标题文档</title>
 </head>
 
 <body>
 
-		<script>
-		
-		//01_________________________________________原型继承
-		
-		//继承了父类的模版，也继承了父类的原型对象
-		//但是参数要写在父类的构造函数上（不符合面向对象的风格）
-		
-		//父类的构造函数模版
-		function Person(name , age){
-				this.name = name;
-				this.age = age;
-			}
-		//父类的原型对象
-		Person.prototype = { 
-			id : 10
-		}
-		
-		
-		function Boy(sex){
-				this.sex = sex;
-			}
-		
-		Boy.prototype = new Person('z3');
-		
-		var b = new Boy();
-		
-		
-		//02___________________________________________类继承（只继承模版，不继承原型对象）
-		
-		function Person(name , age){
-				this.name = name;
-				this.age = age;
-			}
-		
-		Person.prototype = { 
-			id : 10
-		}
-		
-		
-		function Boy(name , age , sex){
-				//使用call 和 apply 绑定函数作用域
-				Person.call(this,name,age);
-				this.sex = sex;
-			}
-		
-		
-		var b = new Boy('z3',18,'男');
-		
-		//03_____________________________________混合继承（原型继承 + 借用构造函数继承）最常用
-		
-		function Person(name , age){
-				this.name = name;
-				this.age = age;
-			}
-		
-		Person.prototype = { 
-			constructor : Person,
-			id : 10
-		}
-		
-		
-		function Boy(name , age ,sex){
-			
-				//使用call 和 apply 绑定函数作用域
-				
-				Person.call(this,name,age);   //继承父类构造器模版
-				this.sex = sex;
-			}
-		
-		Boy.prototype = Person.prototype;   //继承父类的原型对象（实际上这是一个赋值，也就是说Boy.prototype和Person.prototype共用一个对象）
-		Boy.prototype.constructor = Boy;
-		
-		var b = new Boy('z8');  //混合继承时就可以直接把参数写在子类构造函数上了
-		
-		alert(b.name);
-		alert(b.id);
-		
-		
-		</script>
+<script>
+
+  //01_________________________________________原型继承
+
+  //继承了父类的模版，也继承了父类的原型对象
+  //但是参数要写在父类的构造函数上（不符合面向对象的风格）
+
+  //父类的构造函数模版
+  function Person(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+  //父类的原型对象
+  Person.prototype = {
+    id: 10
+  }
+
+
+  function Boy(sex) {
+    this.sex = sex;
+  }
+
+  Boy.prototype = new Person('z3');
+
+  var b = new Boy();
+
+
+  //02___________________________________________构造函数继承（只继承模版，不继承原型对象）
+
+  function Person(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+
+  Person.prototype = {
+    id: 10
+  }
+
+
+  function Boy(name, age, sex) {
+    //使用call 和 apply 绑定函数作用域
+    Person.call(this, name, age);
+    this.sex = sex;
+  }
+
+
+  var b = new Boy('z3', 18, '男');
+
+  //03_____________________________________混合继承（原型继承 + 借用构造函数继承）最常用
+
+  function Person(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+
+  Person.prototype = {
+    constructor: Person,
+    id: 10
+  }
+
+
+  function Boy(name, age, sex) {
+
+    //使用call 和 apply 绑定函数作用域
+
+    Person.call(this, name, age);   //继承父类构造器模版
+    this.sex = sex;
+  }
+
+  Boy.prototype = Object.create(Person.prototype);   //继承父类的原型对象
+  Boy.prototype.constructor = Boy;
+
+  var b = new Boy('z8');  //混合继承时就可以直接把参数写在子类构造函数上了
+
+  alert(b.name);
+  alert(b.id);
+
+
+</script>
 
 
 </body>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>oop</title>
+</head>
+<body>
+    <script>
+        // ES5
+        function Animal(name) {
+          this.name = name
+        }
+        var cat = new Animal('cat');
+
+        // ES6
+        class Animal2 {
+          constructor(name) {
+            this.name = name
+          }
+        }
+        var dog = new Animal2('dog');
+
+        /**
+         * 面向对象的继承
+         */
+        // 1. 构造函数继承（只能继承父类的模板属性，不能继承原型对象）
+        function P1() {
+          this.name = 'p1'
+        }
+        function C1() {
+          P1.call(this);
+          this.type = 'c1'
+        }
+        var s1 = new C1();
+
+
+        // 2. 原型链方式继承（多个实例会共用继承的属性 name 和 play ）
+        function P2() {
+          this.name = 'p2';
+          this.play = [1, 2, 3]
+        }
+        function C2() {
+          this.type = 'c2'
+        }
+        C2.prototype = new P2();
+        var s2 = new C2();
+        var s22 = new C2();
+
+
+        // 3. 组合继承（最好的方式）
+        function P3() {
+          this.name = 'p3';
+          this.play = [1, 2, 3]
+        }
+        function C3() {
+          // 继承模板属性
+          P3.call(this);
+          this.type = 'c3'
+        }
+        // 缺点：多个实例对象共用了属性 name 和 play
+        // C2.prototype = new P2();
+        // 缺点：指向同一个引用，无法正确获得实例的构造器
+        // C2.prototype = P2.prototype;
+
+        // 继承原型对象，而且与父类的原型对象隔离，继而可以还原子类的构造器
+        C3.prototype = Object.create(P3.prototype);
+        C3.prototype.constructor = C3;
+        var s3 = new C3();
+
+
+        // 4. 模拟extjs底层继承
+        function extend(sub, sup) {
+          // 利用中转对象继承父类原型
+          var F = new Function();
+          F.prototype = sup.prototype;
+          sub.prototype = new F();
+          // 还原子类构造器
+          sub.prototype.constructor = sub;
+          // 解耦
+          sub.superClass = sup.prototype;
+          if (sup.prototype.constructor === Object.prototype.constructor) {
+            sup.constructor.constructor = sup
+          }
+        }
+        function P4() {
+          this.name = 'p4'
+        }
+        function C4() {
+          C4.superClass.constructor.call(this);
+          this.type = 'c4'
+        }
+        extend(C4, P4);
+        var s4 = new C4();
+        var s44 = new C4();
+
+    </script>
+</body>
+</html>

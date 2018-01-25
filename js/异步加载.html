@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>load</title>
+    <script src="../tmp/defer1.js"></script>
+    <script src="../tmp/defer2.js"></script>
+
+    <script src="../tmp/defer1.js" defer></script>
+    <script src="../tmp/defer2.js" defer></script>
+
+    <script src="../tmp/async1.js" async></script>
+    <script src="../tmp/async2.js" async></script>
+</head>
+<body>
+    <script>
+        for (var i = 0; i < 200000000; i++) {
+          if (i % 20000000 == 0) {
+            console.log(i)
+          }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JS</title>
+</head>
+<body>
+    <script>
+//        // 问题一（1、2、3）
+//        // 同步任务
+//        console.log(1);
+//        // 异步任务（在同步任务执行后执行）
+//        setTimeout(function(){
+//          console.log(3)
+//        }, 0);
+//        console.log(2);
+
+//        // 问题二（'A'）
+//        console.log('A');
+//        setTimeout(function(){
+//          console.log('B')
+//        }, 0);
+//        while(true) {
+//
+//        }
+
+//        for (var i = 0; i < 5; i++) {
+//          // 此定时器会在1000ms后加入到异步队列
+//          setTimeout(function () {
+//            console.log(i)
+//          }, 1000)
+//        }
+
+        // 浏览器timer模块在拿到定时器时，开始计算时间，也就是200ms后将函数体加入了异步队列，此时正在执行同步队列
+        // 测试表明：同步队列执行完后，大约3s~4s后执行异步队列
+        setTimeout(function() {
+          var time3 = new Date().getTime();
+          console.log('定时器', time3 - time1)
+        }, 200);
+
+        var time1 = new Date().getTime();
+        var a = 0;
+        for (var i = 0; i < 100000000; i++) {
+          a++
+        }
+        var time2 = new Date().getTime();
+        console.log('循环', time2 - time1)
+
+    </script>
+</body>
+</html>

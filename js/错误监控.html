@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>error</title>
+    <script>
+        window.addEventListener('error', function (e) {
+          console.log('错误捕获', e)
+        }, true) // 这里要用事件捕获的方式
+    </script>
+</head>
+<body>
+    <script src="noresource.js"></script>
+    <script>
+      (new Image()).src = 'http://baidu.com/test?error=imgError';
+    </script>
+</body>
+</html>

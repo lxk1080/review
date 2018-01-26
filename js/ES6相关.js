@@ -384,3 +384,36 @@
 // map.set(func, '函数')
 // console.log(map.get(obj))
 // console.log(map.get(func))
+
+/**
+ * 关于Symbol（js的第七种数据类型）
+ */
+// let a = Symbol('a');
+// let b = Symbol('b');
+// let c = Symbol('c');
+//
+// let obj = {
+//   name: 'letter',
+//   type: 'obj',
+//   [a]: 'hello',
+//   [b](arg) {
+//     return arg
+//   }
+// };
+//
+// obj[c] = 'world';
+//
+// console.log(obj[a] + obj[c]); // helloworld
+// console.log(obj[b]('haha')); // haha
+//
+// console.log(Object.keys(obj)); // 不会获取到Symbol
+// console.log(Object.getOwnPropertySymbols(obj)); // 专门用来获取Symbol的
+// console.log(Reflect.ownKeys(obj)); // 可以获得所有的键名
+//
+// console.log(Symbol('foo') === Symbol('foo')); // false
+// console.log(Symbol.for('foo') === Symbol.for('foo')); // true
+//
+// let s1 = Symbol('s1'); // 未登记
+// let s2 = Symbol.for('s2'); // 已登记
+// console.log(Symbol.keyFor(s1)); // undefined
+// console.log(Symbol.keyFor(s2)); // s2

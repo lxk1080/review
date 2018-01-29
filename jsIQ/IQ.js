@@ -18,7 +18,7 @@ function shuffle(arr) {
 // 节流函数
 function debounce(func, delay) {
   let timer;
-  return function(...args) {
+  return function (...args) {
     if (timer) {
       clearTimeout(timer)
     } else {
@@ -81,26 +81,5 @@ function quickSort(arr) {
   return quickSort(left).concat([point], quickSort(right))
 }
 
-// 希尔排序
-function shellSort(arr) {
-  var len = arr.length,
-    temp,
-    gap = 1;
-  while(gap < len/3) {    //动态定义间隔序列
-    gap = gap*3+1;
-  }
-  for (gap; gap > 0; gap = Math.floor(gap/3)) {
-    for (var i = gap; i < len; i++) {
-      temp = arr[i];
-      for (var j = i-gap; j >= 0 && arr[j] > temp; j -= gap) {
-        arr[j+gap] = arr[j];
-      }
-      arr[j+gap] = temp;
-    }
-  }
-  return arr;
-}
-
-let arr = [14, 11, 3, 13, 10, 2, 5, 4, 6, 8, 7, 12, 1, 9];
-arr = shellSort(arr);
-console.log(arr);
+let arr = [14, 11, 3, 13, 10, 15, 2, 5, 4, 6, 8, 7, 12, 1, 9];
+console.log(quickSort(arr));

@@ -79,7 +79,7 @@
           // 解耦
           sub.superClass = sup.prototype;
           if (sup.prototype.constructor === Object.prototype.constructor) {
-            sup.constructor.constructor = sup
+            sup.prototype.constructor = sup
           }
         }
         function P4() {

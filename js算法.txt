@@ -7,4 +7,4 @@
 递归：https://segmentfault.com/a/1190000009857470
 
 波兰式和逆波兰式：理论：http://www.cnblogs.com/chenying99/p/3675876.html
-				  源码：https://githup.com/Tairraos/rpn.js/blob/master/rpn.js
+				源码：https://githup.com/Tairraos/rpn.js/blob/master/rpn.js

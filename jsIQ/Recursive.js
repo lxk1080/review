@@ -14,5 +14,4 @@ function factorial2(n, total = 1) {
   }
   return factorial2(n - 1, n * total)
 }
-
 console.log(factorial2(4));

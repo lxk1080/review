@@ -15,17 +15,36 @@ function shuffle(arr) {
   return newArr
 }
 
-// 节流函数
+// 防抖函数
 function debounce(func, delay) {
   let timer;
   return function (...args) {
+    let me = this;
     if (timer) {
       clearTimeout(timer)
-    } else {
-      timer = setTimeout(() => {
-        func.apply(this, args)
-      }, delay);
     }
+    timer = setTimeout(() => {
+      func.apply(me, args)
+    }, delay);
+  }
+}
+
+// 节流函数
+function throttle(func, time) {
+  let timer, firstTime = true;
+  return function (...args) {
+    if (firstTime) {
+      func.apply(this, args)
+      return firstTime = false
+    }
+    if (timer) {
+      return false
+    }
+    timer = setTimeout(() => {
+      func.apply(this, args)
+      clearTimeout(timer)
+      timer = null
+    }, time)
   }
 }
 

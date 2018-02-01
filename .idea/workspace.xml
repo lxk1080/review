@@ -23,7 +23,7 @@
       <file leaf-file-name="IQ.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/jsIQ/IQ.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="725">
+            <state relative-caret-position="575">
               <caret line="29" column="1" lean-forward="true" selection-start-line="29" selection-start-column="1" selection-end-line="29" selection-end-column="1" />
               <folding />
             </state>
@@ -232,12 +232,12 @@
       <option name="presentableId" value="Default" />
       <updated>1517231447550</updated>
       <workItem from="1517231450240" duration="4099000" />
-      <workItem from="1517446720255" duration="715000" />
+      <workItem from="1517446720255" duration="874000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4814000" />
+    <option name="totallyTimeSpent" value="4973000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -314,7 +314,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/jsIQ/IQ.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="725">
+        <state relative-caret-position="575">
           <caret line="29" column="1" lean-forward="true" selection-start-line="29" selection-start-column="1" selection-end-line="29" selection-end-column="1" />
           <folding />
         </state>

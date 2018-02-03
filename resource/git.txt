@@ -1,0 +1,77 @@
+// 注册一个用户
+git config --global user.name "Your Name"
+git config --global user.email "email@example.com"
+mkdir myDir
+cd myDir
+pwd //用于显示当前目录
+git init  //这个目录变成Git可以管理的仓库
+ls -ah // 可以显示隐藏的目录
+git add readme.txt
+git commit -m "first commit"
+git status
+git diff  // 查看difference（修改的内容）
+git diff HEAD -- readme.txt // 查看当前版本指定文件的修改
+git log // 显示从最近到最远的提交日志（ q 退出，s 保存， down 向下）
+git log --pretty=oneline // 简要显示
+git reset --hard HEAD^ // HEAD间接指向当前版本，上一个版本HEAD^，上上一个版本HEAD^^
+git reset --hard HEAD~1 // 等同于上面一句
+git reflog // 记录了每一次命令，可用于回到过去后再回到未来
+git checkout -- readme.txt  // 让文件回到最近一次git commit或git add时的状态
+cat readme.txt // 查看文件内容
+git reset HEAD readme.txt // 把暂存区的修改撤销掉（unstage），此时如果checkout -- 会回到最近一次的commit状态
+git rm test.txt // 在工作区删除文件（接着要 git commit 让版本库也删除文件，如果在工作区误删，则可以 checkout -- 还原文件为最近一次的commit版本）
+ssh-keygen -t rsa -C "youremail@example.com" // 创建SSH Key
+git remote add origin https://github.com/lxk1080/myDir.git  // 关联远程库（可以使用ssh协议（原生的，速度快），使用https协议每次推送都必须输入口令）
+git remote add gitee git@gitee.com:lxk1080/VoteManager.git  // 关联另一个远程库（给远程库起一个不一样的名字）
+git remote rm origin  // 删除关联的远程库
+git push -u origin master  // 将本地库的主分支推送到远程库上（第一次提交，远程库还是空的, -u 将分支关联）
+git push origin master  //（以后的提交不需要 -u ）
+git clone git@github.com:lxk1080/gitSkills.git // 从远程库克隆一个本地库
+git add -A  // 添加所有内容
+git add .  // 添加新文件和编辑过的文件，不包括删除的文件
+git add -u // 添加编辑或者删除的文件，不包括新添加的文件
+
+git branch dev // 创建分支
+git checkout dev // 切换分支
+上面两句合并为一句：
+git checkout -b dev  // 创建并切换到分支dev
+git branch // 查看当前分支
+git merge dev  // 在dev分支上合并，默认'快进模式'，合并后删除dev分支，不会存在该分支历史信息
+git branch -d dev  // 删除分支
+git log --graph --pretty=oneline --abbrev-commit  // 可以看到分支合并图
+git merge --no-ff -m "merge with no-ff" dev // no-ff 禁用Fast forward，合并后可以找到分支历史信息，这种合并要创建一个新的commit，所以加上-m参数
+
+git stash  // 把当前工作现场"储藏"起来，等以后恢复现场后继续工作
+git stash list  // 查看储藏的工作现场列表
+git stash pop // 恢复的工作现场的同时把stash内容也删除
+git stash apply stash@{0}  // 恢复指定的stash，恢复后，stash内容并不删除，需要用git stash drop来删除
+git stash drop stash@{0}  // 删除指定的stash
+git branch -D feature-vul  // 强行删除一个没有被合并的分支
+
+git remote -v // 查看远程库的信息
+
+git checkout -b dev origin/dev  // 创建远程origin的dev分支到本地（用于克隆分支之后，只能看到本地的master分支）
+git pull  // 把最新的提交从origin/dev抓下来（当其他人提交修改了之后）
+git pull --rebase origin master  // 会同时把 README.md 拉出来
+git branch --set-upstream dev origin/dev  // 指定本地dev分支与远程origin/dev分支的关联（当出现no tracking information的时候）
+
+git tag v1.0  // 创建标签，默认当前版本
+git tag v0.9 515b059  // 指定版本创建标签
+git tag // 查看标签列表
+git show v0.9 // 查看此标签下的版本信息
+git tag -a v0.4 -m "版本0.4" d19e413  // 创建带有说明的标签
+git tag -d v0.9  // 删除标签
+git push origin v1.0  //推送某个标签到远程库
+git push origin --tags  //一次性推送全部尚未推送到远程的本地标签
+
+如果标签已经推送到远程，要删除远程标签，先从本地删除：
+git tag -d v1.0
+从远程删除：
+git push origin :refs/tags/v1.0
+
+htmlpreview.github.io/?  // 查看运行结果
+
+npm install cnpm -g --registry=https://registry.npm.taobao.org   // 淘宝npm镜像
+
+
+

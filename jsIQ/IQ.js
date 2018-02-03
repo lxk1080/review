@@ -15,7 +15,7 @@ function shuffle(arr) {
   return newArr
 }
 
-// 防抖函数
+// 防抖函数（调用后 在计时完成后执行函数，若在延迟时间内再次调用，则重新计时）
 function debounce(func, delay) {
   let timer;
   return function (...args) {
@@ -29,7 +29,27 @@ function debounce(func, delay) {
   }
 }
 
-// 节流函数
+// 防抖函数升级（可以避免连续快速调用时一直不执行的问题）
+function debouncePro(func, delay, time) {
+  let timer, previous;
+  return function (...args) {
+    let now = new Date()
+    if (!previous) previous = now
+    if (timer) {
+      clearTimeout(timer)
+    }
+    if ((now - previous) > time) {
+      func.apply(this, args)
+      previous = now
+    } else {
+      setTimeout(() => {
+        func.apply(this, args)
+      }, delay)
+    }
+  }
+}
+
+// 节流函数（第一次调用立即执行，以后每隔一个时间段才能再次调用）
 function throttle(func, time) {
   let timer, firstTime = true;
   return function (...args) {

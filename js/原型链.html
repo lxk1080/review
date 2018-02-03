@@ -6,6 +6,8 @@
 </head>
 <body>
     <script>
+        // 创建对象的三种方式 ------------------------------------------------------------------------
+
         var o1 = {name: 'o1'};
         var o2 = new Object({name: 'o2'});
 
@@ -15,7 +17,8 @@
         var P = {name: 'p'};
         var o4 = Object.create(P);
 
-        // 模拟new运算符
+        // 模拟new运算符 ---------------------------------------------------------------------------
+
         var new2 = function(func, args) {
           // 新建一个新的对象，继承func.prototype
           var o = Object.create(func.prototype);
@@ -30,6 +33,27 @@
         };
         var o5 = new2(M, ['o5']);
         console.log(o5.name);
+
+        // 原型链 ---------------------------------------------------------------------------------
+
+        function Func() {}
+        // 一个对象的隐式原型指向构造该对象的构造函数的原型，原型对象之间通过__proto__形成原型链
+        console.log(Func.prototype.__proto__ === Object.prototype) // true
+
+        // 对于构造函数有prototype，对于对象有__proto__，而构造函数也是对象
+        // 所以构造函数既有prototype，也有__proto__
+        console.log(Func.__proto__ === Function.prototype) // true
+
+        // 对于一个对象只有__proto__
+        var nums = [1, 2, 3];
+        console.log(nums.prototype); // undefined
+        console.log(nums.__proto__ === Array.prototype); // true
+        console.log(nums.__proto__.__proto__ === Object.prototype); // true
+
+        // 原始类型的值也是对象
+        var num = 10;
+        console.log(num.__proto__ === Number.prototype) // true
+        console.log(num.__proto__.__proto__ === Object.prototype) // true
 
 
     </script>

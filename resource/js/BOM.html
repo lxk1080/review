@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			.box {
+				width: 2000px;
+				height: 1000px;
+				padding: 10px;
+				border: red solid 1px;
+				position: relative;
+			}
+			.item {
+				width: 200px;
+				height: 200px;
+				border: rosybrown solid 1px;
+				margin-top: 80px;
+				margin-left: 80px;
+				overflow: auto;
+			}
+		</style>
+		<script>
+			window.onload = function() {
+				var box = document.getElementsByClassName('box')[0];
+				var item = document.getElementsByClassName('item')[0];
+				
+				console.log('window.innerWidth:', window.innerWidth);
+				console.log('window.innerHeight:', window.innerHeight);
+				console.log('window.outerWidth:', window.outerWidth);
+				console.log('window.outerHeight:', window.outerHeight);
+				console.log('');
+				
+				console.log('window.pageXOffset:', window.pageXOffset, '等价于scrollLeft');
+				console.log('window.pageYOffset:', window.pageYOffset, '等价于scrollTop');
+				console.log('');
+				
+				console.log('window.screen.width:', window.screen.width);
+				console.log('window.screen.height:', window.screen.height);
+				console.log('window.screen.availWidth:', window.screen.availWidth);
+				console.log('window.screen.availHeight:', window.screen.availHeight, '减去了pc端任务栏的高度');
+				console.log('');
+				
+				console.log('box.clientWidth:', box.clientWidth, '不带边框');
+				console.log('box.clientWidth:', box.clientHeight);
+				console.log('box.offsetWidth:', box.offsetWidth, '带边框');
+				console.log('box.offsetHeight:', box.offsetHeight);
+				console.log('')
+				
+				console.log('item.offsetParent:', item.offsetParent, '定位父级（定位方式不为static的，如果没有，则为boby元素）');
+				console.log('item.offsetLeft:', item.offsetLeft, '相对于定位父级的左边距');
+				console.log('item.offsetTop:', item.offsetTop);
+				
+				console.log('item.clientWidth:', item.clientWidth, '可视区宽度（ 减去了滚动条的宽度17px）');
+				console.log('item.clientHeight:', item.clientHeight);
+				console.log('item.scrollWidth:', item.scrollWidth, '元素内容的整体宽度');
+				console.log('item.scrollHeight:', item.scrollHeight);
+				item.scrollTo(30, 150)
+				console.log('item.scrollLeft:', item.scrollLeft);
+				console.log('item.scrollTop:', item.scrollTop);
+				console.log('')
+				
+				console.log('document.documentElement.clientHeight:', document.documentElement.clientHeight, '（window.innerHeight的值减去滚动条的高度）')
+				console.log('scrollLeft: ', document.documentElement.scrollLeft || document.body.scrollLeft)
+				console.log('scrollTop: ', document.documentElement.scrollTop || document.body.scrollTop)
+				console.log('')
+				
+				console.log(box.getBoundingClientRect())
+				
+			}
+		</script>
+	</head>
+	<body>
+		
+		<div class="box">
+			
+			<div class="item">
+				<p>111111111111111111111111111111111111111</p>
+				<p>111111</p>
+				<p>111111</p>
+				<p>111111</p>
+				<p>111111</p>
+				<p>111111</p>
+				<p>111111</p>
+				<p>111111</p>
+				<p>111111</p>
+				<p>111111</p>
+				<p>111111</p>
+				<p>111111</p>
+			</div>
+			<div id="res"></div>
+		</div>
+		
+		
+		
+	</body>
+</html>

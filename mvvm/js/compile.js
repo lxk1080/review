@@ -8,8 +8,11 @@ function Compile (el, vm) {
 Compile.prototype = {
     init: function () {
         if (this.el) {
+            // 将dom树转化为dom片段
             this.fragment = this.nodeToFragment(this.el);
+            // 编译dom片段，把vue语法写的模板编译成html
             this.compileElement(this.fragment);
+            // 将编译后的dom片段转化为真正的dom结构（在DOM树中，文档片段被其所有的子元素所代替）
             this.el.appendChild(this.fragment);
         } else {
             console.log('Dom元素不存在');
@@ -110,5 +113,5 @@ Compile.prototype = {
     },
     isTextNode: function (node) {
         return node.nodeType == 3;
-    },
+    }
 };

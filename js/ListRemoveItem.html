@@ -21,19 +21,19 @@
 </head>
 <body>
 <ul class="list">
-    <li class="item">******** 11 ******* <span> X</span></li>
-    <li class="item">******** 22 ******* <span> X</span></li>
-    <li class="item">******** 33 ******* <span> X</span></li>
-    <li class="item">******** 44 ******* <span> X</span></li>
-    <li class="item">******** 55 ******* <span> X</span></li>
+    <li class="item">******** 11 ******* <span class="del"> X</span></li>
+    <li class="item">******** 22 ******* <span class="del"> X</span></li>
+    <li class="item">******** 33 ******* <span class="del"> X</span></li>
+    <li class="item">******** 44 ******* <span class="del"> X</span></li>
+    <li class="item">******** 55 ******* <span class="del"> X</span></li>
 </ul>
 
 <ul class="list">
-    <li class="item">******** 66 ******* <span> X</span></li>
-    <li class="item">******** 77 ******* <span> X</span></li>
-    <li class="item">******** 88 ******* <span> X</span></li>
-    <li class="item">******** 99 ******* <span> X</span></li>
-    <li class="item">******** 00 ******* <span> X</span></li>
+    <li class="item">******** 66 ******* <span class="del"> X</span></li>
+    <li class="item">******** 77 ******* <span class="del"> X</span></li>
+    <li class="item">******** 88 ******* <span class="del"> X</span></li>
+    <li class="item">******** 99 ******* <span class="del"> X</span></li>
+    <li class="item">******** 00 ******* <span class="del"> X</span></li>
 </ul>
 
 <script>
@@ -44,7 +44,9 @@
       this.lists.forEach((item) => {
         // 事件委托，e.target是被点击的元素，此click事件是由于冒泡产生
         item.addEventListener('click', function (e) {
-          self.removeItem.call(self, e.target)
+          if(e.target.className.indexOf('del') > -1) {
+            self.removeItem.call(self, e.target)
+          }
         })
       })
     };

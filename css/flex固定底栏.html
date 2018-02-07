@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>sticky footer</title>
+  <style>
+    html * {
+      margin: 0;
+      padding: 0;
+    }
+    .Site {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      height: 100px;
+      background: chocolate;
+    }
+    .Site-content {
+      flex: 1;
+    }
+    footer {
+      height: 50px;
+      background: burlywood;
+    }
+  </style>
+</head>
+<body class="Site">
+  <header>header</header>
+  <div class="Site-content">
+    <p style="height: 100px; border: #ccc solid 1px">content</p>
+    <p style="height: 100px; border: #ccc solid 1px">content</p>
+    <p style="height: 100px; border: #ccc solid 1px">content</p>
+  </div>
+  <footer>footer</footer>
+</body>
+</html>

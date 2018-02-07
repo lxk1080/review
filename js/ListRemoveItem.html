@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        ul {
+            margin-bottom: 40px;
+        }
+
+        li {
+            margin-bottom: 15px;
+        }
+
+        span {
+            border: red solid 1px;
+            padding: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<ul class="list">
+    <li class="item">******** 11 ******* <span> X</span></li>
+    <li class="item">******** 22 ******* <span> X</span></li>
+    <li class="item">******** 33 ******* <span> X</span></li>
+    <li class="item">******** 44 ******* <span> X</span></li>
+    <li class="item">******** 55 ******* <span> X</span></li>
+</ul>
+
+<ul class="list">
+    <li class="item">******** 66 ******* <span> X</span></li>
+    <li class="item">******** 77 ******* <span> X</span></li>
+    <li class="item">******** 88 ******* <span> X</span></li>
+    <li class="item">******** 99 ******* <span> X</span></li>
+    <li class="item">******** 00 ******* <span> X</span></li>
+</ul>
+
+<script>
+  class List {
+    constructor(list) {
+      this.lists = Array.from(document.querySelectorAll(list)); // 获取所有列表，得到一个数组，元素为dom节点（这里是两个class为list的节点）
+      let self = this;
+      this.lists.forEach((item) => {
+        // 事件委托，e.target是被点击的元素，此click事件是由于冒泡产生
+        item.addEventListener('click', function (e) {
+          self.removeItem.call(self, e.target)
+        })
+      })
+    };
+
+    removeItem(target) {
+      let self = this;
+      // 通过点击的元素找到其所在的列表，然后删除
+      function findParent(target) {
+        let parent = target.parentNode;
+        let root = self.lists.find(item => item === parent)
+        if (root) {
+          root.removeChild(target)
+        } else {
+          findParent(parent)
+        }
+      }
+
+      findParent(target)
+    }
+  }
+  // 在dom结构加载完成后实例化对象
+  window.addEventListener('DOMContentLoaded', function () {
+    new List('.list')
+  })
+
+</script>
+</body>
+</html>

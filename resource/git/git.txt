@@ -38,6 +38,7 @@ git checkout -b dev  // 创建并切换到分支dev
 git branch // 查看当前分支
 git merge dev  // 在dev分支上合并，默认'快进模式'，合并后删除dev分支，不会存在该分支历史信息
 git branch -d dev  // 删除分支
+git push origin :dev // 删除githup远程分支
 git log --graph --pretty=oneline --abbrev-commit  // 可以看到分支合并图
 git merge --no-ff -m "merge with no-ff" dev // no-ff 禁用Fast forward，合并后可以找到分支历史信息，这种合并要创建一个新的commit，所以加上-m参数
 

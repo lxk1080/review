@@ -94,7 +94,9 @@ util.jsonp = function (url, onsuccess, onerror, charset) {
     }
   };
   var script = util.createScript(url + '&callback=' + callbackName, charset);
+  // FF只支持onload IE只支持onreadstatechange，这里兼容
   script.onload = script.onreadystatechange = function () {
+    // FF的判断语句 || IE的判断语句
     if (!script.readyState || /loaded|complete/.test(script.readyState)) {
       script.onload = script.onreadystatechange = null;
       // 移除该script的 DOM 对象

@@ -31,31 +31,37 @@ function flatByConvert(arr) {
 
 // ES6（Iterator，目前测试此方法不可用，只是最后的join方法起作用）
 Array.prototype[Symbol.iterator] = function () {
-    let arr = [].concat(this)
-    let getFirst = function (array) {
-        let first = array.shift()
-        return first
+  let arr = [].concat(this);
+  let getFirst = function (array) {
+    let first = array[0];
+    if (first instanceof Array) {
+      return getFirst(array[0]);
+    } else if (first !== undefined) {
+      return array.shift();
+    } else {
+      return '';
     }
-    return {
-        next: function () {
-            let item = getFirst(arr)
-            if (item) {
-                return {
-                    value: item,
-                    done: false,
-                };
-            } else {
-                return {
-                    done: true,
-                }
-            }
-        }
-    }
-}
+  };
+  return {
+    next: function () {
+      let item = getFirst(arr);
+      if (item) {
+        return {
+          value: item,
+          done: false,
+        };
+      } else {
+        return {
+          done: true,
+        };
+      }
+    },
+  };
+};
 var flatByES6 = function (arr) {
     let r = []
     for (let i of arr) { r.push(i) }
-    return r.join(',')
+    return r
 }
 
 let arr = ['1', 2, [3, ['a', 'b', 'c'], 4], 5, 6, [7, 8, [9, 10, [11, 12]]]]

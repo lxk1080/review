@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1, ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 深拷贝
+    const copyProperties = function (target, source) {
+      for (let key of Reflect.ownKeys(source)) {
+        if (key !== 'constructor' && key !== 'prototype' && key !== 'name') {
+          let desc = Object.getOwnPropertyDescriptor(source, key)
+          Object.defineProperty(target, key, desc)
+        }
+      }
+    }
+
+    // 只能复制类对象上的属性和类原型的属性， 不能复制类的模板属性（并没有实现多继承）
+    const mix = function (...mixins) {
+      class Mix {}
+      for (let mixin of mixins) {
+        copyProperties(Mix, mixin)
+        copyProperties(Mix.prototype, mixin.prototype)
+      }
+      return Mix
+    }
+
+  </script>
+</body>
+</html>

@@ -34,7 +34,7 @@
         var s1 = new C1();
 
 
-        // 2. 原型链方式继承（多个实例会共用继承的属性 name 和 play ）
+        // 2. 原型链方式继承（多个实例会共用继承的引用属性 play ）
         function P2() {
           this.name = 'p2';
           this.play = [1, 2, 3]
@@ -57,7 +57,7 @@
           P3.call(this);
           this.type = 'c3'
         }
-        // 缺点：多个实例对象共用了属性 name 和 play
+        // 缺点：多个实例对象共用了引用属性 play
         // C2.prototype = new P2();
         // 缺点：指向同一个引用，无法正确获得实例的构造器
         // C2.prototype = P2.prototype;

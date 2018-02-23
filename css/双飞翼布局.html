@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fly</title>
+    <!--利用 float属性 + 负margin值 + 内嵌div 实现-->
+    <style>
+        .fly {
+            min-width: 700px;
+        }
+        header,footer {
+            height: 100px;
+        }
+        .container {
+            height: 300px;
+        }
+        .main,.sub,.extra {
+            float: left;
+            height: 300px;
+        }
+        .main {
+            width: 100%;
+        }
+        .main .inner {
+            height: 300px;
+            margin-left: 200px;
+            margin-right: 200px;
+        }
+        .sub,.extra {
+            width: 200px;
+        }
+        .sub {
+            margin-left: -100%;
+        }
+        .extra {
+            margin-left: -200px;
+        }
+    </style>
+</head>
+<body class="fly">
+    <header style="background: #00B7FF">header</header>
+    <div class="container">
+        <div class="main" style="background: #434563;">
+            <div class="inner">
+                middle
+            </div>
+        </div>
+        <div class="sub" style="background: #238893;">left</div>
+        <div class="extra" style="background: #8914d6;">right</div>
+    </div>
+    <footer style="background: #71a629;">footer</footer>
+
+    <a href="https://www.zhihu.com/question/21504052">圣杯布局和双飞翼布局的区别</a>
+</body>
+</html>

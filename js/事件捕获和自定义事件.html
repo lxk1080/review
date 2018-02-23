@@ -53,9 +53,7 @@
     alert('this is a custom event!')
   });
 
-  btn.dispatchEvent(eve);
-
   btn.onclick = function () {
-    btn.dispatchEvent(eve);
+    btn.dispatchEvent(eve); // 触发事件
   }
 </script>

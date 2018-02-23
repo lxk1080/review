@@ -1,16 +1,18 @@
-function json2url(json) {
-  var arr = [];
-  for (var k in json) {
-    arr.push(k + '=' + json[k])
+function json2url(data) {
+  var res = [];
+  for (var key in data) {
+    var str = key +'='+ data[key];
+    res.push(str)
   }
-  return arr.join('&')
+  return res.join('&')
 }
 
 function ajax(json) {
   json = json || {};
   if (!json.url) return;
-  json.type = json.type || 'get';
-  json.data = json.data || {};
+  var url = json.url;
+  var type  = (json.type || 'get').toLowerCase();
+  var data = json2url(json.data || {});
 
   if (window.XMLHttpRequest) {
     var xhr = new XMLHttpRequest()
@@ -18,22 +20,23 @@ function ajax(json) {
     var xhr = window.ActiveXObject('Microsoft.XMLHTTP')
   }
 
-  switch (json.type) {
+  switch (type) {
     case 'get':
-      var url = json.url + '?' + json2url(json.data);
+      url = url + '?' + data;
       xhr.open('get', url.replace(/\?$/g, ''), true);
       xhr.send();
       break;
     case 'post':
-      xhr.open('post', json.url, true);
+      xhr.open('post', url, true);
       xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-      xhr.send(json.data);
-      break
+      xhr.send(data);
+      break;
+    default: throw new Error('the request type is not correct!');
   }
 
-  xhr.onreadystatechange = function () {
+  xhr.onreadystatechange = function() {
     if (xhr.readyState === 4) {
-      if (xhr.status>=200 && xhr.status < 300 || xhr.status === 304) {
+      if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
         json.success && json.success(xhr.responseText)
       } else {
         json.error && json.error(xhr.status)

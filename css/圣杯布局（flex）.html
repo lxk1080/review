@@ -17,29 +17,26 @@
     footer {
       flex: 0 1 100px;
     }
-    .HolyGrail-body {
+    .container {
       flex: 1;
       display: flex;
     }
-    .HolyGrail-content {
+    .content {
       flex: 1;
     }
-    .HolyGrail-nav, .HolyGrail-ads {
+    .nav, .ads {
       /* 两个边栏的宽度设为12em */
       flex: 0 0 12em;
     }
-    .HolyGrail-nav {
+    .nav {
       /* 导航放到最左边 */
       order: -1;
     }
     @media (max-width: 768px) {
-      .HolyGrail-body {
+      .container {
         flex-direction: column;
-        flex: 1;
       }
-      .HolyGrail-nav,
-      .HolyGrail-ads,
-      .HolyGrail-content {
+      .content, .nav, .ads {
         flex: auto;
       }
     }
@@ -47,10 +44,10 @@
 </head>
 <body class="HolyGrail">
   <header style="background: #00B7FF">header</header>
-  <div class="HolyGrail-body">
-    <main class="HolyGrail-content" style="background: #434563;">content</main>
-    <nav class="HolyGrail-nav" style="background: #238893;">nav</nav>
-    <aside class="HolyGrail-ads" style="background: #8914d6;">ads</aside>
+  <div class="container">
+    <main class="content" style="background: #434563;">content</main>
+    <nav class="nav" style="background: #238893;">nav</nav>
+    <aside class="ads" style="background: #8914d6;">ads</aside>
   </div>
   <footer style="background: #71a629;">footer</footer>
 </body>

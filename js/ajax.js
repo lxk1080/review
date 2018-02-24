@@ -8,18 +8,21 @@ function json2url(data) {
 }
 
 function ajax(json) {
+  // 1. 处理传递的json对象
   json = json || {};
   if (!json.url) return;
   var url = json.url;
   var type  = (json.type || 'get').toLowerCase();
   var data = json2url(json.data || {});
 
+  // 2. 实例化XMLHttpRequest对象
   if (window.XMLHttpRequest) {
     var xhr = new XMLHttpRequest()
   } else {
     var xhr = window.ActiveXObject('Microsoft.XMLHTTP')
   }
 
+  // 3. 处理get和post请求
   switch (type) {
     case 'get':
       url = url + '?' + data;
@@ -34,6 +37,7 @@ function ajax(json) {
     default: throw new Error('the request type is not correct!');
   }
 
+  // 4. 处理响应
   xhr.onreadystatechange = function() {
     if (xhr.readyState === 4) {
       if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {

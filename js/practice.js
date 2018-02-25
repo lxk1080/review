@@ -1,6 +1,18 @@
-for (var i = 0; i < 5; i++) {
-  // 此定时器会在1000ms后加入到异步队列
-  setTimeout(function () {
-    console.log(i)
-  }, 1000)
+function flat(arr) {
+    let res = []
+    function each(arr) {
+        arr.forEach((item) => {
+            if (item instanceof Array) {
+                each(item)
+            } else {
+                res.push(item)
+            }
+        })
+    }
+    each(arr)
+    return res
 }
+
+let arr = [1, 2, [3, 4, [5, 6, 7], [4, 5]], [8, 9]]
+
+console.log(flat(arr))

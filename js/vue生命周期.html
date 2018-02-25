@@ -9,7 +9,7 @@
 </head>
 <body>
 <div id="app">
-    <h1>{{message + ' this is outer HTML'}}</h1>
+    <h1 id="txt">{{message + ' this is outer HTML'}}</h1>
 </div>
 </body>
 <script>
@@ -53,9 +53,11 @@
     beforeUpdate: function () {
       console.group('beforeUpdate 更新前状态===============》');
       console.log("%c%s", "color:red", "el     : " + this.$el);
-      console.log(this.$el);
+      console.log(this.$el); // 这里打印的是Virtual Dom，在beforeUpdate时，Virtual Dom已经改变，只是没有渲染到真正的 Dom 树中
       console.log("%c%s", "color:red", "data   : " + this.$data);
       console.log("%c%s", "color:red", "message: " + this.message);
+
+      console.log(document.getElementById('txt').innerHTML) // 这个才是真正的 Dom 树中的数据
     },
     updated: function () {
       console.group('updated 更新完成状态===============》');
@@ -63,6 +65,8 @@
       console.log(this.$el);
       console.log("%c%s", "color:red", "data   : " + this.$data);
       console.log("%c%s", "color:red", "message: " + this.message);
+
+      console.log(document.getElementById('txt').innerHTML)
     },
     beforeDestroy: function () {
       console.group('beforeDestroy 销毁前状态===============》');

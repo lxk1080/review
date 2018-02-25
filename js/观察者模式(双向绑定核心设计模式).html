@@ -1,111 +1,104 @@
 <!doctype html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>观察者模式</title>
+    <meta charset="utf-8">
+    <title>观察者模式</title>
 </head>
 
 <body>
-		<input type="button" id="pub1" value="第一报社"><input type="text" id="tx1" value=""><br /><br />
-        <input type="button" id="pub2" value="第二报社"><input type="text" id="tx2" value=""><br /><br />
-        <input type="button" id="pub3" value="第三报社"><input type="text" id="tx3" value=""><br /><br />
-        
-        <textarea id="sub1" rows="10" cols="30"></textarea>
-        <textarea id="sub2" rows="10" cols="30"></textarea>
-        
-        
-		<script>
-		
-		//观察着模式：对程序中某一个对象进行实时的观察，当该对象的状态发生改变时进行通知
-		//两个对象：观察者  被观察者
-		//案例：订报纸：（报社【发布者】  订阅者）
-		
-		//发布者
-		var Publish = function(name){
-			this.name = name;
-			this.subscribers = [];  //报社里有哪些人订阅（每一个元素都是函数类型fn）
-		}
-		Publish.prototype = {
-			constructor : Publish,
-			deliver : function(news){   //报社传递信息给订阅者
-				var publish = this;   //获取报社实例对象
-				this.subscribers.forEach(function(fn){
-					fn(news,publish);	//订阅者自动获取更新的信息
-				})
-			return this;   //链式编程
-			}
-		}
-		
-		
-		//订阅者订阅报纸
-		Function.prototype.subscribe = function(publish){
-			var sub = this;    //取得订阅的这个人
-			//some：遍历数组的每一个元素，执行一个函数，如果其中有一个返回true，整体返回true
-			var alreadyExist = publish.subscribers.some(function(item){
-				return item === sub;
-			})
-			if(!alreadyExist){     //如果订阅者不存在，添加这个订阅者
-				publish.subscribers.push(sub);
-			}
-			return this;  //链式编程
-		}
-		
-		//订阅者退订报纸
-		Function.prototype.unsubscribe = function(publish){
-			var sub = this;
-			//filter:过滤掉一部分不符合条件的元素，返回符合条件的元素
-			publish.subscribers = publish.subscribers.filter(function(item){
-				return item !== sub;
-			});
-			return this;    //链式编程
-		}
-		
-		
-		//测试代码
-		window.onload = function(){
-			
-			//实例化三个报社
-			var pub1 = new Publish('第一报社');
-			var pub2 = new Publish('第二报社');
-			var pub3 = new Publish('第三报社');
-			
-			//定义两个订阅者
-			var sub1 = function(news){
-				document.getElementById('sub1').innerHTML = arguments[1].name + ":" +news+"\r\n";
-			};
-			
-			var sub2 = function(news){
-				document.getElementById('sub2').innerHTML = arguments[1].name + ":" +news+"\r\n";
-			}
-			
-			//给订阅者订阅报社
-			sub1.subscribe(pub1).subscribe(pub2);
-			sub2.subscribe(pub2).subscribe(pub3);
-			//sub1.unsubscribe(pub2);  //退订第二报社
-			
-			
-			//报社更新消息
-			document.getElementById('tx1').onkeyup = function(){
-				pub1.deliver(this.value);	
-			};
-			document.getElementById('tx2').onkeyup = function(){
-				pub2.deliver(this.value);	
-			};
-			document.getElementById('tx3').onkeyup = function(){
-				pub3.deliver(this.value);	
-			};
-			
-			
-			
-				
-		}
-		
-		
-		
-		</script>
+<input type="button" id="pub1" value="第一报社"><input type="text" id="tx1" value=""><br/><br/>
+<input type="button" id="pub2" value="第二报社"><input type="text" id="tx2" value=""><br/><br/>
+<input type="button" id="pub3" value="第三报社"><input type="text" id="tx3" value=""><br/><br/>
+
+<textarea id="sub1" rows="10" cols="30"></textarea>
+<textarea id="sub2" rows="10" cols="30"></textarea>
 
 
+<script>
+
+  //观察着模式：对程序中某一个对象进行实时的观察，当该对象的状态发生改变时进行通知
+  //两个对象：观察者  被观察者
+  //案例：订报纸：（报社【发布者】  订阅者）
+
+  //发布者
+  var Publish = function (name) {
+    this.name = name;
+    this.subscribers = [];  //报社里有哪些人订阅（每一个元素都是函数类型fn）
+  }
+  Publish.prototype = {
+    constructor: Publish,
+    deliver: function (news) {   //报社传递信息给订阅者
+      var publish = this;   //获取报社实例对象
+      this.subscribers.forEach(function (fn) {
+        fn(news, publish);	//订阅者自动获取更新的信息
+      })
+      return this;   //链式编程
+    }
+  }
 
 
+  //订阅者订阅报纸
+  Function.prototype.subscribe = function (publish) {
+    var sub = this;    //取得订阅的这个人
+    //some：遍历数组的每一个元素，执行一个函数，如果其中有一个返回true，整体返回true
+    var alreadyExist = publish.subscribers.some(function (item) {
+      return item === sub;
+    })
+    if (!alreadyExist) {     //如果订阅者不存在，添加这个订阅者
+      publish.subscribers.push(sub);
+    }
+    return this;  //链式编程
+  }
+
+  //订阅者退订报纸
+  Function.prototype.unsubscribe = function (publish) {
+    var sub = this;
+    //filter:过滤掉一部分不符合条件的元素，返回符合条件的元素
+    publish.subscribers = publish.subscribers.filter(function (item) {
+      return item !== sub;
+    });
+    return this;    //链式编程
+  }
+
+
+  //测试代码
+  window.onload = function () {
+
+    //实例化三个报社
+    var pub1 = new Publish('第一报社');
+    var pub2 = new Publish('第二报社');
+    var pub3 = new Publish('第三报社');
+
+    //定义两个订阅者
+    var sub1 = function (news) {
+      document.getElementById('sub1').innerHTML = arguments[1].name + ":" + news + "\r\n";
+    };
+
+    var sub2 = function (news) {
+      document.getElementById('sub2').innerHTML = arguments[1].name + ":" + news + "\r\n";
+    }
+
+    //给订阅者订阅报社
+    sub1.subscribe(pub1).subscribe(pub2);
+    sub2.subscribe(pub2).subscribe(pub3);
+    //sub1.unsubscribe(pub2);  //退订第二报社
+
+
+    //报社更新消息
+    document.getElementById('tx1').onkeyup = function () {
+      pub1.deliver(this.value);
+    };
+    document.getElementById('tx2').onkeyup = function () {
+      pub2.deliver(this.value);
+    };
+    document.getElementById('tx3').onkeyup = function () {
+      pub3.deliver(this.value);
+    };
+
+
+  }
+
+
+</script>
 </body>
 </html>

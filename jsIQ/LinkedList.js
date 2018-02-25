@@ -21,11 +21,10 @@ function LinkedList() {
     // 添加元素
     LinkedList.prototype.append = function(name) {
       var node = new Node(name);
-      var current = null;
+      var current = this.head;
       if (this.head === null) {
         this.head = node
       } else {
-        current = this.head;
         while(current.next !== null) {
           current = current.next
         }
@@ -58,13 +57,25 @@ function LinkedList() {
         return false
       }
     };
+    // 返回给定元素的索引，如果没有则返回-1
+    LinkedList.prototype.indexOf = function(name) {
+      var current = this.head;
+      var index = 0;
+      while(current) {
+        if (current.name === name) {
+          return index
+        }
+        current = current.next;
+        index++;
+      }
+      return -1
+    };
     //根据位置删除指定元素，成功返回元素 / 失败返回null
     LinkedList.prototype.removeAt = function(position) {
       // 限定删除范围
       if (position > -1 && position < this.length) {
         var previous = null;
         var current = this.head;
-        var previous = null;
         var index = 0;
         if (position === 0) {
           this.head = current.next
@@ -80,19 +91,6 @@ function LinkedList() {
       } else {
         return null
       }
-    };
-    // 返回给定元素的索引，如果没有则返回-1
-    LinkedList.prototype.indexOf = function(name) {
-      var current = this.head;
-      var index = 0;
-      while(current) {
-        if (current.name === name) {
-          return index
-        }
-        current = current.next;
-        index++;
-      }
-      return -1
     };
     //根据元素删除指定元素，成功返回元素 / 失败返回null
     LinkedList.prototype.remove = function(name) {

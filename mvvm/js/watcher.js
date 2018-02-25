@@ -2,7 +2,7 @@ function Watcher(vm, exp, cb) {
     this.cb = cb; // 数据改变后的回调函数
     this.vm = vm; // vm实例
     this.exp = exp; // 被观察者，data对象的某一个key
-    this.value = this.get();  // 将自己添加到观察者列表的操作
+    this.value = this.get();  // 将自己添加到watcher列表的操作
 }
 
 Watcher.prototype = {
@@ -10,13 +10,13 @@ Watcher.prototype = {
         this.run();
     },
     run: function () {
-        var value = this.vm.data[this.exp];
-        var oldVal = this.value;
-        if (value !== oldVal) {
+        var oldValue = this.value;
+        var newValue = this.vm.data[this.exp];
+        if (newValue !== oldValue) {
             // 数据更新
-            this.value = value;
+            this.value = newValue;
             // 这里一般为dom更新
-            this.cb.call(this.vm, value, oldVal);
+            this.cb.call(this.vm, newValue, oldValue);
         }
     },
     get: function () {

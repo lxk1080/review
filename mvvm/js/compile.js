@@ -1,6 +1,6 @@
 function Compile (el, vm) {
-    this.vm = vm;
     this.el = document.querySelector(el);
+    this.vm = vm;
     this.fragment = null;
     this.init();
 }
@@ -22,7 +22,7 @@ Compile.prototype = {
         var fragment = document.createDocumentFragment();
         var child = el.firstChild;
         while (child) {
-            // 将Dom元素移入fragment中
+            // 将Dom元素移入fragment中，注意：这里是移动，不是复制
             fragment.appendChild(child);
             child = el.firstChild;
         }
@@ -59,6 +59,7 @@ Compile.prototype = {
                 } else {  // v-model 指令
                     self.compileModel(node, self.vm, exp, dir);
                 }
+                // 指令编译后，移除这个属性
                 node.removeAttribute(attrName);
             }
         });

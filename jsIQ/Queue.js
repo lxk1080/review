@@ -75,4 +75,4 @@ priorityQueue.enqueue('q', 2);
 priorityQueue.enqueue('q', 4);
 priorityQueue.enqueue('q', 1);
 priorityQueue.enqueue('q', 3);
-console.log(priorityQueue.print());
+console.log(priorityQueue);

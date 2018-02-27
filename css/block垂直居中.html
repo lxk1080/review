@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>VerticalCenter</title>
+  <style>
+    div {
+      height: 100px;
+      background: goldenrod;
+      margin-bottom: 20px;
+    }
+    p {
+      box-sizing: border-box;
+      border: red solid 1px;
+      width: 100px;
+      height: 60px;
+    }
+  </style>
+</head>
+<body>
+  <!--flex-->
+  <div class="flex">
+    <p>flex</p>
+    <style>
+      .flex {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    </style>
+  </div>
+
+  <!--inlineBlock-->
+  <div class="inlineBlock">
+    <p>inlineBlock</p>
+    <style>
+      .inlineBlock {
+        text-align: center;
+        line-height: 100px;
+      }
+      .inlineBlock p {
+        text-align: left; /*还原*/
+        line-height: normal; /*还原*/
+        display: inline-block;
+        vertical-align: middle;
+      }
+    </style>
+  </div>
+
+  <!--table-->
+  <div class="table">
+    <p>tabel</p>
+    <style>
+      .table {
+        display: table;
+        width: 100%;
+      }
+      .table p {
+        display: table-cell;
+        text-align: center;
+        vertical-align: middle;
+      }
+    </style>
+  </div>
+
+  <!--absolute-->
+  <div class="absolute">
+    <p>absolute</p>
+    <style>
+      .absolute {
+        position: relative;
+      }
+      .absolute p {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-top: -30px;
+        margin-left: -50px;
+      }
+    </style>
+  </div>
+
+</body>
+</html>

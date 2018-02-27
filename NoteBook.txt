@@ -245,8 +245,8 @@ BFC原理（渲染规则）
             2. 存储型：xss存储在数据库、内存、文本中
         防御措施：
             1. 编码（前端或后端编码转义）
-            2. 过滤（前端反转义 --> domparser(过滤script、style、link、iframe、frame、onclick、onerror等标签或属性)）
-            3. 校正（使用domParse，校正不配对的DOM标签）
+            2. 过滤（前端反转义 --> domparse(过滤script、style、link、iframe、frame、onclick、onerror等标签或属性)）
+            3. 校正（使用domParse，校正不配对的DOM标签，修复页面结构）
 
 10、算法 ........................................................................................
     -- 排序

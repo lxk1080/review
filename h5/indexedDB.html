@@ -2,11 +2,31 @@
 <html>
 <head>
   <title>IndexedDB</title>
+  <meta charset="UTF-8">
   <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
   <script type="text/javascript">
     $(document).ready(function () {
       window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
       var request, db;
+      var data=[{
+          id: '1',
+          name: "Byron",
+          age: 24
+      },{
+          id: '2',
+          name: "Frank",
+          age: 30
+      },{
+          id: '3',
+          name: "Aaron",
+          age: 26
+      },{
+          id: 'r1',
+          name: "aaa"
+      },{
+          id: 'r2',
+          name: "bbb"
+      }];
 
       // 1. 判断浏览器是否支持indexedDB
       if (!window.indexedDB) {
@@ -16,14 +36,23 @@
       // 2. 打开一个IndexedDB数据库（这个过程是异步的）
       // IndexedDB需要你创建一个请求来打开它
       // 第一个参数是数据库的名称，第二个参数是数据库的版本号。版本号可以在升级数据库时用来调整数据库结构和数据。
-      request = window.indexedDB.open("testDB", 2);
+      request = window.indexedDB.open("testDB", 1);
 
       // onupgradeneeded事件在第一次打开页面初始化数据库时会被调用，或在当有版本号变化时
-      // 所以，你应该在onupgradeneeded函数里创建你的存储数据
+      // 所以，应该在onupgradeneeded函数里创建存储数据，keyPath: 主键，存储的数据一定要带有主键
       request.onupgradeneeded = function (event) {
         console.log("Upgrading");
         db = event.target.result;
-        var objectStore = db.createObjectStore("students", {keyPath: "rollNo"});
+        var objectStore = db.createObjectStore("students", {keyPath: "id"});
+        for (var i = 0; i < data.length; i++) {
+            request = objectStore.add(data[i])
+            request.onsuccess = function(){
+                console.log('数据已存入数据库')
+            };
+            request.onerror = function () {
+                console.error('数据库中已有该数据')
+            }
+        }
       }
       // 如果没有版本号变化，而且页面之前被打开过，会触发一个onsuccess事件
       request.onsuccess = function (event) {
@@ -34,50 +63,54 @@
         console.log("Error opening DB", event);
       }
 
-      // 往ObjectStore里新增对象
-      // 在indexedDB里任何的存取对象的操作都需要放在事务里执行，并要求事务具有读写权限
+      // 3. 往ObjectStore里新增对象
+      // 在indexedDB里任何对象的增删改查都需要放在事务里执行，并要求事务具有读写权限
       $("#addBtn").click(function () {
+        var id = $("#id").val();
         var name = $("#name").val();
-        var rollNo = $("#rollno").val();
 
         var transaction = db.transaction(["students"], "readwrite");
         transaction.oncomplete = function (event) {
           console.log("Success :)");
-          $("#result").html("Add : Success");
         };
-
         transaction.onerror = function (event) {
           console.log("Error :(");
-          $("#result").html("Add : Error");
         };
+
         var objectStore = transaction.objectStore("students");
 
-        objectStore.add({rollNo: rollNo, name: name});
+        var res = objectStore.add({id: id, name: name});
+        res.onsuccess = function () {
+            $("#result").html("Add : Success");
+        }
+        res.onerror = function () {
+            $("#result").html("Add : Error");
+        }
       });
 
-      // 从ObjectStore里删除对象
+      // 4. 从ObjectStore里删除对象
       // 删除跟新增一样，需要创建一个新的事务，然后调用删除接口，通过key删除对象
       $("#removeBtn").click(function () {
-        var rollNo = $("#rollno").val();
-        db.transaction(["students"], "readwrite").objectStore("students").delete(rollNo);
+        var id = $("#id").val();
+        db.transaction(["students"], "readwrite").objectStore("students").delete(id);
       });
 
-      // 通过key取出对象
+      // 5. 通过key取出对象
       $("#getBtn").click(function () {
-        var rollNo = $("#rollno").val();
-        var request = db.transaction(["students"], "readwrite").objectStore("students").get(rollNo);
+        var id = $("#id").val();
+        var request = db.transaction(["students"], "readwrite").objectStore("students").get(id);
         request.onsuccess = function (event) {
           $("#result").html("Name : " + request.result.name);
         };
       });
 
-      // 更新一个对象
+      // 6. 更新一个对象
       $("#updateBtn").click(function () {
-        var rollNo = $("#rollno").val();
+        var id = $("#id").val();
         var name = $("#name").val();
         var transaction = db.transaction(["students"], "readwrite");
         var objectStore = transaction.objectStore("students");
-        var request = objectStore.get(rollNo);
+        var request = objectStore.get(id);
         request.onsuccess = function (event) {
           $("#result").html("Updating : " + request.result.name + " to " + name);
           request.result.name = name;
@@ -89,13 +122,14 @@
 </head>
 <body>
   <form>
-    Roll No <input type="text" name="rollno" id="rollno"/><br>
-    Name <input type="text" name="name" id="name"/><br>
+    Id　  <input type="text" name="id" id="id"/><br><br>
+    Name <input type="text" name="name" id="name"/><br><br>
     <button type="button" name="addBtn" id="addBtn">Add</button>
     <button type="button" name="removeBtn" id="removeBtn">Remove</button>
     <button type="button" name="getBtn" id="getBtn">Get</button>
     <button type="button" name="updateBtn" id="updateBtn">Update</button>
   </form>
+  <br>
   <div id="result"></div>
 </body>
 </html>

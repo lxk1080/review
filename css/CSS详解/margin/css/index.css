@@ -1,0 +1,93 @@
+
+/* 普通的左恒定宽自适应   */
+.d1{
+	border: red solid 1px;
+}
+.img1 {
+	width: 200px;
+	float: left;
+}
+.p1 {
+	margin-left: 210px;
+}
+
+/* 用margin负值左恒定宽自适应  */
+.d2{
+	float: left;
+	width: 100%;
+}
+.p2{
+	margin-right: 220px;
+}
+.img2{
+	width: 200px;
+	float: left;
+	margin-left: -200px;  /* 使用负值  */
+}
+
+
+/* 宽高比恒等2:1  */
+hr{
+	clear: both;
+}
+.box {
+	background: #00CC66;
+	overflow: hidden;
+	clear: both;
+}
+.box>div {
+	margin: 50%;
+	background: #FFCC99
+}
+
+/* 消除margin-top重叠（其中的一种方法）  */
+.out{
+	width: 200px;
+	height: 200px;
+	background: #666;
+	overflow: hidden;  /*  使父元素变成块状格式化元素   （overflow不为visible）*/
+}
+.inner{
+	width: 100px;
+	height: 100px;
+	border: red solid 1px;
+	margin-top: 20px;
+}
+
+/* 无间隙两端对齐  */
+.con{
+	width: 600px;
+	margin: auto;
+	border: solid 1px;
+}
+.ul{
+	overflow: hidden;
+	margin-right: -10px; /* 设置margin为负值，可以拉伸元素在水平方向上右边的空间，此时包含ul标签盒子宽是是610px */
+}
+.li{
+	width: 193.3px;
+	height: 100px;
+	background: green;
+	float: left;
+	margin-right: 10px;
+}
+
+/* 两栏等高布局  */
+.p3{
+	border: red solid 1px;
+	overflow: hidden;
+}
+.c1,.c2{
+	margin-bottom: -300px;	
+	padding-bottom: 300px;
+}
+.c1{
+	width: 100px;
+	float: left;
+	background: orange;
+}
+.c2{
+	width: 100px;
+	float: left;
+	background: green;
+}

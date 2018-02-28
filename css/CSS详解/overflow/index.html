@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+	</head>
+	<body>
+		
+		<h3>拉伸效果（overflow属性不能是visible）</h3>
+		<div class="d1"></div>
+		  
+		<hr />
+		
+		<h3>文字溢出...</h3>
+		<div class="d2">反对孤独感大范甘迪奋斗过的</div>
+		
+		<hr />
+		
+		<h3>锚点定位（直接到指定id的位置，本质是：改变容器的滚动高度）</h3>
+		<a href="#mao">定位</a>
+		<div id="mao">我是锚点</div>
+		
+		<hr />
+		
+		<h3>锚点选项卡</h3>
+		<div class="box">
+			<div class="list" id="one">1</div>
+			<div class="list" id="two">2</div>
+			<div class="list" id="three">3</div>
+			<div class="list" id="four">4</div>
+		</div>
+		<div class="link">
+			<a href="#one">1</a>
+			<a href="#two">2</a>
+			<a href="#three">3</a>
+			<a href="#four">4</a>
+		</div>
+		
+	</body>
+</html>
+<!--
+		1. overflow-x
+		   overflow-y
+		       如果x和y一个是visible，另一个是hidden、scroll或auto，那么这个visible会被重置为auto
+		2. 设置td元素的overflow，还需要为table为table-layout:fixed才行
+		3. 所有浏览器的默认滚动条都是来自于html元素，可以:
+			html{overflow:hidden}
+		4. 滚动高度：
+		 	var st = document.documentElement.scrollTop || document.body.scrollTop
+		5. 滚动栏宽度大约17px
+		6. 水平居中跳动问题修复
+			兼容： html{overflow: scroll}
+			IE9+： .con{ padding-left:calc(100vw - 100%); } 
+				  100vw -- 浏览器宽度；100% -- 可用内容宽度
+			      100vw - 100% = 滚动栏宽度（如果出现滚动栏的话），不出现那就是0了
+			
+		7. 自定义滚动条
+			常用：
+				::-webkit-scrollbar{  //  血槽宽度
+					width: 8px; height: 8px;
+				}
+				::-webkit-scrollbar-thumb{  //  拖动条
+					background-color: rgba(0,0,0,.3);
+					border-radius: 6px;
+				}
+				::-webkit-scrollbar-track{  //  背景槽
+					background-color: #ddd;
+					border-radius: 6px;
+				}
+		
+		8. 当overflow元素在包含块和absolute之间时，overflow无效
+		       包含块：position为relation/absolute/fixed的元素
+		       解决方法： 使overflow元素为包含块（在overflow元素上加position:relative;）
+-->

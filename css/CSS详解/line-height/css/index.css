@@ -1,0 +1,54 @@
+﻿
+/* 内联元素的高度由行高决定（是所占行高，不是元素的高度）  */
+/* 分隔符  */
+.test{
+	line-height: 30px;
+	background: red;
+	border: green solid 1px; /* 看到的竖线实质上是左右重合的边框   */
+	font-size: 16px;  /* 内容区域默认的高度，与浏览器和字体相关  */
+}
+
+/* 消除图片底部间隙（3种方法）  */
+.con{
+	border: red solid 1px;
+	line-height: 0;  /* 1. 行高为0，文字的基线会上移  */
+	font-size: 0;  /* 2. 行高的 百分比值/倍数值 是根据font-size改变的，font-size为0，则line-height也为0 */
+}
+.img1{
+	width: 200px;
+	display: block; /* 3. 设置图片为block，block元素没有基线（效果最好）  */
+	vertical-align: bottom; /* 4. 设置底线对齐  */
+}
+
+/* 图像水平垂直居中  */
+.out{
+	width: 500px;
+	border: red solid 1px;
+	text-align: center;
+	line-height: 200px; /* 设置行高（可以理解为存在着看不见的文字）  */
+}
+.img2{
+	width: 200px;
+	vertical-align: middle;  /* 垂直居中（图片与文字的基线垂直居中对齐）   */
+}
+
+/* 多行文本水平垂直居中（原理与图片水平垂直居中相同）   */
+.box{
+	width: 300px;
+	line-height: 200px;
+	text-align: center;
+	border: darkgreen solid 1px;
+}
+.text{
+	display: inline-block;  /* 1. 把display属性设为和图片一样，inline-block元素自带空白字符 */
+	vertical-align: middle; /* 2. 使此元素与文字的基线垂直居中对齐 */
+	line-height: normal; /* 3. 重置从父容器继承的line-height和text-align  */
+	text-align: left;
+	max-width: 80%;
+}
+
+/* 块级元素（用line-height代替height）   */
+.end{
+	line-height: 100px;
+	border: red solid 1px;
+}

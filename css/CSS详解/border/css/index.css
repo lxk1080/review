@@ -1,0 +1,48 @@
+*{
+	padding: 0;
+	margin: 0;
+}
+
+/* 菜单效果  */
+.menu{
+	width: 120px;
+	height: 20px;
+	border-top: 60px double;
+	border-bottom: 20px solid;
+}
+
+/* 透明边框  */
+.opac{
+	width: 100px;
+	height: 100px;
+	border: red solid 1px;
+	border-right: 50px solid transparent;
+}
+
+/* 边框三角 */
+.sanjiao{
+	width: 0px;
+	height: 0px;
+	border-width: 20px 30px;
+	border-style: solid;
+	border-color: red red transparent transparent;
+}
+
+/* 利用透明边框增大可点击区域 */
+.check{
+	width: 16px;
+	height: 16px;
+	border: 2px solid transparent;
+	box-shadow: inset 0 1px,inset 1px 0,inset -1px 0,inset 0 -1px;
+}
+
+/* 可视渲染区域  */
+.icon{
+	width: 20px;
+	height: 20px;
+	position: relative;
+	left: -20px;  /* 这里改成-16px即可投影，因为在-16px时，元素右边还留有一点点可见  */
+	border-right: 20px solid transparent; /* 这里实测即使加了透明边框也不能渲染投影  */
+	filter: drop-shadow(20px 0px #ff8040); /* 要在元素可见的情况下才能投影  */
+}
+

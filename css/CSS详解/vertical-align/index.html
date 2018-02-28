@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<link rel="stylesheet" type="text/css" href="css/index.css"/>
+	<body>
+		
+		<h3>table-cell元素自身的垂直居中</h3>
+		<p class="ta"><img class="img1" src="img/p8.jpg" /></p>
+		
+		<hr />
+		
+		<h3>图片垂直居中</h3>
+		<p class="p">
+			<img class="img" src="img/p8.jpg"/>
+		</p>	
+		
+		<hr />
+		
+		<h3>块级元素的垂直居中</h3>
+		<div class="out">
+			<div class="inner">
+				<img class="img2"  src="img/p8.jpg" />
+			</div>
+		</div>
+		
+		<hr />
+		
+		<h3>inline-block元素基线对齐</h3>
+		<span class="span"></span>
+		<span class="span">baseline</span>
+		
+	
+	</body>
+</html>
+<!--
+	1. vertical-align四种类型对齐方式：
+		线类： baseline（内联元素之间的默认对齐方式）
+			 middle （元素的垂直中心点会和父元素基线上 1/2 x的高度的位置对齐）
+			 top、bottom  （应用该属性的元素的盒子顶部或底部与父级元素的顶部或底部对齐）
+			 
+		文本类：（应用该属性的元素的盒子顶部或底部与父级元素的内容区域的顶部或底部对齐）
+			text-top、text-bottom
+			
+		上标下标类：（提高或降低元素的基线到父级合适的上标基线或下标基线位置）
+			sub、super
+			
+		数值百分比类：（应用该属性的元素相对于自身原来的位置上移或下移，百分比值是相对于行高计算的）
+			20px、20em、20%
+	
+	2. vertical-align的"百分比值"是相对于line-height计算的（IE6/IE7下的百分比值不支持小数line-height）
+	
+	3. vertical-align是应用于inline水平元素和table-cell元素的，内联元素默认基线对齐，普通文本为"匿名inline元素"
+	
+	4. inline水平元素
+		inline: <span>  <a>  <strong>  ...
+		inline-block: <input>  <button>  ... （IE8+）
+		table-cell: <td> ...
+	       所以在默认状态下，支持vertical-align的有  图片、按钮、文字、单元格...
+	
+	5. 对于内联元素，处处都会受到vertical-align 和 line-height 的影响
+	
+	6. 对于inline-block元素，如果元素内没有其他元素，则基线为底边缘，如果有内联元素，则基线为其内部最后一行内联元素的基线（见上"inline-block元素基线对齐"）
+	
+	7. 对于元素的垂直居中middle（近似垂直居中）：
+	       元素的垂直中心点会和父元素基线上 1/2 x（文字） 的 height的位置对齐
+	       文字的中心应该和中线对齐，但文字有下沉特性，所以文字的中心会在中线的下方，具体下多少，由文字的font-size决定
+	       所以此时想要完全垂直居中，只需设置font-size:0;
+-->
+

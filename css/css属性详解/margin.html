@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Margin</title>
+    <style>
+        html p {
+            margin: 0;
+            padding: 0;
+        }
+        .box {
+            border: #666 solid 1px;
+            padding: 0 20px 20px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h3>普通的恒定宽自适应</h3>
+    <div class="d1">
+        <img src="img/p8.jpg" class="img1"  />
+        <p class="p1">
+            简介：张鑫旭老师将带领大家了解CSS中margin与元素尺寸的关系、margin的百分比单位、介绍如何正确看待CSS的margin重叠、深入理解margin：auto。并通过实例剖析CSS margin负值定位的常见应用。还会针对大家在使用margin时容易发生困惑的无效情形，进行深入解析。
+        </p>
+    </div>
+
+    <style>
+        .img1 {
+            width: 200px;
+            float: left;
+        }
+        .p1 {
+            margin-left: 210px;
+        }
+    </style>
+</div>
+
+<!--------------------------------------------------------------------------------------------------------------------------------->
+
+<div class="box">
+    <h3>用margin负值左恒定宽自适应</h3>
+    <div class="d2">
+        <p class="p2">
+            简介：张鑫旭老师将带领大家了解CSS中margin与元素尺寸的关系、margin的百分比单位、介绍如何正确看待CSS的margin重叠、深入理解margin：auto。并通过实例剖析CSS margin负值定位的常见应用。还会针对大家在使用margin时容易发生困惑的无效情形，进行深入解析。
+        </p>
+    </div>
+    <img src="img/p8.jpg" class="img2"  />
+
+    <style>
+        .d2{
+            float: left;
+            width: 100%;
+        }
+        .p2{
+            margin-right: 220px;
+        }
+        .img2{
+            width: 200px;
+            float: left;
+            margin-left: -200px;  /* 使用负值  */
+        }
+    </style>
+</div>
+
+<!--------------------------------------------------------------------------------------------------------------------------------->
+
+<div class="box">
+    <h3>宽高比恒等2:1</h3>
+    <div class="wrapper">
+        <div></div>
+    </div>
+
+    <style>
+        .wrapper {
+            background: #00CC66;
+            overflow: hidden;
+            clear: both;
+        }
+        .wrapper>div {
+            margin: 50%;
+            background: #FFCC99
+        }
+    </style>
+</div>
+
+<!--------------------------------------------------------------------------------------------------------------------------------->
+
+<div class="box">
+    <h3>消除margin-top重叠（其中的一种方法）</h3>
+    <div class="out">
+        <div class="inner"></div>
+    </div>
+
+    <style>
+        .out{
+            width: 200px;
+            height: 200px;
+            background: goldenrod;
+            overflow: hidden;  /*  使父元素变成块状格式化元素   （overflow不为visible）*/
+        }
+        .inner{
+            width: 100px;
+            height: 100px;
+            border: red solid 1px;
+            margin-top: 20px;
+        }
+    </style>
+</div>
+
+<!--------------------------------------------------------------------------------------------------------------------------------->
+
+<div class="box">
+    <h3>无间隙两端对齐</h3>
+    <div class="con">
+        <div class="ul">
+            <div class="li">1</div>
+            <div class="li">2</div>
+            <div class="li">3</div>
+        </div>
+    </div>
+
+    <style>
+        .con{
+            width: 600px;
+            margin: auto;
+            border: solid 1px;
+        }
+        .ul{
+            overflow: hidden;
+            margin-right: -9px; /* 设置margin为负值，可以拉伸元素在水平方向上右边的空间，此时包含ul标签盒子宽是是610px */
+        }
+        .li{
+            width: 194px;
+            height: 100px;
+            background: goldenrod;
+            float: left;
+            margin-right: 9px;
+        }
+    </style>
+</div>
+
+<!--------------------------------------------------------------------------------------------------------------------------------->
+
+<div class="box">
+    <h3>两栏等高布局</h3>
+    <div class="p3">
+        <div class="c1">
+            <div>1111</div>
+            <div>1111</div>
+            <div>1111</div>
+            <div>1111</div>
+        </div>
+        <div class="c2">
+            <div>2222</div>
+            <div>2222</div>
+        </div>
+    </div>
+
+    <style>
+        .p3 {
+            border: red solid 1px;
+            overflow: hidden;
+        }
+        .c1,.c2 {
+            float: left;
+            width: 100px;
+            padding-bottom: 300px;
+            margin-bottom: -300px;
+        }
+        .c1 {
+            background: #00B7FF;
+        }
+        .c2 {
+            background: chocolate;
+        }
+    </style>
+</div>
+</body>
+</html>

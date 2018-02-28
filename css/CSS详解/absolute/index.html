@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<link rel="stylesheet" type="text/css" href="css/index.css"/>
+	<body>
+		<div>绝对定位</div>
+		<div class="d1">123</div>
+		<div class="d2">456456</div>
+		<div class="d3">789</div>
+		
+		<hr />
+		
+		<div>全屏覆盖（整个屏幕显示#999覆盖层）</div>
+		<div class="all"></div>
+		
+		<hr />
+		
+		<div>遮罩层</div>
+		<div class="container">
+			<i class="cover"></i>
+			<img src="img/p8.jpg" />
+		</div>
+		
+		<hr />
+		
+		<div>高度自适应（九宫格）</div>
+		<!--<div class="page">
+			<div class="list"></div><div class="list"></div>
+			<div class="list"></div><div class="list"></div>
+			<div class="list"></div><div class="list"></div>
+			<div class="list"></div><div class="list"></div>
+			<div class="list"></div>
+		</div>-->
+		
+		<hr />
+		
+		<div>绝对定位实现绝对居中（万能居中，IE8以下不支持）</div>
+		<div class="abscen"></div>
+		
+		<hr />
+		
+		<div>fixed效果(避免了移动端position:fixed问题)</div>
+		<div class="content"></div>
+		
+	</body>
+</html>
+<!--
+	1. 凌驾于普通流之上
+	2. 依赖的绝对定位，父容器为非静态定位，使用top和left控制位置
+	3. 无依赖的绝对定位，跟随性（原先位置不变，不依赖于relative等属性），使用margin控制位置
+	4. 同是绝对定位的元素，越是后面的标签层级越高
+	5. 一般情况下，元素的height百分比要想起作用，需要父容器的height不是auto，
+	       但是对于绝对定位的父容器，即使height是auto，子元素的height百分比也是有效的（见上方高度自适应）
+	6. body的默认高度为0
+-->

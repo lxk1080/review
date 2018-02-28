@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <title>VerticalCenter</title>
   <style>
+    html * {
+      margin: 0;
+      padding: 0;
+    }
     div {
       height: 100px;
       background: goldenrod;
@@ -47,20 +51,42 @@
     </style>
   </div>
 
-  <!--table-->
-  <div class="table">
-    <p>tabel</p>
+  <!--table1-->
+  <div class="table1">
+    <p class="cell">tabel</p>
     <style>
-      .table {
+      .table1 {
         display: table;
         width: 100%;
       }
-      .table p {
+      .table1 .cell {
         display: table-cell;
         text-align: center;
         vertical-align: middle;
       }
     </style>
+  </div>
+
+  <!--table2-->
+  <div class="table2">
+    <div class="cell">
+      <p>tabel</p>
+      <style>
+        .table2 {
+          display: table;
+          width: 100%;
+        }
+        .table2 .cell {
+          display: table-cell;
+          text-align: center;
+          vertical-align: middle;
+        }
+        .table2 .cell p {
+          text-align: left; /*还原*/
+          display: inline-block;
+        }
+      </style>
+    </div>
   </div>
 
   <!--absolute-->
@@ -74,8 +100,23 @@
         position: absolute;
         left: 50%;
         top: 50%;
-        margin-top: -30px;
-        margin-left: -50px;
+        transform: translate(-50%, -50%);
+      }
+    </style>
+  </div>
+
+  <!--grid-->
+  <div class="grid">
+    <p>grid</p>
+    <style>
+      .grid {
+        display: grid;
+        grid-template-columns: auto 100px auto;
+        grid-template-rows: auto 60px auto;
+      }
+      .grid p {
+        grid-row: 2 / 3;
+        grid-column: 2 / 3;
       }
     </style>
   </div>

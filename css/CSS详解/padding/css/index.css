@@ -1,0 +1,64 @@
+
+/* 注册登录分隔线 */
+.seq{
+	padding: 14px 6px 2px;
+	margin-left: 12px;
+	border-left: 2px solid;
+	font-size: 0;
+}
+
+/* 手机屏幕的正方形  */
+.con{
+	padding: 50%;
+	background: darkgrey;
+	position: relative;
+	/*
+	background: url("");
+	background-size: 100%;
+	*/
+}
+.example{
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+
+/* 火狐下清除button的padding  */
+button::-moz-focus-inner{
+	padding: 0;
+}
+
+/* 原生按钮的padding高度各浏览器不兼容，用label实现  */
+#btn{
+	display: none;
+}
+label{
+	display: inline-block;
+	line-height: 20px;
+	padding: 10px;
+}
+
+/* 三道杠  */
+.line_three{
+	width: 100px;
+	height: 20px;
+	padding: 15px 0;
+	border-top: 20px solid;
+	border-bottom: 20px solid;
+	background-color: currentcolor; 
+	background-clip: content-box;  /* 让背景颜色只在内容区域显示  */
+}
+
+/* 白眼  */
+.eye{
+	width: 100px;
+	height: 100px;
+	border: 1px solid;
+	border-radius: 50%;
+	padding: 10px;
+	background-color: currentcolor;
+	background-clip: content-box;
+}
+

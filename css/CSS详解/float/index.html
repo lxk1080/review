@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<link rel="stylesheet" type="text/css" href="css/index.css"/>
+	<body>
+		
+		<h3>清除浮动</h3>
+		<div class="clearfix"></div>
+		
+		<hr />
+		
+		<h3>清除浮动实例</h3>
+		<div class="box">
+			<div class="d1"></div>
+		</div>
+		
+		<hr />
+		
+		<h3>两侧自适应</h3>
+		<div class="d2">
+			<img src="img/p8.jpg" class="img1"  />
+			<p class="p1">
+				简介：张鑫旭老师将带领大家了解CSS中margin与元素尺寸的关系、margin的百分比单位、介绍如何正确看待CSS的margin重叠、深入理解margin：auto。并通过实例剖析CSS margin负值定位的常见应用。还会针对大家在使用margin时容易发生困惑的无效情形，进行深入解析。
+			</p>
+		</div>
+		
+		
+	</body>
+</html>
+<!--
+	1. float的初衷是：实现文字环绕效果，浮动脱离了文档流，不占据空间，但是同是浮动的元素之间是占据空间的，用clear抗浮动，使其占据文档流
+	
+	2. 空格、&nbsp、换行符等本质都是 "字符"，所以可用float:left清除空格，本质是 空格 被挤到了后面
+	
+	3. 浮动具有包裹性（容器紧紧的包住内容）和破坏性（容器高度塌陷）
+	
+	4. .clearfix应用在包含浮动元素的父级元素上
+	
+	5. 浮动使元素block块状化
+	
+	6. 让IE7飙泪的浮动问题
+		含clear的浮动元素包裹不正确的问题；
+		浮动元素倒数2个莫名垂直间距问题；
+		浮动元素最后一个字符重复问题；
+		浮动元素楼梯排列问题；
+		浮动元素和文本不在同一行的问题；
+
+-->

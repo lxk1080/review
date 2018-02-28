@@ -8,6 +8,9 @@
             padding: 0;
             margin: 0;
         }
+        section {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -15,13 +18,13 @@
     <section class="box">
         <style>
             .box {
-                background: black;
+                background: goldenrod;
                 overflow: hidden; /* BFC */
             }
             .inner {
                 height: 100px;
                 margin-top: 10px;
-                background: blue;
+                border: red solid 2px;
             }
         </style>
         <article class="inner"></article>
@@ -31,19 +34,19 @@
     <section class="margin">
         <style>
             .margin {
-                background: burlywood;
-                overflow: hidden; /* BFC */
+                background: goldenrod;
+                overflow: hidden; /* BFC 这里消除与外部元素的重叠 */
             }
             .margin p {
-                margin: 5px auto 25px;
-                background: red;
+                margin: 20px auto;
+                border: red solid 2px;
             }
         </style>
         <p>1</p>
+        <p>2</p>
         <div style="overflow: hidden"> <!--BFC是独立的，消除与外部元素的重叠-->
-            <p>2</p>
+            <p>3</p>
         </div>
-        <p>3</p>
     </section>
 
     <!--BFC不与float元素重叠-->
@@ -53,11 +56,11 @@
                 float: left;
                 width: 300px;
                 height: 100px;
-                background: blue;
+                border: blue solid 1px;
             }
             .right {
-                height: 110px;
-                background: pink;
+                height: 120px;
+                border: green solid 1px;
                 overflow: hidden; /* BFC */
             }
         </style>
@@ -69,7 +72,7 @@
     <section class="float">
         <style>
             .float {
-                background: rosybrown;
+                border: rosybrown solid 1px;
                 overflow: hidden; /* BFC */
             }
             .child {

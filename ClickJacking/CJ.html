@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CJ</title>
+  <style>
+    html,body,iframe {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    iframe {
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 2;
+      opacity: 0.5;
+      filter: alpha(opacity=0.5);
+      border: none;
+    }
+    button {
+      width: 200px;
+      height: 30px;
+    }
+  </style>
+</head>
+<body>
+  <button type="button">查看</button>
+  <br>
+  <!--使用透明的iframe诱导用户点击-->
+  <iframe src="//www.baidu.com"></iframe>
+</body>
+</html>

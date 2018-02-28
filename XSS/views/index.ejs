@@ -7,42 +7,42 @@
     <script src="/js/he.js"></script>
     <script src="/js/htmlparser.js"></script>
     <script>
-        var parse = function (str) {
-            var result = ''
-            try {
-                // 使用 he.unescape() 解码得到dom结构的字符串，然后使用HTMLParser过滤
-                HTMLParser(he.unescape(str, {strict: true}), {
-                    // 匹配起始标签
-                    start: function (tag, attrs, unary) {
-                        // 过滤标签
-                        if (tag == 'script' || tag == 'style' || tag == 'link' || tag == 'iframe' || tag == 'frame') return
-                        result += '<' + tag
-                        // 过滤属性，类似 onclick、onerror...
-                        /* for (var i = 0, len = attrs.length; i < len; i++) {
-                            result += ' ' + attrs[i].name + '="' + attrs[i].value + '"'
-                        } */
-                        result += (unary ? '/' : '') + '>'
-                    },
-                    // 匹配末尾标签
-                    end: function (tag) {
-                        result += '</' + tag + '>'
-                    },
-                    // 匹配文本
-                    chars: function (text) {
-                        result += text
-                    },
-                    // 匹配注释
-                    comment: function (text) {
-                        result += '<!--' + text + '-->'
-                    }
-                })
-                return result
-            } catch (e) {
-                console.log('e.error')
-            } finally {
-
+      var parse = function (str) {
+        var result = ''
+        try {
+          // 使用 he.unescape() 解码得到dom结构的字符串，然后使用HTMLParser过滤
+          HTMLParser(he.unescape(str, {strict: true}), {
+            // 匹配起始标签
+            start: function (tag, attrs, unary) {
+              // 过滤标签
+              if (tag == 'script' || tag == 'style' || tag == 'link' || tag == 'iframe' || tag == 'frame') return
+              result += '<' + tag
+              // 过滤属性，类似 onclick、onerror...
+                /* for (var i = 0, len = attrs.length; i < len; i++) {
+                 result += ' ' + attrs[i].name + '="' + attrs[i].value + '"'
+                 } */
+              result += (unary ? '/' : '') + '>'
+            },
+            // 匹配末尾标签
+            end: function (tag) {
+              result += '</' + tag + '>'
+            },
+            // 匹配文本
+            chars: function (text) {
+              result += text
+            },
+            // 匹配注释
+            comment: function (text) {
+              result += '<!--' + text + '-->'
             }
+          })
+          return result
+        } catch (e) {
+          console.log('e.error')
+        } finally {
+
         }
+      }
     </script>
 </head>
 <body>
@@ -51,7 +51,7 @@
 <p><%- xss %></p> <!--innerHTML的功能-->
 
 <textarea name="name" cols="100" rows="15" id="txt">
-    <p> what <img src="null" onerror="alert(1)" alt="imgObject" /></p>
+    <p> what <img src="null" onerror="alert(1)" alt="imgObject"/></p>
     <button type="button" onclick="alert('哈哈')">点我</button>
 </textarea>
 <br><br>
@@ -61,50 +61,50 @@
 
 
 <script>
-    var btn = document.querySelector('#btn')
-    var get = document.querySelector('#get')
-    var txt = document.querySelector('#txt')
+  var btn = document.querySelector('#btn')
+  var get = document.querySelector('#get')
+  var txt = document.querySelector('#txt')
 
-    if (window.XMLHttpRequest) {
-        var xhr = new XMLHttpRequest()
-    } else {
-        var xhr = window.ActiveXObject('Microsoft.XMLHTTP')
+  if (window.XMLHttpRequest) {
+    var xhr = new XMLHttpRequest()
+  } else {
+    var xhr = window.ActiveXObject('Microsoft.XMLHTTP')
+  }
+
+  // 发送评论
+  btn.addEventListener('click', function () {
+    var url = '/setComment?comment=' + txt.value
+    xhr.open('GET', url, true)
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          console.log('success')
+        } else {
+          console.log('error ' + xhr.status)
+        }
+      }
     }
+    xhr.send()
+  })
 
-    // 发送评论
-    btn.addEventListener('click', function () {
-        var url = '/setComment?comment=' + txt.value
-        xhr.open('GET', url, true)
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    console.log('success')
-                } else {
-                    console.log('error ' + xhr.status)
-                }
-            }
+  // 获取评论
+  get.addEventListener('click', function () {
+    var url = '/getComment'
+    xhr.open('GET', url, true)
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          var data = parse(JSON.parse(xhr.responseText).comment)
+          var txt = document.createElement('span')
+          txt.innerHTML = data
+          document.body.appendChild(txt)
+        } else {
+          console.log('error ' + xhr.status)
         }
-        xhr.send()
-    })
-
-    // 获取评论
-    get.addEventListener('click', function () {
-        var url = '/getComment'
-        xhr.open('GET', url, true)
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    var data = parse(JSON.parse(xhr.responseText).comment)
-                    var txt = document.createElement('span')
-                    txt.innerHTML = data
-                    document.body.appendChild(txt)
-                } else {
-                    console.log('error ' + xhr.status)
-                }
-            }
-        }
-        xhr.send()
-    })
+      }
+    }
+    xhr.send()
+  })
 </script>
 </body>
 </html>

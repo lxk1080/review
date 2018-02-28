@@ -238,6 +238,7 @@ BFC原理（渲染规则）
             1. Token认证
             2. referer认证
             3. 隐藏令牌
+
     --XSS
         XSS: 跨域脚本攻击，Cross-site scripting，向页面注入脚本，例如在评论框注入script标签等
         攻击类型：
@@ -247,6 +248,18 @@ BFC原理（渲染规则）
             1. 编码（前端或后端编码转义）
             2. 过滤（前端反转义 --> domparse(过滤script、style、link、iframe、frame、onclick、onerror等标签或属性)）
             3. 校正（使用domParse，校正不配对的DOM标签，修复页面结构）
+
+    --ClickJacking
+        ClickJacking: 点击劫持，视觉欺骗
+        攻击类型：
+            1. 攻击者使用一个透明的iframe覆盖在网页上，然后诱使用户在该页面上进行操作，用户在不知情的情况下点击透明的iframe页面
+            2. 攻击者使用一张图片覆盖在网页，遮挡网页原有位置的含义
+        防御措施：
+            1. 使用http头：X-Frame-Options: DENY
+               -- DENY（浏览器会拒绝当前页面加载任何frame页面）
+                  SAMEORIGIN（frame页面的地址只能为同源域名下的页面）
+                  ALLOW-FROM origin（允许frame加载的页面地址）
+            2. 在防御图片覆盖攻击时，需要检查用户提交的HTML代码中，img标签的style属性是否可能导致浮出
 
 10、算法 ........................................................................................
     -- 排序

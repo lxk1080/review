@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Grid</title>
+  <style>
+    /*
+      术语: 网格线、网格轨道、网格单元格、网格区域、网格容器
+
+      display: grid; // grid容器
+      grid-template-columns: 网格有多少列，每列的宽度
+      grid-template-rows: 网格有多少行，每行的高度
+
+      grid-column-start: 列起始线
+      grid-column-end: 列终止线
+      grid-row-start: 行起始线
+      grid-row-end: 行终止线
+
+      grid-column: 1; 第一列
+      grid-row: 1 / span 5; 从第一行开始，总共占五行
+
+      grid-column: 1 / 2; 列起始线/列终止线
+      grid-row: 1 / 2; 行起始线/行终止线
+
+      grid-area: 1 / 1 / 2 / 2; row-start/column-start/row-end/column-end
+    */
+    .wrapper {
+      display: grid;
+      /*grid-template-columns: 100px 10px 100px 10px 100px 10px 100px;*/
+      /*grid-template-rows: auto 10px auto 10px auto 10px auto 10px auto;*/
+      grid-template-columns: repeat(3, 100px 10px) 100px;
+      grid-template-rows: repeat(4, auto 10px) auto;
+    }
+    .box {
+      background-color: #444;
+      color: #fff;
+      font-size: 150%;
+      padding: 20px;
+      text-align: center;
+    }
+    .a{
+      grid-column: 1 / 6;
+      grid-row: 1 / 2;
+      /*
+       grid-area: 1 / 1 / 2 / 6; 等同于上面写法（网格区域）
+      */
+    }
+    .b {
+      grid-column: 7 / 8;
+      grid-row: 1 / 10;
+      background: orange;
+    }
+    .c {
+      grid-column: 1 / 2;
+      grid-row: 3 / 4;
+    }
+    .d {
+      grid-column: 3 / 4;
+      grid-row: 3 / 4;
+    }
+    .e {
+      grid-column: 5 / 6;
+      grid-row: 3 / 4;
+    }
+    .f {
+      grid-column: 1 / 4;
+      grid-row: 5 / 6;
+    }
+    .g {
+      grid-column: 5 / 6;
+      grid-row: 5 / 6;
+    }
+    .h {
+      grid-column: 1 / 2;
+      grid-row: 7 / 8;
+    }
+    .i {
+      grid-column: 3 / 6;
+      grid-row: 7 / 8;
+    }
+    .j {
+      grid-column: 1 / 6;
+      grid-row: 9 / 10;
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="box a">A</div>
+  <div class="box b">B</div>
+  <div class="box c">C</div>
+  <div class="box d">D</div>
+  <div class="box e">E</div>
+  <div class="box f">F</div>
+  <div class="box g">G</div>
+  <div class="box h">H</div>
+  <div class="box i">I</div>
+  <div class="box j">J</div>
+</div>
+</body>
+</html>

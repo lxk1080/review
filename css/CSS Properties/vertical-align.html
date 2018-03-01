@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VerticalAlign</title>
+    <style>
+        html p {
+            margin: 0;
+            padding: 0;
+        }
+        .box {
+            border: #666 solid 1px;
+            padding: 0 20px 20px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+<!--table-cell元素自身的垂直居中-->
+<div class="box">
+    <h3>table-cell元素自身的垂直居中</h3>
+    <p class="ta">
+        <img class="img1" src="img/p8.jpg" />
+    </p>
+
+    <style>
+        .ta {
+            display: table-cell;
+            text-align: center; /* 水平居中 */
+            vertical-align: middle; /* table-cell元素要设置自身垂直局中，里面的元素才会居中，比较特殊  */
+            width: 300px;
+            height: 200px;
+            border: red solid 1px;
+        }
+        .img1 {
+            width: 200px;
+        }
+    </style>
+</div>
+
+<!--图片垂直居中-->
+<div class="box">
+    <h3>图片垂直居中</h3>
+    <p class="p">
+        <img class="img" src="img/p8.jpg"/>
+    </p>
+
+    <style>
+        .p{
+            width: 300px;
+            line-height: 200px;  /* 设置图片自带空白字符的行高，此时空白字符处于垂直居中的位置  */
+            text-align: center;
+            border: red solid 1px;
+        }
+        .img {
+            width: 200px;
+            vertical-align: middle; /* 设置图片中线与空白字符的基线+(1/2 x的高度)的位置对齐  */
+        }
+    </style>
+</div>
+
+<!--块级元素的完全垂直居中（很重要，需要悟透基线原理）-->
+<div class="box">
+    <h3>块级元素的完全垂直居中（很重要，需要悟透基线原理）</h3>
+    <div class="out">
+        <div class="inner">
+            <img class="img2"  src="img/p8.jpg" />
+        </div>
+    </div>
+
+    <style>
+        .out {
+            width: 300px;
+            line-height: 200px; /* 1. 父容器要有行高，目的是为了让空白字符处于居中位置  */
+            font-size: 0; /* 关键的一句，此时x的height为0，基线与中线重合，基线+(1/2 x height)=基线=中线，实现完全垂直居中  */
+            text-align: center;
+            border: red solid 1px;
+        }
+        .inner {
+            display: inline-block; /* 2. 将块元素显示为内联元素（因为vertical-align只支持内联元素），并让其自带空白字符  */
+            vertical-align: middle; /* 3. 设置中线对齐  */
+            width: 200px;
+            border: blue solid 1px;
+        }
+        .img2 {
+            width: 100%;
+            display: block; /* 清除底部空隙（块级元素没有基线，自然不会与图片自带的空白符基线对齐）  */
+        }
+    </style>
+</div>
+
+<!--inline-block元素基线对齐-->
+<div class="box">
+    <h3>inline-block元素基线对齐</h3>
+    <span class="span"></span>
+    <span class="span">baselineAlign...</span>
+
+    <style>
+        /* inline-block元素基线对齐  */
+        /* 我们看到的元素包含文字，事实上元素包含的并不是文字，而是包含的一行（行高），只不过默认的行高就是font-size的值，而文字是一直处于行高的中心下沉位置，
+         * 当行高为0时，行高无限接近于一条线，此时元素的上边缘与这条线近乎重叠，所以看起来元素的上边缘正处于文字的中心下沉位置，这时虽然行高为0，但是文字依然属于元素，
+         * 文字是内联元素，所以这个元素的基线依然是文字的基线
+         */
+        .span {
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            border: red solid 1px;
+
+            line-height: 0;
+        }
+    </style>
+</div>
+
+</body>
+</html>
+<!--
+	1. vertical-align四种类型对齐方式：
+		线类：baseline（内联元素之间的默认对齐方式）
+			 middle （元素的垂直中心点会和父元素基线上 1/2 x的高度的位置对齐）
+			 top、bottom  （应用该属性的元素的盒子顶部或底部与父级元素的顶部或底部对齐）
+
+		文本类：（应用该属性的元素的盒子顶部或底部与父级元素的内容区域的顶部或底部对齐）
+			text-top、text-bottom
+
+		上标下标类：（提高或降低元素的基线到父级合适的上标基线或下标基线位置）
+			sub、super
+
+		数值百分比类：（应用该属性的元素相对于自身原来的位置上移或下移，百分比值是相对于行高计算的）
+			20px、20em、20%
+
+	2. vertical-align的"百分比值"是相对于line-height计算的（IE6/IE7下的百分比值不支持小数line-height）
+
+	3. vertical-align是应用于inline水平元素和table-cell元素的，内联元素默认基线对齐，普通文本为"匿名inline元素"
+
+	4. inline水平元素
+		inline: <span>  <a>  <strong>  ...
+		inline-block: <input>  <button>  ... （IE8+）
+		table-cell: <td> ...
+	       所以在默认状态下，支持vertical-align的有  图片、按钮、文字、单元格...
+
+	5. 对于内联元素，处处都会受到vertical-align 和 line-height 的影响
+
+	6. 对于inline-block元素，如果元素内没有其他元素，则基线为底边缘，如果有内联元素，则基线为其内部最后一行内联元素的基线（见上"inline-block元素基线对齐"）
+
+	7. 对于元素的垂直居中middle（近似垂直居中）：
+	       元素的垂直中心点会和父元素基线上 1/2 x（文字） 的 height的位置对齐
+	       文字的中心应该和中线对齐，但文字有下沉特性，所以文字的中心会在中线的下方，具体下多少，由文字的font-size决定
+	       所以此时想要完全垂直居中，只需设置font-size:0;
+-->

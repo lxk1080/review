@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LineHeight</title>
+    <style>
+        html p {
+            margin: 0;
+            padding: 0;
+        }
+        .box {
+            border: #666 solid 1px;
+            padding: 0 20px 20px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+<!--内联元素的高度由行高（内容高度+半行间距*2）决定-->
+<div class="box">
+    <h3>内联元素的高度由行高（内容高度+半行间距*2）决定</h3>
+    登录<span class="test"></span>注册
+
+    <style>
+        .test {
+            border: red solid 1px;
+            font-size: 12px;
+            margin: 10px;
+            line-height: 50px;
+        }
+    </style>
+</div>
+
+<!--消除图片底部间隙（图像后自带空白字符，IE7不自带）-->
+<div class="box">
+    <h3>消除图片底部间隙（图像后自带空白字符，IE7不自带）</h3>
+    <div class="con"><img class="img1" src="img/p8.jpg" /><!--IE7这里折行或空格才会有效--></div>
+
+    <style>
+        .con {
+            width: 30%;
+            border: red solid 1px;
+            line-height: 0; /* 1. 行高为0，文字的基线会上移  */
+            font-size: 0; /* 2. 行高的 百分比值/倍数值 是根据font-size改变的，font-size为0，则line-height也为0 */
+        }
+        .img1 {
+            width: 100%;
+            display: block; /* 3. 设置图片为block，block元素没有基线（效果最好）  */
+            vertical-align: bottom; /* 4. 设置底线对齐  */
+        }
+    </style>
+</div>
+
+<!--图像水平垂直居中（IE8+）-->
+<div class="box">
+    <h3>图像水平垂直居中（IE8+）</h3>
+    <div class="out"><img class="img2" src="img/p8.jpg" /></div>
+
+    <style>
+        .out {
+            width: 400px;
+            /*height: 300px;*/
+            line-height: 200px; /* 内容（图片的高） + 半行间距*2 = 行高 */
+            text-align: center;
+            border: red solid 1px;
+        }
+        .img2 {
+            width: 200px;
+            vertical-align: middle;
+        }
+    </style>
+</div>
+
+<!--多行文本水平垂直居中（IE8+）-->
+<div class="box">
+    <h3>多行文本水平垂直居中（IE8+）</h3>
+    <div class="text-wrapper">
+        <p class="text">从认识你的那一天起，似乎心的跳动已经不受我自己控制了</p>
+    </div>
+
+    <style>
+        .text-wrapper {
+            width: 400px;
+            line-height: 200px;
+            text-align: center;
+            border: red solid 1px;
+        }
+        .text {
+            display: inline-block;
+            vertical-align: middle;
+            line-height: normal; /* 还原 */
+            text-align: left; /* 还原 */
+            max-width: 300px; /* 这里的宽不能设置固定的值，因为那样如果字数比较少，就不居中了 */
+            border: goldenrod solid 1px;
+        }
+    </style>
+</div>
+
+<!--块级元素（用line-height代替height）-->
+<div class="box">
+    <h3>块级元素（用line-height代替height）</h3>
+    <div class="end">我们终究没有擦肩而过，而是有了这一场相识</div>
+
+    <style>
+        .end {
+            line-height: 100px;
+            border: red solid 1px;
+        }
+    </style>
+</div>
+
+</body>
+</html>
+<!--
+	1. 盒子模型：
+		内容盒子（内容区域）
+		内联盒子（span、em、... 或者 匿名内联盒子[也就是普通文字]）
+		行框盒子（每一行）
+		包含盒子（块元素）
+
+	2. 行高 = 内容区域高度  + 行间距
+
+	3. line-height: 1.5;
+	   line-height: 150%;
+	   line-height: 1.5em;
+	   的区别？
+	   line-height: 1.5; 所有可继承的元素根据自己的font-size大小计算行高（推荐使用）
+	   line-height: 1.5em/150%; 当前元素根据font-size计算行高，并继承给下面的元素
+
+	4. 基线对齐是针对于内联元素的
+
+	5. 内联元素有默认的行高，跟着浏览器走，且与字体相关
+
+	6. 块元素本身没有高度，但是往块元素内加入文本（匿名内联元素），块元素就有了高度，这个高度不是文字撑起来的，而是由行高决定，行高 = 内容区域高度  + 2*半行间距
+	   内容区域高度与font-size和字体有关，行高是默认的，行间距 = 行高 - 内容区域高度
+	   行间距存在的意义就是为了使：【行间距】 + 【内容区域高度】 正好等于 【行高】，所以行间距可以为负值（例如当行高为0时）
+-->

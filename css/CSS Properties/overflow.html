@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Overflow</title>
+    <style>
+        html p {
+            margin: 0;
+            padding: 0;
+        }
+        .box {
+            border: #666 solid 1px;
+            padding: 0 20px 20px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+<!--拉伸效果（overflow属性不能是visible）-->
+<div class="box">
+    <h3>拉伸效果（overflow属性不能是visible）</h3>
+    <div class="d1"></div>
+
+    <style>
+        .d1 {
+            width: 200px;
+            height: 100px;
+            border: #666 solid 1px;
+            resize: both; /* 水平垂直两边拉，resize拖拽区域的大小是17*17  */
+            overflow: hidden; /* 加了这句上面一句才有效 */
+        }
+    </style>
+</div>
+
+<!--文字溢出...-->
+<div CLASS="box">
+    <h3>文字溢出...</h3>
+    <div class="d2">珍惜每一个当下，是活着的最大的价值，未来，可以适度遐思，但千万别花时间去做梦。今天握不住，明天就只有悲伤</div>
+
+    <style>
+        .d2 {
+            width: 300px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    </style>
+</div>
+
+<!--锚点定位（直接到指定id的位置，本质是：改变容器的滚动高度）-->
+<div class="box">
+    <h3>锚点定位（直接到指定id的位置，本质是：改变容器的滚动高度）</h3>
+    <a href="#mao">定位</a>
+    <div id="mao">我是锚点</div>
+</div>
+
+<!--锚点选项卡-->
+<div class="box">
+    <h3>锚点选项卡</h3>
+    <div class="target">
+        <div class="list" id="one">1</div>
+        <div class="list" id="two">2</div>
+        <div class="list" id="three">3</div>
+        <div class="list" id="four">4</div>
+    </div>
+    <div class="link">
+        <a href="#one">1</a>
+        <a href="#two">2</a>
+        <a href="#three">3</a>
+        <a href="#four">4</a>
+    </div>
+
+    <style>
+        .target {
+            width: 100px;
+            height: 100px;
+            overflow: hidden;
+        }
+        .target .list {
+            line-height: 100px;
+            text-align: center;
+            font-size: 30px;
+            color: #fff;
+            background: goldenrod;
+        }
+        .link a {
+            padding: 5px 10px;
+            line-height: 50px;
+            text-decoration: none;
+            border: #666 solid 1px;
+        }
+    </style>
+</div>
+
+<!--水平跳动修复-->
+<div class="box">
+    <h3>水平跳动修复</h3>
+    <div class="html">
+        <div class="btn-wrapper">
+            <button type="button" class="btn">切换</button>
+        </div>
+        <div class="chunk"></div>
+    </div>
+
+    <style>
+        .html {
+            width: 200px;
+            height: 200px;
+            overflow: auto;
+            border: red solid 1px;
+        }
+        .btn-wrapper {
+            text-align: center;
+            padding-left: calc(200px - 100%);
+        }
+        .chunk {
+            display: none;
+            height: 200px;
+            width: 100px;
+            margin: 10px auto;
+            border: goldenrod solid 1px;
+        }
+    </style>
+    <script>
+        let btn = document.querySelector('.btn')
+        btn.addEventListener('click', function () {
+            if (document.querySelector('.chunk').style.display == 'block') {
+                document.querySelector('.chunk').style.display = 'none'
+            } else {
+                document.querySelector('.chunk').style.display = 'block'
+            }
+        })
+    </script>
+</div>
+
+<!--自定义滚动条-->
+<div class="box">
+    <h3>自定义滚动条</h3>
+    <div class="scroll">
+        <p>123</p><p>123</p><p>123</p><p>123</p><p>123</p><p>123</p>
+        <p>123</p><p>123</p><p>123</p><p>123</p><p>123</p><p>123</p>
+        <p>123</p><p>123</p><p>123</p><p>123</p><p>123</p><p>123</p>
+    </div>
+
+    <style>
+        .scroll {
+            width: 400px;
+            height: 300px;
+            border: #666 solid 1px;
+            border-radius: 6px;
+            overflow: auto;
+        }
+        ::-webkit-scrollbar{  /* 血槽宽度 */
+            width: 10px;
+            height: 10px;
+        }
+        ::-webkit-scrollbar-thumb{  /* 拖动条 */
+            background-color: rgba(0, 0, 0, .5);
+            border-radius: 6px;
+        }
+        ::-webkit-scrollbar-track{  /* 背景槽 */
+            background-color: #ccc;
+            border-radius: 6px;
+        }
+    </style>
+</div>
+
+</body>
+</html>
+<!--
+		1. overflow-x
+		   overflow-y
+		       如果x和y一个是visible，另一个是hidden、scroll或auto，那么这个visible会被重置为auto
+		2. 设置td元素的overflow，还需要为table为table-layout:fixed才行
+		3. 所有浏览器的默认滚动条都是来自于html元素，可以:
+			html{overflow:hidden}
+		4. 滚动高度：
+		 	var st = document.documentElement.scrollTop || document.body.scrollTop
+		5. 滚动栏宽度大约17px
+		6. 水平居中跳动问题修复
+			兼容： html{overflow: scroll}
+			IE9+： .con{ padding-left:calc(100vw - 100%); }
+				  100vw -- 浏览器宽度；100% -- 可用内容宽度
+			      100vw - 100% = 滚动栏宽度（如果出现滚动栏的话），不出现那就是0了
+
+		7. 自定义滚动条
+			常用：
+				::-webkit-scrollbar{  //  血槽宽度
+					width: 8px;
+					height: 8px;
+				}
+				::-webkit-scrollbar-thumb{  //  拖动条
+					background-color: rgba(0,0,0,.3);
+					border-radius: 6px;
+				}
+				::-webkit-scrollbar-track{  //  背景槽
+					background-color: #ddd;
+					border-radius: 6px;
+				}
+
+		8. 当overflow元素在包含块和absolute之间时，overflow无效
+		       包含块：position为relation/absolute/fixed的元素
+		       解决方法： 使overflow元素为包含块（在overflow元素上加position:relative;）
+-->

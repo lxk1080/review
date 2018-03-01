@@ -71,36 +71,54 @@
   <div class="table2">
     <div class="cell">
       <p>tabel</p>
-      <style>
-        .table2 {
-          display: table;
-          width: 100%;
-        }
-        .table2 .cell {
-          display: table-cell;
-          text-align: center;
-          vertical-align: middle;
-        }
-        .table2 .cell p {
-          text-align: left; /*还原*/
-          display: inline-block;
-        }
-      </style>
     </div>
+    <style>
+      .table2 {
+        display: table;
+        width: 100%;
+      }
+      .table2 .cell {
+        display: table-cell;
+        text-align: center;
+        vertical-align: middle;
+      }
+      .table2 .cell p {
+        text-align: left; /*还原*/
+        display: inline-block;
+      }
+    </style>
   </div>
 
-  <!--absolute-->
-  <div class="absolute">
+  <!--absolute1-->
+  <div class="absolute1">
     <p>absolute</p>
     <style>
-      .absolute {
+      .absolute1 {
         position: relative;
       }
-      .absolute p {
+      .absolute1 p {
         position: absolute;
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
+      }
+    </style>
+  </div>
+
+  <!--absolute2-->
+  <div class="absolute2">
+    <p>absolute2</p>
+    <style>
+      .absolute2 {
+        position: relative;
+      }
+      .absolute2 p {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto; /* 此时的margin:auto就可以自由分配剩下的空间（包括水平和垂直方向） */
       }
     </style>
   </div>

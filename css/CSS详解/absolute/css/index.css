@@ -71,8 +71,9 @@ img{
 	position: absolute;
 	top:50px; /* 作为header */
 	bottom: 50px; /* 作为footer */
-	left: 50px;  /* 作为aside  */ 
+	left: 50px;  /* 作为aside  */
 	overflow: auto;
+	border: red solid 1px;
 }
 
 

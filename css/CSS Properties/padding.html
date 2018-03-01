@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Padding</title>
+  <style>
+    html p {
+      margin: 0;
+      padding: 0;
+    }
+    .box {
+      border: #666 solid 1px;
+      padding: 0 20px 20px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+
+<!--分隔线-->
+<div class="box">
+  <h3>分隔线</h3>
+  注册<span class="seq"></span>登录
+
+  <style>
+    .seq {
+      padding: 14px 6px 4px;
+      margin-left: 12px;
+      border-left: 1px #333 solid;
+      font-size: 0;
+    }
+  </style>
+</div>
+
+<!--手机屏幕的正方形-->
+<div class="box">
+  <h3>手机屏幕的正方形</h3>
+  <div class="con">
+    <div class="example"></div>
+  </div>
+
+  <style>
+    .con {
+      padding: 50%;
+      background: #666;
+      position: relative;
+    }
+    .example {
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+    }
+  </style>
+</div>
+
+<!--火狐下清除button的padding-->
+<div class="box">
+  <h3>火狐下清除button的padding</h3>
+  <button>按钮</button>
+
+  <style>
+    button::-moz-focus-inner{
+      padding: 0;
+    }
+  </style>
+</div>
+
+<!--原生按钮的padding高度各浏览器不兼容，用label实现-->
+<div class="box">
+  <h3>原生按钮的padding高度各浏览器不兼容，用label实现</h3>
+  <button id="btn" onclick="alert(1)"></button>
+  <label class="proxy" for="btn">按钮</label>
+
+  <style>
+    #btn {
+      display: none;
+    }
+    .proxy {
+      display: inline-block;
+      padding: 5px 10px;
+      border: #999 solid 1px;
+    }
+  </style>
+</div>
+
+<!--三道杠-->
+<div class="box">
+  <h3>三道杠</h3>
+  <div class="line_three"></div>
+
+  <style>
+    .line_three {
+      padding: 10px 0;
+      width: 100px;
+      height: 25px;
+      background: #666;
+      background-clip: content-box;
+      border-top: #666 solid 25px;
+      border-bottom: #666 solid 25px;
+    }
+  </style>
+</div>
+
+<!--白眼-->
+<div class="box">
+  <h3>白眼</h3>
+  <div class="eye"></div>
+
+  <style>
+    .eye {
+      width: 100px;
+      height: 100px;
+      border: #666 solid 1px;
+      border-radius: 50%;
+      padding: 10px;
+      background: #666;
+      background-clip: content-box;
+    }
+  </style>
+</div>
+
+</body>
+</html>
+<!--
+  1. 对于inline元素，水平padding影响尺寸，垂直padding不影响，但是会影响背景色
+  2. padding百分比相对于宽度计算
+  3. 对于 ol/li 元素内置padding-left，单位是px不是em（一般内置的padding单位都是em）
+  在Chrome下是40px，所以字号很小，间距就大，字号很大，前面的序号可能会到容器外面，但是 li
+  元素内容的padding-left一直是40px
+  4. input/textarea/button/select都有内置padding，radio/checkbox无内置padding
+
+  5. 在IE下，按钮的文字越多，左右的padding越大，设置 button{ overflow: visible; }
+-->

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Border</title>
+  <style>
+    html p {
+      margin: 0;
+      padding: 0;
+    }
+    .box {
+      border: #666 solid 1px;
+      padding: 0 20px 20px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+
+<!--菜单效果（三道杠）-->
+<div class="box">
+  <h3>菜单效果（三道杠）</h3>
+  <div class="menu"></div>
+
+  <style>
+    .menu {
+      width: 150px;
+      height: 20px;
+      border-top: #666 double 60px;
+      border-bottom: #666 solid 20px;
+    }
+  </style>
+</div>
+
+<!--透明边框-->
+<div class="box">
+  <h3>透明边框</h3>  <!--透明边框也是占位置的-->
+  <div class="opac"></div><br>
+
+  <style>
+    .opac {
+      width: 100px;
+      height: 100px;
+      border: red solid 1px;
+      border-right: 20px solid transparent;
+    }
+  </style>
+</div>
+
+<!--边框三角-->
+<div class="box">
+  <h4>边框三角</h4>
+  <div class="sanjiao"></div><br>
+
+  <style>
+    .sanjiao {
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 20px 40px;
+      border-color: transparent transparent transparent #666;
+    }
+  </style>
+</div>
+
+<!--利用透明边框增大可点击区域-->
+<div class="box">
+  <h4>利用透明边框增大可点击区域</h4>
+  <div class="check" onclick="alert(1)"></div>
+
+  <style>
+    .check {
+      width: 50px;
+      height: 50px;
+      border: rgba(50, 50, 50, 0.2) solid 20px;
+      box-shadow: inset 1px 0, inset 0 1px, inset -1px 0, inset 0 -1px;
+    }
+  </style>
+</div>
+
+<!--可视渲染区域-->
+<div class="box">
+  <h4>可视渲染区域</h4>
+  <div class="icon">影</div>
+
+  <style>
+    .icon {
+      width: 50px;
+      height: 50px;
+      border-right: transparent solid 50px; /* 可作为渲染元素的容器，必须是透明的 */
+      filter: drop-shadow(50px 0 #ff8040);
+      font-size: 30px;
+    }
+  </style>
+</div>
+
+</body>
+</html>
+<!--
+	1. border不支持百分比宽度
+	2. border-color继承了color，还有box-shadow、text-shadow
+-->

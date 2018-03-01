@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Absolute</title>
+  <style>
+    html p {
+      margin: 0;
+      padding: 0;
+    }
+    .box {
+      border: #666 solid 1px;
+      padding: 0 20px 20px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+
+<!--全屏覆盖（初始屏幕被rgba(0, 0, 0, 0.1)覆盖）-->
+<div class="box">
+  <h3>全屏覆盖（初始屏幕被rgba(0, 0, 0, 0.1)覆盖）</h3>
+  <div class="all"></div>
+
+  <style>
+    .all {
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</div>
+
+<!--遮罩层-->
+<div class="box">
+  <h3>遮罩层</h3>
+  <div class="container">
+    <img src="img/p8.jpg" />
+    <i class="cover"></i>
+  </div>
+  <style>
+    .container {
+      border: #666 solid 1px;
+      position: relative;
+      width: 30%;
+    }
+    .container img {
+      width: 100%;
+      display: block;
+    }
+    .container .cover {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background: blue;
+      opacity: 0.2;
+    }
+  </style>
+</div>
+
+<!--九宫格（随着屏幕宽高自适应）-->
+<div class="box">
+  <h3>九宫格（随着屏幕宽高自适应）</h3>
+  <div class="page-wrapper">
+    <div class="page">
+      <div class="list"></div><div class="list"></div>
+      <div class="list"></div><div class="list"></div>
+      <div class="list"></div><div class="list"></div>
+      <div class="list"></div><div class="list"></div>
+      <div class="list"></div>
+    </div>
+  </div>
+
+  <style>
+    .page-wrapper {
+      width: 50%;
+      padding-top: 25%;
+      border: #666 solid 1px;
+      position: relative;
+    }
+    .page {
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+
+      /* plus（附加样式） */
+      padding-top: 2px;
+    }
+    .page .list {
+      box-sizing: border-box;
+      width: 33.3%; /* 这里及下面的 33.3% 是相对于 .page 元素的 */
+      height: 33.3%;
+      float: left;
+      background: goldenrod;
+      border: #fff solid 2px;
+
+      /* plus */
+      margin-left: -2px;
+      margin-top: -2px;
+      position: relative;
+    }
+    /* plus */
+    .page .list:nth-child(3n+1) {
+      margin-left: 0;
+    }
+    .list:hover {
+      z-index: 2;
+      border-color: red;
+    }
+  </style>
+</div>
+
+<!--绝对定位实现绝对居中（初始屏幕万能居中，IE8以下不支持）-->
+<div class="box">
+  <h3>绝对定位实现绝对居中（初始屏幕万能居中，IE8以下不支持）</h3>
+  <p>可以看到屏幕中间的透明蓝色方块</p>
+  <div class="abscen"></div>
+  <style>
+    .abscen {
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 200px;
+      height: 100px;
+      background: blue;
+      margin: auto; /* 关键一句，由于是全屏覆盖，又设置了宽和高，那么此时margin:auto就可以自由分配剩下的空间 */
+      opacity: 0.2;
+    }
+  </style>
+</div>
+
+<!--fixed效果(避免了移动端position:fixed问题)-->
+<div class="box">
+  <h3>fixed效果(避免了移动端position:fixed问题)</h3>
+  <div class="screen">
+    <div class="header">header</div>
+    <div class="content">
+      <p>123</p><p>123</p><p>123</p><p>123</p>
+      <p>123</p><p>123</p><p>123</p><p>123</p>
+      <p>123</p><p>123</p><p>123</p><p>123</p>
+      <p>123</p><p>123</p><p>123</p><p>123</p>
+    </div>
+    <div class="footer">footer</div>
+  </div>
+
+  <style>
+    .screen {
+      width: 30%;
+      height: 300px;
+      border: #666 solid 1px;
+      position: relative;
+    }
+    .content {
+      position: absolute;
+      top: 40px; /* header */
+      bottom: 40px; /* footer */
+      width: 100%;
+      height: calc(100% - 80px);
+      box-sizing: border-box;
+      border: red solid 1px;
+      overflow: auto;
+    }
+    .header {
+      height: 40px;
+    }
+    .footer {
+      position: absolute;
+      bottom: 0;
+      height: 40px;
+    }
+  </style>
+</div>
+
+</body>
+</html>
+<!--
+	1. 凌驾于普通流之上
+	2. 依赖的绝对定位，父容器为非静态定位，使用top和left控制位置
+	3. 无依赖的绝对定位，跟随性（原先位置不变，不依赖于relative等属性），使用margin控制位置
+	4. 同是绝对定位的元素，越是后面的标签层级越高
+	5. 一般情况下，元素的height百分比要想起作用，需要父容器的height不是auto，
+	       但是对于绝对定位的父容器，即使height是auto，子元素的height百分比也是有效的（见上方高度自适应）
+	6. body的默认高度为0
+-->

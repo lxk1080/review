@@ -18,6 +18,7 @@
 </head>
 <body>
 
+<!--普通的恒定宽自适应-->
 <div class="box">
     <h3>普通的恒定宽自适应</h3>
     <div class="d1">
@@ -26,8 +27,10 @@
             简介：张鑫旭老师将带领大家了解CSS中margin与元素尺寸的关系、margin的百分比单位、介绍如何正确看待CSS的margin重叠、深入理解margin：auto。并通过实例剖析CSS margin负值定位的常见应用。还会针对大家在使用margin时容易发生困惑的无效情形，进行深入解析。
         </p>
     </div>
-
     <style>
+        .d1 {
+            overflow: hidden;
+        }
         .img1 {
             width: 200px;
             float: left;
@@ -38,24 +41,22 @@
     </style>
 </div>
 
-<!--------------------------------------------------------------------------------------------------------------------------------->
-
+<!--用margin负值左恒定宽自适应-->
 <div class="box">
     <h3>用margin负值左恒定宽自适应</h3>
     <div class="d2">
         <p class="p2">
             简介：张鑫旭老师将带领大家了解CSS中margin与元素尺寸的关系、margin的百分比单位、介绍如何正确看待CSS的margin重叠、深入理解margin：auto。并通过实例剖析CSS margin负值定位的常见应用。还会针对大家在使用margin时容易发生困惑的无效情形，进行深入解析。
         </p>
+        <img src="img/p8.jpg" class="img2"  />
     </div>
-    <img src="img/p8.jpg" class="img2"  />
-
     <style>
         .d2{
-            float: left;
-            width: 100%;
+            overflow: hidden;
         }
         .p2{
             margin-right: 220px;
+            float: left;
         }
         .img2{
             width: 200px;
@@ -65,41 +66,36 @@
     </style>
 </div>
 
-<!--------------------------------------------------------------------------------------------------------------------------------->
-
+<!--宽高比恒等2:1-->
 <div class="box">
     <h3>宽高比恒等2:1</h3>
     <div class="wrapper">
         <div></div>
     </div>
-
     <style>
         .wrapper {
-            background: #00CC66;
+            background: url("./img/p8.jpg");
+            background-size: cover;
             overflow: hidden;
-            clear: both;
         }
         .wrapper>div {
             margin: 50%;
-            background: #FFCC99
         }
     </style>
 </div>
 
-<!--------------------------------------------------------------------------------------------------------------------------------->
-
+<!--消除margin-top重叠（其中的一种方法）-->
 <div class="box">
     <h3>消除margin-top重叠（其中的一种方法）</h3>
     <div class="out">
         <div class="inner"></div>
     </div>
-
     <style>
         .out{
             width: 200px;
             height: 200px;
             background: goldenrod;
-            overflow: hidden;  /*  使父元素变成块状格式化元素   （overflow不为visible）*/
+            overflow: hidden;  /* 使父元素变成块状格式化元素（overflow不为visible）*/
         }
         .inner{
             width: 100px;
@@ -110,8 +106,7 @@
     </style>
 </div>
 
-<!--------------------------------------------------------------------------------------------------------------------------------->
-
+<!--无间隙两端对齐-->
 <div class="box">
     <h3>无间隙两端对齐</h3>
     <div class="con">
@@ -121,7 +116,6 @@
             <div class="li">3</div>
         </div>
     </div>
-
     <style>
         .con{
             width: 600px;
@@ -142,8 +136,7 @@
     </style>
 </div>
 
-<!--------------------------------------------------------------------------------------------------------------------------------->
-
+<!--两栏等高布局-->
 <div class="box">
     <h3>两栏等高布局</h3>
     <div class="p3">
@@ -158,7 +151,6 @@
             <div>2222</div>
         </div>
     </div>
-
     <style>
         .p3 {
             border: red solid 1px;
@@ -180,3 +172,42 @@
 </div>
 </body>
 </html>
+<!--
+	1. 非定位元素的margin百分比值是根据自身的宽计算的，绝对定位元素的百分比margin是相对于第一个定位祖先元素的宽度计算的
+
+	2. margin重叠，只发生在垂直方向上，只支持block元素（不包括float和absolute）
+
+	3. 消除margin-top重叠
+		* 使父元素变成块状格式化元素BFC（overflow、block、inline-block等等元素不为visible）
+		* 给父元素设置border
+		* 给父元素设置padding
+		* 在父元素和第一个子元素之间插入一个inline元素（例如 &nbsp;）
+
+		原理：margin的本质是在遇到障碍物时靠力的反作用把自己往相反的方向推，border和padding以及inline元素的本质都是障碍物
+			 而overflow:hidden的本质是父元素将自己高度拉伸，直到能够包裹住子元素为止，这样就永远不会overflow了
+
+		注意：margin是以左和上为基准的（默认为0），也就是说，当同时存在margin-left和margin-right时，margin-left完胜，
+			 但是margin-right依然存在，margin-top同理
+
+		理解：margin-top就像是气波，如果父元素的top不是封闭的，这股气波就会冲出去，直到在气波范围内撞到障碍物会连同父亲被反作用向后推，
+			 如果父元素是封闭的但是没有固定的高，那么此时父元素top边会被冲出一截，但是top边会回到原来的位置，看起来就像是子元素被反推了一样，
+			 如果父元素是封闭的而且有固定的高，那么子元素会被反推，如果气波足够大，子元素还会穿透父元素，也就是"溢出"
+
+	4. 关于margin为什么垂直方向不能居中，因为block元素只是宽度自动填充的，而不会高度自动填充
+
+	5. 垂直居中：
+		* writing-mode:vertical-lr; （更改流为垂直方向，此时高度会自动填充，只能实现垂直居中了）
+		* position:absolute;top:0;left:0;right:0;bottom:0;margin:auto;
+		* 转换为inline-block，用vertical-align控制（注意此时的水平居中用text-align）
+
+	6. inline元素没有垂直的margin
+
+	7. margin-start: 当前文档流的开始方位的margin值
+		正常流：margin-start=margin-left
+		垂直流：margin-start=margin-top
+
+	8. 控制margin重叠
+		  collapse： 默认，重叠
+		  discard： 取消垂直方向上的margin
+		  separate： margin不重叠
+-->

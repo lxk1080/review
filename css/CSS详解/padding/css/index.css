@@ -12,10 +12,6 @@
 	padding: 50%;
 	background: darkgrey;
 	position: relative;
-	/*
-	background: url("");
-	background-size: 100%;
-	*/
 }
 .example{
 	position: absolute;

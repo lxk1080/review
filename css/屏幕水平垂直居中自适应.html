@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!--<meta name="viewport" -->
+        <!--content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">-->
+  <title>Test</title>
+  <!--
+    存在元素A满足以下条件
+    - 1. A元素左右距离10px
+    - 2. A元素在窗口水平垂直居中
+    - 3. A元素中的文字A水平垂直居中
+    - 4. A元素中字体设置为20px
+    - 5. A的高度始终为A宽度的50%（如果不会，可以降低要求，把高度设为100px）
+  -->
+  <style>
+    html * {
+      margin: 0;
+      padding: 0;
+    }
+    /* 2. A元素在窗口水平垂直居中 */
+    .box {
+      position: fixed;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+
+      display: flex;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+    }
+    .A {
+      /* 1. A元素左右距离10px */
+      margin: 0 10px;
+
+      /* 5. A的高度始终为A宽度的50% */
+      width: 50%;
+      padding-top: 25%;
+
+      position: relative;
+    }
+    .text {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      box-sizing: border-box;
+      border: red solid 1px;
+
+      /* 3. A元素中的文字A水平垂直居中 */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      /* 4. A元素中字体设置为20px */
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <div class="A">
+    <span class="text">A</span>
+  </div>
+</div>
+
+</body>
+</html>

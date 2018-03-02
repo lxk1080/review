@@ -34,17 +34,17 @@ function debouncePro(func, delay, time) {
   return function (...args) {
     let now = new Date()
     if (!previous) previous = now
+    if (now - previous > time) {
+      func.apply(this, args)
+      previous = now
+      return
+    }
     if (timer) {
       clearTimeout(timer)
     }
-    if ((now - previous) > time) {
+    timer = setTimeout(() => {
       func.apply(this, args)
-      previous = now
-    } else {
-      setTimeout(() => {
-        func.apply(this, args)
-      }, delay)
-    }
+    }, delay)
   }
 }
 
@@ -119,5 +119,11 @@ function quickSort(arr) {
   return quickSort(left).concat([point], quickSort(right))
 }
 
+// 排序
 let arr = [14, 11, 3, 13, 10, 15, 2, 5, 4, 6, 8, 7, 12, 1, 9];
 console.log(quickSort(arr));
+
+// 防抖函数升级版
+setInterval(debouncePro(function() {
+  console.log('step...')
+}, 100, 1000), 10)

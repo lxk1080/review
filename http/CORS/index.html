@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+</head>
+<body>
+
+<button class="btn">获取</button>
+<div class="resA"></div>
+<div class="resF"></div>
+
+<script>
+    
+    let btn = document.querySelector('.btn')
+    let resA = document.querySelector('.resA')
+    let resF = document.querySelector('.resF')
+    btn.addEventListener('click', function () {
+        // ajax
+        let urlA = 'http://localhost:3000?name=CORS'
+        let xhr = new XMLHttpRequest()
+        xhr.open('GET', urlA, true)
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    resA.innerHTML = `${xhr.response}（ajax）`
+                }
+            }
+        }
+        xhr.send()
+
+        // fetch
+        let urlF = 'http://localhost:3000'
+        fetch(urlF, {
+            method: 'post',
+            body:  'name=CORS',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).then(function (response) {
+            response.text().then((data) => {
+                console.log(response)
+                if (response.status === 200) {
+                    resF.innerHTML = `${data}（fetch）`
+                } else {
+                    console.log(response.status)
+                }
+            })
+        }).catch(function (err) {
+            // 这里只能捕获到一些网络错误或连接断开
+            console.log('net error')
+        });
+
+    })
+    
+</script>
+
+</body>
+</html>

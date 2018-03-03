@@ -24,7 +24,7 @@
   // 窗口A(http:A.com)向跨域的窗口B(http:B.com)发送信息
   Bwindow.postMessage('data', 'http://B.com');
   // 在窗口B中监听
-  Awindow.addEventListener('message', function (event) {
+  window.addEventListener('message', function (event) {
     console.log(event.origin);
     console.log(event.source);
     console.log(event.data);
@@ -50,7 +50,7 @@
   // CORS【参考资料】http://www.ruanyifeng.com/blog/2016/04/cors.html
   // url（必选），options（可选）
   fetch('/some/url/', {
-    method: 'get',
+    method: 'get'
   }).then(function (response) {
 
   }).catch(function (err) {

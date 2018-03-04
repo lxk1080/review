@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Color</title>
+</head>
+<body>
+
+<div class="item">item</div>
+
+<script src='../jsLib/jquery-1.7.1.min.js'></script>
+<script>
+
+    // 封装全局函数的插件
+    ;(function($) {
+        $.fn.extend({
+            color: function(value) {
+                if (!value) {
+                    return this.css('color')
+                } else {
+                    return this.css('color', value)
+                }
+            }
+        })
+    })(jQuery);
+
+   console.log($('.item').color()) // rgb(0,0,0)
+
+   console.log($('.item').color('red')) // jQuery对象
+
+</script>
+
+</body>
+</html>

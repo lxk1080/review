@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Table</title>
+    <style>
+        table {
+            width: 300px;
+        }
+
+        .odd {
+            background: #eee;
+        }
+        .even {
+            background: #ccc;
+        }
+        .selected {
+            background: #666;
+        }
+
+        .odd2 {
+            background: burlywood;
+        }
+        .even2 {
+            background: navajowhite;
+        }
+        .selected2 {
+            background: goldenrod;
+        }
+    </style>
+</head>
+<body>
+
+<table class="table1">
+    <thead>
+    <tr><th>choose</th><th>first</th><th>second</th></tr>
+    </thead>
+    <tbody>
+    <tr><td><input type="checkbox"></td><td>111</td><td>2222</td></tr>
+    <tr><td><input type="checkbox"></td><td>111</td><td>2222</td></tr>
+    <tr><td><input type="checkbox"></td><td>111</td><td>2222</td></tr>
+    <tr><td><input type="checkbox" checked></td><td>111</td><td>2222</td></tr>
+    <tr><td><input type="checkbox"></td><td>111</td><td>2222</td></tr>
+    <tr><td><input type="checkbox"></td><td>111</td><td>2222</td></tr>
+    <tr><td><input type="checkbox"></td><td>111</td><td>2222</td></tr>
+    <tr><td><input type="checkbox"></td><td>111</td><td>2222</td></tr>
+    </tbody>
+</table>
+
+<br><br><br>
+
+<table class="table2">
+    <thead>
+        <tr><th>choose</th><th>first</th><th>second</th></tr>
+    </thead>
+    <tbody>
+        <tr><td><input type="checkbox"></td><td>111</td><td>2222</td></tr>
+        <tr><td><input type="checkbox"></td><td>111</td><td>2222</td></tr>
+        <tr><td><input type="checkbox"></td><td>111</td><td>2222</td></tr>
+        <tr><td><input type="checkbox"></td><td>111</td><td>2222</td></tr>
+        <tr><td><input type="checkbox"></td><td>111</td><td>2222</td></tr>
+        <tr><td><input type="checkbox" checked></td><td>111</td><td>2222</td></tr>
+        <tr><td><input type="checkbox"></td><td>111</td><td>2222</td></tr>
+        <tr><td><input type="checkbox"></td><td>111</td><td>2222</td></tr>
+    </tbody>
+</table>
+
+<script src='../jsLib/jquery-1.7.1.min.js'></script>
+<script>
+
+    // 封转对象方法的插件
+    ;(function($) {
+        $.fn.extend({
+            alterBgColor: function(options) {
+                options = $.extend({
+                    odd: 'odd',
+                    even: 'even',
+                    selected: 'selected'
+                }, options)
+
+                $('tbody>tr:odd', this).addClass(options.odd)
+                $('tbody>tr:even', this).addClass(options.even)
+                $('tbody>tr', this).click(function() {
+                    let hasSelected = $(this).hasClass(options.selected)
+                    $(this)[hasSelected ? 'removeClass' : 'addClass'](options.selected).find(':checkbox').attr('checked', !hasSelected)
+                })
+                // 初始化时检查是否有已经选中的
+                $('tbody>tr:has(:checked)', this).addClass(options.selected)
+                return this
+            }
+        })
+    })(jQuery);
+
+    $('.table1').alterBgColor()
+
+    $('.table2').alterBgColor({
+        odd: 'odd2',
+        even: 'even2',
+        selected: 'selected2'
+    })
+
+</script>
+
+</body>
+</html>

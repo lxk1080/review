@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TrimLR</title>
+</head>
+<body>
+
+<script src='../jsLib/jquery-1.7.1.min.js'></script>
+<script>
+
+    // 封装对象方法的插件
+    ;(function($){
+        $.extend({
+            // 去除左空格
+            triml: function(text) {
+                return (text || '').replace(/^\s+/g, '')
+            },
+            // 去除右空格
+            trimr: function(text) {
+                return (text || '').replace(/\s+$/g, '')
+            },
+            // 去除左右空格
+            trimlr: function(text) {
+                return (text || '').replace(/^\s+|\s+$/g, '')
+            }
+        })
+    })(jQuery);
+
+    console.log('  123  '.replace(/\s/g, '空'))
+    console.log($.triml('  123  ').replace(/\s/g, '空'))
+    console.log($.trimr('  123  ').replace(/\s/g, '空'))
+    console.log($.trimlr('  123  ').replace(/\s/g, '空'))
+
+</script>
+
+</body>
+</html>

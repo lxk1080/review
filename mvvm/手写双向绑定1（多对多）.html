@@ -27,18 +27,45 @@
 
 <script>
 
+// 一个报社有多个订阅者，一个订阅者可以订阅多家报社
+// 这里双向绑定实现的是 多对多 的关系
+
+let obj = {}
+
 class Publish {
     constructor(name) {
         this.name = name
+        this.key = this.getKey()
         this.subs = []
         this.init()
     }
 
+    getKey() {
+        return this.name.substr(1)
+    }
+
     init() {
         let self = this
-        let node = document.querySelector(this.name)
+        let value = obj[self.key]
+        let node = document.querySelector(self.name)
+
+        Object.defineProperty(obj, self.key, {
+            configurable: true,
+            enumerable: false,
+            get: function () {
+                return value
+            },
+            set: function (newValue) {
+                if (newValue !== value) {
+                    value = newValue
+                    node.value = value
+                    self.deliver(newValue)
+                }
+            }
+        })
+
         node.addEventListener('keyup', function() {
-            self.deliver(node.value)
+            obj[self.key] = node.value
         })
     }
 
@@ -90,7 +117,6 @@ window.addEventListener('DOMContentLoaded', function() {
 
     sub1.subscribe(pub1).subscribe(pub2)
     sub2.subscribe(pub2).subscribe(pub3)
-    sub1.unsubscribe(pub2)
 })
 
 

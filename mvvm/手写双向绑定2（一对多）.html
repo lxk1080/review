@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--<meta name="viewport" -->
+    <!--content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">-->
+    <title>Test</title>
+</head>
+<body>
+
+<input type="button" value="第一报社"><input type="text" id="pub1" value=""><br/><br/>
+<input type="button" value="第二报社"><input type="text" id="pub2" value=""><br/><br/>
+
+<textarea id="sub1" rows="10" cols="30"></textarea>
+<textarea id="sub2" rows="10" cols="30"></textarea>
+<textarea id="sub3" rows="10" cols="30"></textarea>
+
+<script>
+
+    // 这里实现的是 mvvm 的双向绑定
+    // 一个 publish 可以有多个 sub，但一个 sub 只能有一个 publish
+
+    let data = {}
+
+    class Publish {
+        constructor(name) {
+            this.name = name
+            this.key = this.getKey()
+            this.init()
+        }
+
+        getKey() {
+            return this.name.substr(1)
+        }
+
+        init() {
+            let self = this
+            let value = data[self.key]
+            let node = document.querySelector(self.name)
+            let dep = new Dep()
+
+            Object.defineProperty(data, self.key, {
+                configurable: true,
+                enumerable: false,
+                get: function () {
+                    if (Dep.target) {
+                        dep.addSub(Dep.target)
+                    }
+                    return value
+                },
+                set: function (newValue) {
+                    if (newValue !== value) {
+                        value = newValue
+                        node.value = value
+                        dep.deliver(value, self)
+                    }
+                }
+            })
+
+            node.addEventListener('keyup', function () {
+                data[self.key] = node.value
+            })
+        }
+    }
+
+    class Dep {
+        constructor() {
+            this.subs = []
+        }
+
+        addSub(sub) {
+            this.subs.push(sub)
+        }
+
+        deliver(news, pub) {
+            this.subs.forEach((sub) => {
+                sub.update(news, pub)
+            })
+        }
+    }
+    Dep.target = null
+
+    class Sub {
+        constructor(name, pub) {
+            this.name = name
+            this.pub = pub
+            this.value = this.get()
+        }
+
+        update(news, pub) {
+            this.value = news
+            document.querySelector(this.name).innerHTML = `${pub.name.substr(1)}: ${news}`
+        }
+
+        get() {
+            Dep.target = this
+            let value = data[this.pub.key]
+            Dep.target = null
+            return value
+        }
+    }
+
+    window.addEventListener('DOMContentLoaded', function () {
+        let pub1 = new Publish('#pub1')
+        let pub2 = new Publish('#pub2')
+
+        let sub1 = new Sub('#sub1', pub1)
+        let sub2 = new Sub('#sub2', pub2)
+        let sub3 = new Sub('#sub3', pub2)
+    })
+
+</script>
+</body>
+</html>

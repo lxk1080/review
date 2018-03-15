@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<script>
+		function copyUrl2() {
+			var Url2 = document.getElementById("area").innerText;
+			var oInput = document.createElement('input');
+			oInput.value = Url2;
+			document.body.appendChild(oInput);
+			oInput.select(); // 选择对象
+			document.execCommand("Copy"); // 执行浏览器复制命令
+			oInput.className = 'oInput';
+
+			oInput.parentNode.removeChild(oInput)
+			alert('复制成功');
+		}
+	</script>
+</head>
+
+<body onload="">
+	<div id="area">
+		<div>1234</div>
+		<div>5678</div>
+		<div>abcd</div>
+	</div>
+	<input type="button" onClick="copyUrl2()" value="点击复制代码" />
+
+</body>
+
+</html>

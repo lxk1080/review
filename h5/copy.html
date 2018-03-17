@@ -8,8 +8,8 @@
 	<title>Document</title>
 	<script>
 		function copyUrl2() {
-			var Url2 = document.getElementById("area").innerText;
-			var oInput = document.createElement('input');
+			var Url2 = document.getElementById("text").innerText;
+			var oInput = document.createElement('textarea');
 			oInput.value = Url2;
 			document.body.appendChild(oInput);
 			oInput.select(); // 选择对象
@@ -23,7 +23,7 @@
 </head>
 
 <body onload="">
-	<div id="area">
+	<div id="text">
 		<div>1234</div>
 		<div>5678</div>
 		<div>abcd</div>

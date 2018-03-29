@@ -11,26 +11,26 @@
 <div class="resF"></div>
 
 <script>
-    
-    let btn = document.querySelector('.btn')
-    let resA = document.querySelector('.resA')
-    let resF = document.querySelector('.resF')
+
+    let btn = document.querySelector('.btn');
+    let resA = document.querySelector('.resA');
+    let resF = document.querySelector('.resF');
     btn.addEventListener('click', function () {
         // ajax
-        let urlA = 'http://localhost:3000?name=CORS'
-        let xhr = new XMLHttpRequest()
-        xhr.open('GET', urlA, true)
+        let urlA = 'http://localhost:3000?name=CORS';
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', urlA, true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     resA.innerHTML = `${xhr.response}（ajax）`
                 }
             }
-        }
-        xhr.send()
+        };
+        xhr.send();
 
         // fetch
-        let urlF = 'http://localhost:3000'
+        let urlF = 'http://localhost:3000';
         fetch(urlF, {
             method: 'post',
             body:  'name=CORS',
@@ -39,7 +39,7 @@
             }
         }).then(function (response) {
             response.text().then((data) => {
-                console.log(response)
+                console.log(response);
                 if (response.status === 200) {
                     resF.innerHTML = `${data}（fetch）`
                 } else {
@@ -52,7 +52,7 @@
         });
 
     })
-    
+
 </script>
 
 </body>

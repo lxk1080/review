@@ -21,60 +21,60 @@
 
     // 创建一个script对象
     function createScript(url, charset) {
-      var script = document.createElement('script')
-      script.setAttribute('src', url)
-      charset && script.setAttribute('charset', charset)
-      script.async = true
+      var script = document.createElement('script');
+      script.setAttribute('src', url);
+      charset && script.setAttribute('charset', charset);
+      script.async = true;
       return script
     }
 
     // 将对象转url形式的字符串
     function json2url(data) {
-      var res = []
+      var res = [];
       for (var key in data) {
-        var str = key +'='+ data[key]
+        var str = key +'='+ data[key];
         res.push(str)
       }
       return res.join('&')
     }
 
     function jsonp(json) {
-      json = json || {}
-      if (!json.url || typeof json.url !== 'string') return
-      var url = json.url
-      var data = json2url(json.data || {})
-      var success = json.success || ''
-      var error = json.error || ''
-      var charset = json.charset || ''
-      var key = json.key || 'jsonpCallback'
+      json = json || {};
+      if (!json.url || typeof json.url !== 'string') return;
+      var url = json.url;
+      var data = json2url(json.data || {});
+      var success = json.success || '';
+      var error = json.error || '';
+      var charset = json.charset || '';
+      var key = json.key || 'jsonpCallback';
 
       // 1. 设置回调函数名称
-      var callbackName = getName('Callback_')
+      var callbackName = getName('Callback_');
 
       // 2. 设置回调函数体
       window[callbackName] = function () {
         if (success && isFuntion(success)) {
           success(arguments[0])
         }
-      }
+      };
 
       // 3. 创建script对象
-      if (data.length) data = '&' + data
-      var script = createScript(url +'?'+ key +'='+ callbackName + data, charset)
+      if (data.length) data = '&' + data;
+      var script = createScript(url +'?'+ key +'='+ callbackName + data, charset);
 
       // 4. 将script加入到dom中
-      document.getElementsByTagName('head')[0].appendChild(script)
+      document.getElementsByTagName('head')[0].appendChild(script);
 
       // 加载成功时
       script.onload = script.onreadystatechange = function() {
         if (!script.readyState || /loaded|complete/.test(script.readyState)) {
-          script.onload = script.onreadystatechange = null
+          script.onload = script.onreadystatechange = null;
           if (script.parentNode) {
             script.parentNode.removeChild(script)
           }
           window[callbackName] = null
         }
-      }
+      };
       // 加载失败时
       script.onerror = function() {
         if (error && isFuntion(error)) {

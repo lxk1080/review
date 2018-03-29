@@ -2,9 +2,9 @@
 {
   // 参数：类 属性 属性描述符
   let readonly = function (target, name, descriptor) {
-    descriptor.writable = false
+    descriptor.writable = false;
     return descriptor
-  }
+  };
 
   class Test {
     @readonly
@@ -13,7 +13,7 @@
     }
   }
 
-  let test = new Test()
+  let test = new Test();
   // Cannot assign to read only property 'time' of object
   // test.time = 'another'
   console.log(test.time())
@@ -23,7 +23,7 @@
   // 类修饰符
   let typename = function (target, name, descriptor) {
     target.myname = 'hello'
-  }
+  };
 
   @typename
   class Test {
@@ -38,14 +38,14 @@
   // 埋点（例如打印日志）
   let log = function (type) {
     return function (target, name, descriptor) {
-      let method = descriptor.value
+      let method = descriptor.value;
       descriptor.value = (...arg) => {
-        method.apply(target, arg)
+        method.apply(target, arg);
         // 给原来的方法添加一个打印日志的功能
         console.log(`log ${type}`)
       }
     }
-  }
+  };
 
   class AD {
     @log('show')
@@ -58,7 +58,7 @@
     }
   }
 
-  let ad = new AD()
-  ad.show()
+  let ad = new AD();
+  ad.show();
   ad.click()
 }

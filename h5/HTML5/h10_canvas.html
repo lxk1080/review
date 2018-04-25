@@ -1,0 +1,119 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<style>
+	body{ background:#333}
+	/*在样式中设置的宽和高是相对于画布宽高的等比例缩放，并不能设置画布的宽高*/
+	#c1{ background:#FFF; display:block; margin:0 auto; width:400px; height:400px;} 
+</style>
+</head>
+
+<body>
+
+	<canvas id="c1" width="400" height="400">	<!--设置画布的大小，默认宽300 高150--> 
+    <span>不支持canvas的浏览器</span>
+    </canvas>  
+
+    <script>
+	
+	window.onload = function(){
+		
+		var c1 = document.getElementById('c1');
+		
+		var c = c1.getContext('2d');  //创建绘制图形的对象
+		/*
+		c.fillStyle = 'red';  //填充样式
+		
+		c.strokeStyle = 'black';  //线条样式
+		
+		c.lineWidth = 5;   //线的宽度
+		 
+		c.lineJoin = 'bevel';  //边界连接样式  round 是圆角，bevel 是斜角
+			
+		//参数：left top width height
+		//边框线默认是一个像素，会从一个点向左右各延伸0.5px，计算机自动补充两边的0.5培训，所以left和top最好设为0.5的形式
+		//否则就会是2个像素
+		c.strokeRect(50.5,50.5,100,100); 
+		
+		c.fillRect(50.5,50.5,100,100); 
+		
+		c.clearRect(0,0,400,400)   //一个矩形橡皮擦（擦除矩形区域）
+		*/
+		
+		/* //fillRect()方法是对下面代码的一个封装
+		c.beginPath();  
+		
+		c.rect(10,10,10,10);   
+		
+		c.closePath(); 
+		
+		c.fill();  //填充
+		*/
+		
+		/*
+		c.beginPath();  //开始绘制路径
+		
+		c.moveTo(100,100);  //绘制的起点
+		
+		c.lineTo(200,200);  //绘制的下一个点
+		
+		c.lineTo(300,200);  //绘制的下一个点
+
+		c.closePath();  //关闭绘制路径，开始点和结束点会自动连接闭合
+		
+		c.stroke();  //画线，把这些点按顺序连接起来，没有这句，就不会有线
+		*/
+		
+		/*
+		c.save();   //保存路径
+		
+		c.beginPath();  
+		
+		c.moveTo(100,100);  
+		
+		c.lineTo(200,200);  
+		
+		c.lineTo(300,200);  
+		
+		c.closePath(); 
+		
+		c.fillStyle = 'red'; //save()和restore()之间相当于块级作用域，c.fillStyle就是局部变量，否则下方的三角形也是红色
+		
+		c.fill();  
+		
+		c.restore();  //恢复路径
+		
+		c.beginPath();  
+		
+		c.moveTo(100,200);  
+		
+		c.lineTo(200,300);  
+		
+		c.lineTo(300,300);  
+		
+		c.closePath(); 
+		
+		c.fill(); 
+		*/
+		
+		
+		c.moveTo(100,100);
+		
+		c.lineWidth = 20;
+		
+		c.lineTo(200,200);
+		
+		c.lineCap = 'round';  //端点样式 round：圆  square：长度多出为宽一半的值（也就是10px）
+		
+		c.stroke();
+		
+		
+		
+	}
+	
+	</script>
+    
+</body>
+</html>

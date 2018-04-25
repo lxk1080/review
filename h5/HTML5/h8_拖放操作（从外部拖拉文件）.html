@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<style>
+	#div1{ background:#63F; width:300px; height:120px;}
+	ul li{ float:left;}
+</style>
+</head>
+
+<body>
+  
+	<div id="div1">将文件拖拽到此区域</div>
+    <ul id="ul"></ul>
+    
+    <script>
+	
+	var ul = document.getElementById('ul');
+	
+	//目标元素
+	div1.ondragenter = function(){   //进入目标元素一瞬间触发并维持状态
+		this.innerHTML = "释放鼠标可以释放";	
+	}
+	div1.ondragover = function(){   //enter和leave之间连续触发
+		//要想触发ondrop事件，就必须在ondragover中阻止默认事件
+		return false;
+	}
+	div1.ondragleave = function(){   //离开目标元素时
+		this.innerHTML = "将文件拖放到此区域";	
+	}
+	div1.ondrop = function(ev){   //拖拽元素放到了目标元素里时
+
+		var fs = ev.dataTransfer.files;  //这是一个文件集合（数组）
+		//alert(fs[0].type);  //显示文件类型，不是数据类型
+		
+		for(var i = 0; i<fs.length; i++){
+			if(fs[i].type.indexOf('image') == -1){ //如果不是图片类型
+				alert('请上传图片');
+			} else {
+				var fd = new FileReader();  //相当于一个阅读器
+				
+				fd.readAsDataURL(fs[i]);  //读取文件信息
+				
+				fd.onload = function(){   //文件信息读取成功之后触发的事件
+					var li = document.createElement('li');
+					var img = document.createElement('img');
+					img.src = this.result;   //读取到的数据
+					li.appendChild(img);
+					ul.appendChild(li);	
+					alert("拖拽成功");
+				}	
+			}
+		}
+		//ev.preventDefault(); //阻止浏览器打开拖放进来的内容
+		return false;  
+	}
+	
+	</script>
+    
+    
+    
+    
+</body>
+</html>

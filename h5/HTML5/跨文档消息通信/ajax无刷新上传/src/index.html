@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <style>
+        .d1 {
+            border: #999 solid 1px;
+            border-radius: 20px;
+            width: 300px;
+            height: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        .d2 {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 0;
+            height: 100%;
+            background: goldenrod;
+        }
+        .d3 {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            line-height: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<input type="file" id="file" name="f1">
+<button type="button" id="btn">上传</button>
+<br><br>
+<div class="d1">
+    <div class="d2"></div>
+    <div class="d3">0%</div>
+</div>
+
+<script>
+
+    // 注意，目前为止的测试表明，此上传操作不能跨域，不能添加Content-Type请求头
+
+    let btn = document.querySelector('#btn')
+    let file = document.querySelector('#file')
+    let d2 = document.querySelector('.d2')
+    let d3 = document.querySelector('.d3')
+
+    btn.addEventListener('click', function() {
+        let xhr = new XMLHttpRequest()
+        xhr.open('post', 'http://127.0.0.1:3000/', true)
+        xhr.setRequestHeader('X-Request-With', 'XMLHttpRequest')
+
+        // 文件上传时的进度接口
+        let upload = xhr.upload
+        upload.onprogress = function(event) {
+            console.log(event.total + ':' + event.loaded)
+
+            let percent = event.loaded / event.total
+            d2.style.width = 300 * percent + 'px'
+            d3.innerHTML = Math.floor(percent * 100) + '%'
+        }
+
+        // 响应成功后的回调函数
+        xhr.onload = function () {
+            alert(this.responseText)
+        }
+
+        // 将文件封转为FormData对象
+        let oFormData = new FormData()
+        oFormData.append('file', file.files[0])
+
+        xhr.send(oFormData)
+    })
+
+</script>
+
+</body>
+</html>

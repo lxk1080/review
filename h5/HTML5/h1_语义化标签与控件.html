@@ -1,0 +1,95 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<script src="html5shiv.js"></script>
+</head>
+
+<body>
+	<header>头部</header>
+    <footer>底部</footer>
+	<nav>导航</nav>
+    <hgroup>标题组合</hgroup>
+    
+    <article>独立的内容主体
+    <section>用来划分区域块</section>
+    <aside>和主体相关的附属信息</aside>
+    </article> 
+    
+    <figure> //媒体内容  
+    <figcaption>媒体标题</figcaption>
+    <img src=""/>
+    </figure>
+    
+    <time datetime="2014-01-02">09:30 时间</time>
+    
+    <input type="text" list="list">
+    <datalist id="list">  //列出文本框中可以输入的值
+    <option>html</option>
+    <option>js</option>
+    <option>css</option>
+    </datalist>
+    
+    <details open>  //描述细节
+    <summary>html</summary>  //概要
+    <p>标记语言</p>
+    </details>
+    
+    <dialog>对话框</dialog>
+    
+    <address>作者详细信息</address>
+    
+    <mark>标记元素</mark>
+    
+    公钥：<keygen name="security" />
+    
+    <progress max="10" value="3">进度条</progress>
+	
+    <input type="email" />
+    <input type="tel" />
+    <input type="url" />
+    <input type="search" />
+    <input type="range" max="10" min="0" step="6" value="5" /> 
+    <input type="number" />   
+    <input type="color" />
+    <input type="datetime" />  
+    <input type="datetime-local" />  //显示完整日期，不含时区
+    <input type="date" />
+    <input type="time" />
+    <input type="week" />  //第几周
+    <input type="month" />  //第几个月
+    
+    placeholder 输入框信息
+    autocomplete 是否保存用户输入值 on/off 
+	autofocus 指定文本框获得焦点
+    required 此项必填
+    pattern 正则表达式   pattern="\d{1,5}" //输入1到5个数字
+    
+    <input type="submit" value="保存到草稿箱" formaction="不是form默认的url，而是另外的url" formnovalidate />
+    //formnovalidate 表示关闭表单验证
+    
+    
+    //验证反馈
+    <form>
+    <input type="email" id="text" maxlength="5"/>
+    <input type="submit" />
+    </form>
+    <script>
+	var text = document.getElementById("text");
+	text.addEventListener("invalid",fn,false);  //invalid代表无效时执行函数fn，false是冒泡事件，默认是捕获事件
+	function fn(){
+		if(this.validity.valueMissing){
+			alert("输入值为空");
+			ev.preventDefault();
+		}
+		if(this.validity.typeMismatch){
+			alert("输入值不符合规定类型");
+			ev.preventDefault();
+		}
+	}
+	</script>
+    
+
+</body>
+</html>

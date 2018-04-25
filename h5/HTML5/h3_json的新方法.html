@@ -1,0 +1,50 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<script src="json2.js"></script>
+</head>
+
+<body>
+<script>
+
+	//eval：可以解析任何形式的字符串
+    //JSON.parse()：只可以解析JSON形式的字符串(安全性要高)
+	//JSON.stringify()：将json转化成字符串
+	/*
+	var str = '{"name":"lxk"}';  //严格的以这种形式加上引号（里面必须是双引号）
+	
+	var json = JSON.parse(str);   //将字符串转化成json
+	
+	alert(json.name);
+	*/
+	
+	/*
+	var json = {name:"lxk"};
+	
+	var str = JSON.stringify(json);  //将json转化成字符串
+	
+	alert(str);
+	*/
+	
+	/*
+	var a = {name:"lxk"};
+	var b = a;   //是对象的引用，还是同一个对象，如果修改b.name的值，a.name的值也会改变
+	*/
+	
+	/*  //对象的继承 
+	var a = {name:"lxk",age:{large:"gg"}};
+	var b= JSON.stringify(a);
+	var c = JSON.parse(b);
+	c.name = 'fxy';
+	alert(a.name);    //a.name的值不会随之改变
+	alert(a.age.large);   //嵌套对象的引用
+	*/
+	
+	
+	
+	
+</script>
+</body>
+</html>

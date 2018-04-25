@@ -1,0 +1,85 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<style>
+
+	li{ background:#903; width:200px; height:80px; margin:5px 0; color:#CCC}
+	#div1{ background:#63F; width:300px; height:120px;}
+	
+</style>
+</head>
+
+<body>
+
+	<div>
+    <ul id="ul">
+    	<li draggable="true">a</li>
+        <li draggable="true">b</li>
+        <li draggable="true">c</li>
+    </ul>
+    </div>
+    
+	<div id="div1"></div>
+    <br><br><br><br>
+    <img src="img2.jpg" id="img" width="250px" />
+    <script>
+	
+	var i = 0;
+	
+	//拖拽元素
+	var li = document.getElementsByTagName("li");
+	for(var i = 0; i<li.length ; i++){
+		li[i].index = i;
+		li[i].ondragstart = function(ev){      //拖拽前一瞬间触发并维持状态
+		
+			var ev = ev || window.event;
+			
+			ev.dataTransfer.setData("index",this.index);  //键值对
+			
+			this.style.background = "green";	
+			
+			ev.dataTransfer.effectAllowed = 'copy';  //改变显示光标样式
+			
+			ev.dataTransfer.setDragImage(img,100,50); //从元素中拖出指定的其他元素，后面两个值指定在元素中的鼠标位置
+		}	
+		/*li[i].ondrag = function(){   //在拖拽过程中连续触发
+			document.title = i++;	
+		}*/
+		li[i].ondragend = function(){   //在拖拽结束后触发
+			this.style.background = "#903";	
+		}
+	}
+	
+	//目标元素
+	div1.ondragenter = function(){   //进入目标元素一瞬间触发并维持状态
+		this.style.background = "red";	
+	}
+	div1.ondragover = function(){   //enter和leave之间连续触发
+		//document.title = i++;	
+		//要想触发ondrop事件，就必须在ondragover中阻止默认事件
+		return false;
+	}
+	div1.ondragleave = function(){   //离开目标元素时
+		this.style.background = "#63F";	
+	}
+	div1.ondrop = function(ev){   //拖拽元素放到了目标元素里时
+		var ev = ev || window.event;
+		var ul = document.getElementById("ul");
+		ul.removeChild(li[ev.dataTransfer.getData("index")]);  //删除元素
+			
+		for(var i = 0; i<li.length ; i++){  //删除元素后，其他元素的索引会发生改变，在这里重新构建一下索引
+			li[i].index = i;
+		}
+		
+		
+	}
+	
+	</script>
+    
+    
+    
+    
+</body>
+</html>

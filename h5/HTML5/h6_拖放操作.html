@@ -1,0 +1,66 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<style>
+
+	li{ background:#903; width:200px; height:80px; margin:5px 0; color:#CCC}
+	#div1{ background:#63F; width:300px; height:120px;}
+	
+</style>
+</head>
+
+<body>
+
+	<div>
+    <ul>
+    	<li draggable="true">a</li>
+        <li draggable="true">b</li>
+        <li draggable="true">c</li>
+    </ul>
+    </div>
+    
+	<div id="div1"></div>
+    
+    <script>
+	
+	var i = 0;
+	
+	//拖拽元素
+	var li = document.getElementsByTagName("li");
+	for(var i = 0; i<li.length ; i++){
+		li[i].ondragstart = function(){      //拖拽前一瞬间触发（触发的状态会维持到拖拽结束）
+			this.style.background = "green";	
+		}	
+		/*li[i].ondrag = function(){   //在拖拽过程中连续触发
+			document.title = i++;	
+		}*/
+		li[i].ondragend = function(){   //在拖拽结束后触发
+			this.style.background = "#903";	
+		}
+	}
+	
+	//目标元素
+	div1.ondragenter = function(){   //进入目标元素一瞬间触发并维持状态
+		this.style.background = "red";	
+	}
+	div1.ondragover = function(){   //enter和leave之间连续触发
+		//document.title = i++;	
+		//要想触发ondrop事件，就必须在ondragover中阻止默认事件（意思也就是说要先终止over事件才能触发drop事件）
+		return false;
+	}
+	div1.ondragleave = function(){   //离开目标元素时
+		this.style.background = "#63F";	
+	}
+	div1.ondrop = function(){   //拖拽元素放到了目标元素里时
+		alert("拖拽成功");	
+	}
+	
+	</script>
+    
+    
+    
+    
+</body>
+</html>

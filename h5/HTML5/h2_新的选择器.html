@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+		<input type="text" id="text" class="text text1" title="text" autocomplete="off">
+        
+		<script>
+		
+		var t = document.querySelector("#text");  // #text  .text  input  [title=text] 只能选择一个元素
+		
+		document.querySelectorAll(".text");  //获取的是数组
+		
+		document.getElementsByClassName("");  //H5新特性
+		
+		alert(t.classList)  //所有的class类，类似于数组的对象
+		t.classList.add("text2");  //添加类
+		t.classList.remove("text2");  //删除类
+		t.classList.toggle("text4");   //有就删除，没有就添加
+		
+		
+		
+		</script>
+
+
+</body>
+</html>

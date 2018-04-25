@@ -1,0 +1,112 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<style>
+	body{ background:#333}
+	canvas{ background:#FFF; display:block; margin:0 auto;}
+	img{ background:#FFF; display:block; margin:0 auto; }
+</style>
+</head>
+
+<body>
+	<canvas id="c1" width="300" height="300">	
+    <span>不支持canvas的浏览器</span>
+    </canvas>
+    <br>
+	<img id="img" />
+    
+    <script>
+	
+	var c1 = document.getElementById('c1');
+	
+	var c = c1.getContext('2d');
+	
+	//1.覆盖合成
+	c.fillRect(0,0,100,100);
+	
+	c.globalAlpha = 0.5; //透明度
+	
+	c.globalCompositeOperation = "source-over";  //合成方式（更多问度娘）
+	
+	c.fillStyle = "red";
+	
+	c.fillRect(50,50,100,100);
+	
+	//2.将画布导出为图像
+	var img = document.getElementById('img');
+	
+	img.src = c1.toDataURL();  //将c1画布变成url
+	
+	
+	//3.图形点击事件（必须是路径）
+	c.beginPath();
+	c.arc(100,100,20,0,360*Math.PI/180,false);
+	c.closePath();
+	c.fill();
+	/*
+	c1.onmousedown = function(ev){  
+		var ev = ev || window.ev;
+		var x = ev.clientX - c1.offsetLeft;
+		var y = ev.clientY - c1.offsetTop;
+		
+		if(c.isPointInPath(x,y)){   //只针对'最后'画出的路径（即使路径写在这个函数的后面）
+			alert('别点！！！');	
+		}
+	}
+	*/
+	//写一个包装对象的方法，使鼠标事件可以针对多个路径响应
+	function shape(x,y,r){
+		this.x = x;
+		this.y = y;
+		this.r = r;
+		
+		c.beginPath();
+		c.arc(this.x,this.y,this.r,0,360*Math.PI/180,false);
+		c.closePath();
+		c.fill()	
+	}
+	//图形重绘
+	shape.prototype.reDrow = function(point){
+		c.beginPath();
+		c.arc(this.x,this.y,this.r,0,360*Math.PI/180,false);
+		c.closePath();
+		c.fill();
+		
+		if(c.isPointInPath(point.x,point.y)){   
+			this.click();	
+		}	
+	}
+	
+	var arc1 = new shape(100,250,50);
+	var arc2 = new shape(200,250,50);
+	
+	arc1.click = function(){
+		alert('123');	
+	}
+	arc2.click = function(){
+		alert('456');	
+	}
+	
+	c1.onmousedown = function(ev){  
+		var ev = ev || window.ev;
+		
+		var point = {
+		x : ev.clientX - c1.offsetLeft,
+		y : ev.clientY - c1.offsetTop,
+		}
+		
+		arc1.reDrow(point);
+		arc2.reDrow(point);	
+	}
+	
+	
+	
+	
+	
+	</script>
+    
+    
+</body>
+</html>

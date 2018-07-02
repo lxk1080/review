@@ -50,20 +50,30 @@ function debouncePro(func, delay, time) {
 
 // 节流函数（第一次调用立即执行，以后每隔一个时间段才能再次调用）
 function throttle(func, time) {
-  let timer, firstTime = true;
-  return function (...args) {
+  let timer, previous, firstTime = true;
+  return function(...args) {
+    let now = new Date();
+    if (!previous) previous = now;
     if (firstTime) {
-      func.apply(this, args)
-      return firstTime = false
+      func.apply(this, args);
+      return firstTime = false;
     }
-    if (timer) {
-      return false
+    if (now - previous > time) {
+      clearTimeout(timer);
+      timer = null;
+      func.apply(this, args);
+      previous = now;
+    } else {
+      if (timer) {
+        return false;
+      }
+      timer = setTimeout(() => {
+        func.apply(this, args);
+        previous = now;
+        clearTimeout(timer);
+        timer = null;
+      }, time)
     }
-    timer = setTimeout(() => {
-      func.apply(this, args)
-      clearTimeout(timer)
-      timer = null
-    }, time)
   }
 }
 

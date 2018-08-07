@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>imageData</title>
+    <style>
+        .wrapper {
+            display: flex;
+            justify-content: space-around;
+            width: 1200px;
+            margin: 20px auto;
+        }
+
+        canvas {
+            display: block;
+            border: #666 solid 1px;
+        }
+
+        .text {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <canvas id="canvasa" width="500" height="300"></canvas>
+    <canvas id="canvasb" width="500" height="300"></canvas>
+</div>
+<div class="text">
+    <a href="javascript:filter()">Filter</a>
+    <a href="javascript:gray()">Gray</a>
+    <a href="javascript:blackWhite()">BlackWhite</a>
+    <a href="javascript:reverse()">Reverse</a>
+    <a href="javascript:blur()">Blur</a>
+    <a href="javascript:mosaic()">Mosaic</a>
+</div>
+
+<script>
+  const canvasa = document.querySelector('#canvasa');
+  const aCtx = canvasa.getContext('2d');
+  const canvasb = document.querySelector('#canvasb');
+  const bCtx = canvasb.getContext('2d');
+
+  const img = new Image();
+  img.onload = function () {
+    aCtx.drawImage(img, 0, 0, canvasa.width, canvasa.height);
+  }
+  img.src = '@sea.jpg';
+
+  function filter() {
+    const imageData = aCtx.getImageData(0, 0, canvasa.width, canvasa.height);
+    const pixelData = imageData.data;
+
+    for (let i = 0, len = pixelData.length; i < len; i++) {
+      // pixelData[4*i+0] = 0; // 红色通道
+      // pixelData[4*i+1] = 0; // 绿色通道
+      pixelData[4 * i + 2] = 0; // 蓝色通道
+      pixelData[4 * i + 3] = 200; // 透明度(0~255)
+    }
+
+    // 7个参数，imageData, dx, dy, dirtyX, dirtyY, w, h
+    bCtx.putImageData(imageData, 0, 0, 0, 0, canvasb.width, canvasb.height);
+  }
+
+  function gray() {
+    const imageData = aCtx.getImageData(0, 0, canvasa.width, canvasa.height);
+    const pixelData = imageData.data;
+
+    for (let i = 0, len = pixelData.length; i < len; i++) {
+      const r = pixelData[4 * i + 0];
+      const g = pixelData[4 * i + 1];
+      const b = pixelData[4 * i + 2];
+
+      const gray = r * 0.3 + g * 0.59 + b * 0.11;
+
+      pixelData[4 * i + 0] = gray;
+      pixelData[4 * i + 1] = gray;
+      pixelData[4 * i + 2] = gray;
+    }
+
+    bCtx.putImageData(imageData, 0, 0, 0, 0, canvasb.width, canvasb.height);
+  }
+
+  function blackWhite() {
+    const imageData = aCtx.getImageData(0, 0, canvasa.width, canvasa.height);
+    const pixelData = imageData.data;
+
+    for (let i = 0, len = pixelData.length; i < len; i++) {
+      const r = pixelData[4 * i + 0];
+      const g = pixelData[4 * i + 1];
+      const b = pixelData[4 * i + 2];
+
+      const gray = r * 0.3 + g * 0.59 + b * 0.11;
+      let v = null;
+      if (gray > 255 / 2) {
+        v = 255;
+      } else {
+        v = 0;
+      }
+
+      pixelData[4 * i + 0] = v;
+      pixelData[4 * i + 1] = v;
+      pixelData[4 * i + 2] = v;
+    }
+
+    bCtx.putImageData(imageData, 0, 0, 0, 0, canvasb.width, canvasb.height);
+  }
+
+  function reverse() {
+    const imageData = aCtx.getImageData(0, 0, canvasa.width, canvasa.height);
+    const pixelData = imageData.data;
+
+    for (let i = 0, len = pixelData.length; i < len; i++) {
+      const r = pixelData[4 * i + 0];
+      const g = pixelData[4 * i + 1];
+      const b = pixelData[4 * i + 2];
+
+      pixelData[4 * i + 0] = 255 - r;
+      pixelData[4 * i + 1] = 255 - g;
+      pixelData[4 * i + 2] = 255 - b;
+    }
+
+    bCtx.putImageData(imageData, 0, 0, 0, 0, canvasb.width, canvasb.height);
+  }
+
+  function blur() {
+    const tmpImageData = aCtx.getImageData(0, 0, canvasa.width, canvasa.height);
+    const tmpPixelData = tmpImageData.data;
+
+    const imageData = aCtx.getImageData(0, 0, canvasa.width, canvasa.height);
+    const pixelData = imageData.data;
+
+    const blurR = 3;
+
+    for (let i = blurR; i < canvasb.height - blurR; i++) {
+      for (let j = blurR; j < canvasb.width - blurR; j++) {
+        let totalr = 0, totalg = 0, totalb = 0;
+        for (let dx = -blurR; dx <= blurR; dx++) {
+          for (let dy = -blurR; dy <= blurR; dy++) {
+            let x = i + dx;
+            let y = j + dy;
+
+            let p = x * canvasb.width + y;
+            totalr += tmpPixelData[p * 4 + 0];
+            totalg += tmpPixelData[p * 4 + 1];
+            totalb += tmpPixelData[p * 4 + 2];
+          }
+        }
+        let p = i * canvasb.width + j;
+        let totalNumber = (2 * blurR + 1) * (2 * blurR + 1);
+        pixelData[p * 4 + 0] = totalr / totalNumber;
+        pixelData[p * 4 + 1] = totalg / totalNumber;
+        pixelData[p * 4 + 2] = totalb / totalNumber;
+      }
+    }
+
+    bCtx.putImageData(imageData, 0, 0, 0, 0, canvasb.width, canvasb.height);
+  }
+
+  function mosaic() {
+    const tmpImageData = aCtx.getImageData(0, 0, canvasa.width, canvasa.height);
+    const tmpPixelData = tmpImageData.data;
+
+    const imageData = aCtx.getImageData(0, 0, canvasa.width, canvasa.height);
+    const pixelData = imageData.data;
+
+    let size = 16;
+    let totalnum = size * size;
+    for (let i = 0; i < canvasb.height; i += size) {
+      for (let j = 0; j < canvasb.width; j += size) {
+
+        let totalr = 0, totalg = 0, totalb = 0;
+        for (let dx = 0; dx < size; dx++) {
+          for (let dy = 0; dy < size; dy++) {
+
+            let x = i + dx;
+            let y = j + dy;
+
+            let p = x * canvasb.width + y;
+            totalr += tmpPixelData[p * 4 + 0];
+            totalg += tmpPixelData[p * 4 + 1];
+            totalb += tmpPixelData[p * 4 + 2];
+          }
+        }
+
+        let resr = totalr / totalnum;
+        let resg = totalg / totalnum;
+        let resb = totalb / totalnum;
+
+        for (let dx = 0; dx < size; dx++) {
+          for (let dy = 0; dy < size; dy++) {
+
+            let x = i + dx;
+            let y = j + dy;
+
+            let p = x * canvasb.width + y;
+            pixelData[p * 4 + 0] = resr;
+            pixelData[p * 4 + 1] = resg;
+            pixelData[p * 4 + 2] = resb;
+          }
+        }
+      }
+    }
+
+    bCtx.putImageData(imageData, 0, 0, 0, 0, canvasb.width, canvasb.height);
+  }
+
+</script>
+</body>
+</html>

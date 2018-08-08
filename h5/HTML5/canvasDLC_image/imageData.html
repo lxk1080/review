@@ -47,16 +47,16 @@
   img.onload = function () {
     aCtx.drawImage(img, 0, 0, canvasa.width, canvasa.height);
   }
-  img.src = '@sea.jpg';
+  img.src = '@autumn.jpg';
 
   function filter() {
     const imageData = aCtx.getImageData(0, 0, canvasa.width, canvasa.height);
     const pixelData = imageData.data;
 
     for (let i = 0, len = pixelData.length; i < len; i++) {
-      // pixelData[4*i+0] = 0; // 红色通道
+      pixelData[4*i+0] = 0; // 红色通道
       // pixelData[4*i+1] = 0; // 绿色通道
-      pixelData[4 * i + 2] = 0; // 蓝色通道
+      // pixelData[4 * i + 2] = 0; // 蓝色通道
       pixelData[4 * i + 3] = 200; // 透明度(0~255)
     }
 
@@ -132,7 +132,7 @@
     const imageData = aCtx.getImageData(0, 0, canvasa.width, canvasa.height);
     const pixelData = imageData.data;
 
-    const blurR = 3;
+    const blurR = 2; // 模糊程度
 
     for (let i = blurR; i < canvasb.height - blurR; i++) {
       for (let j = blurR; j < canvasb.width - blurR; j++) {
@@ -160,21 +160,20 @@
   }
 
   function mosaic() {
-    const tmpImageData = aCtx.getImageData(0, 0, canvasa.width, canvasa.height);
-    const tmpPixelData = tmpImageData.data;
+    let tmpImageData = aCtx.getImageData(0, 0, canvasa.width, canvasa.height);
+    let tmpPixelData = tmpImageData.data;
 
-    const imageData = aCtx.getImageData(0, 0, canvasa.width, canvasa.height);
-    const pixelData = imageData.data;
+    let imageData = aCtx.getImageData(0, 0, canvasa.width, canvasa.height);
+    let pixelData = imageData.data;
 
-    let size = 16;
+    let size = 10; // mosaic块的大小，这个大小最好能被canvas的宽高整除
     let totalnum = size * size;
+
     for (let i = 0; i < canvasb.height; i += size) {
       for (let j = 0; j < canvasb.width; j += size) {
-
         let totalr = 0, totalg = 0, totalb = 0;
         for (let dx = 0; dx < size; dx++) {
           for (let dy = 0; dy < size; dy++) {
-
             let x = i + dx;
             let y = j + dy;
 

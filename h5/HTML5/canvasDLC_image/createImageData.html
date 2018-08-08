@@ -28,7 +28,7 @@
       pixelData[4*p+0] = parseInt(Math.pow(Math.cos(Math.atan2(j-300,i-300)/2), 2) * 255);
       pixelData[4*p+1] = parseInt(Math.pow(Math.cos(Math.atan2(j-300,i-300)/2 - 2*Math.acos(-1)/3), 2) * 255);
       pixelData[4*p+2] = parseInt(Math.pow(Math.cos(Math.atan2(j-300,i-300)/2 + 2*Math.acos(-1)/3), 2) * 255);
-      pixelData[4*p+3] = 255;
+      pixelData[4*p+3] = 255; // Alpha默认为0
     }
   }
 

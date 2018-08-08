@@ -23,6 +23,7 @@
 
   for (let i = 0; i < canvas.height; i++) {
     for (let j = 0; j < canvas.width; j++) {
+
       let p = i * canvas.width + j;
 
       pixelData[4*p+0] = parseInt(Math.pow(Math.cos(Math.atan2(j-300,i-300)/2), 2) * 255);

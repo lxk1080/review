@@ -69,7 +69,17 @@
             c.clearRect(0, 0, 400, 400);
             c.setLineDash([10, 5]);  // [实线长度, 间隙长度]
             c.lineDashOffset = offset;
-            c.strokeRect(50, 50, 210, 210);
+            // c.strokeRect(50, 50, 210, 210);
+            c.beginPath();
+            c.moveTo(20, 20);
+            c.lineTo(50, 100);
+            c.lineTo(100, 200);
+            c.lineTo(200, 300);
+            c.lineTo(400, 100);
+            c.closePath();
+
+            c.stroke();
+
             offset = offset - 5;
           }, 100);
         }
@@ -131,6 +141,8 @@
           c.fillStyle = 'red';
           c.fillRect(100, 100, 200, 200);
         }
+
+        dash();
 
     </script>
 </body>

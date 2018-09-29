@@ -12,99 +12,99 @@
 
 <body>
 
-	<canvas id="c1" width="600" height="600">	
+	<canvas id="c1" width="600" height="600">
     <span>不支持canvas的浏览器</span>
     </canvas>
-	
-    
+
+
     <script>
-	
+
 	var c1 = document.getElementById('c1');
-	
+
 	var c = c1.getContext('2d');
-	
+
 	//设置背景
-	/* 
+	/*
 	var img = new Image();
-	
-	img.src = 'img2.jpg';
-	
+
+	img.src = '../common/img/img2.jpg';
+
 	img.onload = function(){  //图片加载完毕后触发onload事件
-		
+
 		//创建图案（x和y轴都重复的图片）
 		var bg = c.createPattern(img,'repeat');
-		
+
 		//填充样式为图片
 		c.fillStyle = bg;
-		
+
 		c.fillRect(0,0,200,200);
-			
+
 	}
 	*/
-	
+
 	//线性渐变
 	/*
 	//创建一个从一个坐标点到另一个坐标点的方向的渐变
 	//如果创建的图形超过了这个范围，超出部分的两端将以渐变线两端的纯色显示
 	var gra = c.createLinearGradient(200,200,400,200); //坐标点 坐标点
-	
+
 	//给渐变添加颜色
 	gra.addColorStop(0,'red');  //0是开始点
 	//中间可以有任意多个点（数值要在0和1之间）
 	gra.addColorStop(0.5,'green');
 	gra.addColorStop(1,'purple'); //1是终点
-	
+
 	c.fillStyle = gra;
-	
+
 	c.fillRect(200,200,200,100);
 	*/
-	
-	
+
+
 	//放射性渐变
 	/*
 	//参数：第一个圆的圆心位置和半径，第二个圆的圆心位置和半径
 	var gra = c.createRadialGradient(100,100,100,100,100,200);
-	
+
 	gra.addColorStop(0,'red');
 	//gra.addColorStop(0.5,'green');
 	gra.addColorStop(1,'purple');
-	
+
 	c.fillStyle = gra;
-	
+
 	c.fillRect(0,0,400,400);
 	*/
-	
+
 	//文本
-	
+
 	c.font = '60px impact'; //大小  字体（canvas中支持的字体很少，以impact最为常用）
-	
+
 	c.textBaseline = 'top'; //文字基准线
-	
+
 	//参数：文本内容  起始点
-	c.fillText('小小超能力',0,0); //填充字 
-	
-	c.strokeText('小小超能力',0,100); //画线字	
-	
+	c.fillText('小小超能力',0,0); //填充字
+
+	c.strokeText('小小超能力',0,100); //画线字
+
 	var w = c.measureText('小小').width; //获取文字的宽，文字高度就是文字大小
-	
+
 	c.fillText('小小',(c1.width-w)/2,(c1.height-60)/2); //将文字居中显示
-	
-	
+
+
 	//阴影
-	
+
 	c.shadowOffsetX = 10;  // X轴偏移
-	
+
 	c.shadowOffsetY = 10;  // Y轴偏移
-	
+
 	c.shadowBlur = 5;  //高斯模糊值
-	
+
 	c.shadowColor = 'red';  //默认颜色是黑色透明 rgba(0,0,0,0)
-	
+
 	c.fillText('超能力',100,400);
-	
-	
-	
+
+
+
 	</script>
-    
+
 </body>
 </html>

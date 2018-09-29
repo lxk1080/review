@@ -12,7 +12,7 @@
     let text = document.querySelector('.text')
     // 接收数据
     window.onhashchange = function () {
-        text.innerHTML = window.location.hash.substr(1)
+        text.innerHTML = decodeURIComponent(window.location.hash.substr(1))
 
         // 发送数据
         try {
@@ -22,7 +22,7 @@
             let ifr = document.createElement('iframe')
             ifr.style.display = 'none'
             ifr.src = './hash_proxy.html'
-            let res = document.body.appendChild(ifr)
+            document.body.appendChild(ifr)
             setTimeout(() => {
                 ifr.src = './hash_proxy.html#当我们眺望远方的时候，近处的风景便看不清了'
             }, 60)

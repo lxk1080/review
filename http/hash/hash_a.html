@@ -23,7 +23,7 @@
     // 接收数据
     let response = document.querySelector('.response')
     window.onhashchange = function () {
-        response.innerHTML = window.location.hash.substr(1)
+        response.innerHTML = decodeURIComponent(window.location.hash.substr(1))
     }
 </script>
 

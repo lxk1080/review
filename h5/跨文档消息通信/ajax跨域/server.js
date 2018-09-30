@@ -23,5 +23,5 @@ app.listen(3000, function(err) {
         console.log(err)
         return
     }
-    console.log('lisrening... port 3000')
+    console.log('listening... port 3000')
 })

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>path</title>
+</head>
+<body>
+<!--
+  注意：参数大写代表绝对坐标，小写代表与前一个坐标的相对坐标
+
+  M (x,y)
+    起始点坐标x y （Move to）
+  L (x,y)
+    从当前点的坐标画直线到指定点的 x y坐标 （Line to）
+  H (x)
+    从当前点的坐标画水平直线到指定的x轴坐标 （Horizontal line to）
+  V (y)
+    从当前点的座标画垂直直线到指定的y轴坐标 （Vertical line to）
+  C (x1 y1 x2 y2 x y)
+    从当前点的坐标画条贝塞风线到指定点的x, y坐标，其中 x1 y1及x2, y2为控制点 （Curve）
+  S (x2 y2 x y)
+    从当前点的坐标画条反射的贝塞曲线到指定点的x, y坐标，其中x2, y2为反射的控制点（Smooth curve）
+  Q (x1 y1 x y)
+    从当前点的坐标画条反射二次贝塞曲线到指定点的x, y坐标，其中x1 y1为控制点（Quadratic Bézier curve）
+  T (x y)
+    从当前点的坐标画条反射二次贝塞曲线到指定点的x, y坐标，以前一个坐标为反射控制点（Smooth Quadratic Bézier curve）
+  A (rx ry x-axis-rotation large-arc-flag sweep-flag x y)
+    从当前点的坐标画个椭圆形到指定点的x, y坐标，其中rx, ry为椭圆形的x轴及y轴的半径，x-axis-rotation是弧线与x轴的旋转角度，large-arc-flag则设定1最大角度的弧线或是0最小角度的弧线，sweep-flag设定方向为1顺时针方向或0逆时针方向（Arc）
+  Z
+    关闭路径，将当前点坐标与第一个点的坐标连接起来（Closepath）
+-->
+
+
+
+</body>
+</html>

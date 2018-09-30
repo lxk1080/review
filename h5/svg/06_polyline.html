@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>polyline</title>
+</head>
+<body>
+<!--
+  1. 和<polygon>元素类似，通过points来控制折线中每个点的位置
+  2. 不同的是<polyline>起点和终点不闭合，而<polygon>元素却会闭合
+-->
+
+<svg width="400" height="400">
+  <polyline
+      points="0,40 40,40 40,80 80,80 80,120 120,120 120,160"
+      stroke="#D07735"
+      stroke-width="6"
+      fill="white"
+  />
+  <polyline
+      points="200,40 240,40 240,80 280,80 280,120 320,120 280,160"
+      stroke="#D07735"
+      stroke-width="6"
+      fill="#F9F38C"
+  />
+</svg>
+
+</body>
+</html>

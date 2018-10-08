@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>rect</title>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>rect</title>
 </head>
 <body>
 <!--
@@ -18,21 +18,23 @@
     height：矩形的高度
     rx：实现圆角效果时，圆角沿x轴的半径
     ry：实现圆角效果时，圆角沿y轴的半径
+
+    SVG规范将属性区分成properties和其他attributes，前者是可以用CSS来设置，后者则不能
 -->
 
 <svg width="600" height="300">
-    <rect
-        id="A"
-        x="100"
-        y="100"
-        fill="#ff6cc4"
-        stroke="#6EA9FF"
-        stroke-width="4"
-        width="80"
-        height="80"
-        rx="10"
-        ry="10"
-    />
+  <rect
+      id="A"
+      x="100"
+      y="100"
+      fill="#ff6cc4"
+      stroke="#6EA9FF"
+      stroke-width="4"
+      width="80"
+      height="80"
+      rx="10"
+      ry="10"
+  />
 </svg>
 
 </body>

@@ -7,6 +7,7 @@
 <body>
 <!--
   注意：参数大写代表绝对坐标，小写代表与前一个坐标的相对坐标
+  网址：http://www.w3cplus.com/svg/svg-path.html
 
   M (x,y)
     起始点坐标x y （Move to）
@@ -17,20 +18,44 @@
   V (y)
     从当前点的座标画垂直直线到指定的y轴坐标 （Vertical line to）
   C (x1 y1 x2 y2 x y)
-    从当前点的坐标画条贝塞风线到指定点的x, y坐标，其中 x1 y1及x2, y2为控制点 （Curve）
+    从当前点的坐标画条三次贝塞尔曲线到指定点的x, y坐标，其中x1 y1和x2 y2分别为起点和终点的曲线控制点（Curve）
   S (x2 y2 x y)
-    从当前点的坐标画条反射的贝塞曲线到指定点的x, y坐标，其中x2, y2为反射的控制点（Smooth curve）
+    紧接着当前点的坐标画条反射的贝塞曲线到指定点的x, y坐标，其中x2, y2为反射的控制点（Smooth curve）
   Q (x1 y1 x y)
-    从当前点的坐标画条反射二次贝塞曲线到指定点的x, y坐标，其中x1 y1为控制点（Quadratic Bézier curve）
+    从当前点的坐标画条反射二次贝塞曲线到指定点的x, y坐标，其中x1 y1为起点和终点贝塞尔曲线共同的控制点（Quadratic Bézier curve）
   T (x y)
     从当前点的坐标画条反射二次贝塞曲线到指定点的x, y坐标，以前一个坐标为反射控制点（Smooth Quadratic Bézier curve）
+    T只有一组参数x,y，表示终点的坐标，所以T的前方要接上Q才能画出对应的坐标线
   A (rx ry x-axis-rotation large-arc-flag sweep-flag x y)
-    从当前点的坐标画个椭圆形到指定点的x, y坐标，其中rx, ry为椭圆形的x轴及y轴的半径，x-axis-rotation是弧线与x轴的旋转角度，large-arc-flag则设定1最大角度的弧线或是0最小角度的弧线，sweep-flag设定方向为1顺时针方向或0逆时针方向（Arc）
+    从当前点的坐标画个椭圆形到指定点的x, y坐标
+    其中rx, ry为椭圆形的x轴及y轴的半径
+    x-axis-rotation是弧线与x轴的旋转角度，以x,y为基点顺时针旋转
+    large-arc-flag设定1大角度的弧线或是0小角度的弧线
+    sweep-flag设定起点到终点方向为1顺时针方向或0逆时针方向
+    注意：如果弧形的rx,ry轴的长度相加，小于弧线两点之间的间距，那么就会一律以大角度弧线显示
   Z
     关闭路径，将当前点坐标与第一个点的坐标连接起来（Closepath）
 -->
 
+<svg width="400" height="200" viewBox="0 0 400 100" preserveAspectRatio="xMidYMid meet">
+  <path d="M0,0 H100" stroke="black" />
+  <path d="M0,0 V100 H100" stroke="black" fill="none" />
+  <path d="M0,0 L100,100" stroke="black" />
+  <path d="M0,0 C40,40 60,40 100,0 S150,-40 200,0" stroke="black" fill="none" />
 
+  <path d="M200,0 A50,20 0 0 0 200,100" stroke="black" fill="none" />
+</svg>
+
+<!--画两个椭圆形的弧线-->
+<svg width="400" height="200" viewBox="0 0 400 100" preserveAspectRatio="xMidYMid meet">
+  <path d="M 0 0 L 50 50 A 50,50 0 1 0 100,0" stroke="#000" fill="none" />
+  <path d="M 0 0 L 50 50 A 50,50 0 0 0 100,0" stroke="#f00" fill="none" />
+</svg>
+
+<!--画一个矩形-->
+<svg width="400" height="200" viewBox="0 0 400 100" preserveAspectRatio="xMidYMid meet">
+  <path d="M10,10 H90 V90 H10 L10,10" fill="transparent" stroke="black" />
+</svg>
 
 </body>
 </html>

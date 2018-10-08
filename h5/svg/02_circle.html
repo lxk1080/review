@@ -1,21 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>circle</title>
+  <meta charset="UTF-8">
+  <title>circle</title>
+  <style>
+    html {
+      background: #212121;
+    }
+  </style>
 </head>
 <body>
 
 <svg width="600" height="300">
-    <circle
-        id="oval"
-        cx="260"
-        cy="150"
-        r="80"
-        stroke="#1D36C6"
-        stroke-width="6"
-        fill="#BD10E0"
-    />
+  <circle
+      id="oval"
+      cx="260"
+      cy="150"
+      r="80"
+      stroke="#1D36C6"
+      stroke-width="6"
+      fill="#BD10E0"
+  />
+</svg>
+
+<!--圆形进度条-->
+<svg width="200" height="200" viewBox="0 0 120 120" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <circle class="progress-background" r="50" cx="60" cy="60" fill="transparent" stroke="#fff" />
+  <circle class="progress-bar" r="50" cx="60" cy="60" fill="transparent" stroke="#ffcd00"
+          stroke-dasharray="314"
+          stroke-dashoffset="100"
+  />
 </svg>
 
 </body>

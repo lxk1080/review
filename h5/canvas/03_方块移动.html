@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>无标题文档</title>
+  <style>
+    body {
+      background: #333;
+    }
+
+    #c1 {
+      background: #FFF;
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="c1" width="400" height="400">  <!--默认宽300 高150-->
+  <span>不支持canvas的浏览器</span>
+</canvas>
+
+<script>
+  const c1 = document.getElementById('c1');
+  const c = c1.getContext('2d');
+
+  c.fillStyle = 'red';
+  c.fillRect(10, 10, 20, 20);
+
+  setInterval('move()', 20);
+
+  let num = 10;
+
+  function move() {
+    // 画出来的东西不是对象，所谓的移动只是重新绘制图形，所以先清除原图
+    c.clearRect(0, 0, c1.width, c1.height);
+    c.fillRect(num, num, 20, 20);
+    num++;
+  }
+</script>
+</body>
+</html>

@@ -25,9 +25,10 @@
 <script>
   const c1 = document.getElementById('c1');
   const c = c1.getContext('2d');
-  let imageData;
-  let oldX;
-  let oldY;
+
+  let imageData = null;
+  let oldX = null;
+  let oldY = null;
 
   document.onmousedown = function (ev) {   // 鼠标按下时开始画线起点
     ev = ev || window.event;
@@ -44,7 +45,7 @@
       const y = ev.clientY - c1.offsetTop;
 
       // 此方法清空画布时，会清空所有属性，包括之前的moveTo、lineTo
-      // 也就意味着只能从新开始画，导致上次的画的图像与当前图像不能有效融合
+      // 也就意味着只能重新开始画，导致上次的画的图像与当前图像不能有效融合
       // c1.width = c1.width;
       // if (oldX) {
       //   c.moveTo(oldX, oldY);
@@ -59,7 +60,6 @@
 
       c.lineTo(x, y);
       c.lineWidth = 20;
-      c.lineCap = 'round';
       c.stroke();
 
       // 保存数据，c1.width = c1.width 此方法清空画布会清空所有，包括一切属性
@@ -71,6 +71,8 @@
     document.onmouseup = function () {  // 鼠标弹起时清除鼠标移动事件
       document.onmousemove = null;
       document.onmouseup = null;
+      oldX = null;
+      oldY = null;
     }
   }
 </script>

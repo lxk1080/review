@@ -18,7 +18,7 @@ function html_encode(str) {
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    res.render('index', {title: 'Express', xss: req.query.xss});
+    res.render('index', {title: 'XSS', xss: req.query.xss});
 });
 
 router.get('/setComment', function (req, res, next) {

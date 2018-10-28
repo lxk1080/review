@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>canvas</title>
+    <style>
+        canvas {
+            border: #333 solid 1px;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="400" height="400"></canvas>
+
+    <script>
+        const canvas = document.querySelector('canvas');
+        const c = canvas.getContext('2d');
+
+        function arcClick() {
+          c.beginPath();
+          c.arc(100,100,20,0,360*Math.PI/180,false);
+          c.strokeStyle = '#333';
+          c.stroke();
+          canvas.addEventListener('mousedown', (e) => {
+            const x = e.clientX - canvas.getBoundingClientRect().left;
+            const y = e.clientY - canvas.getBoundingClientRect().top;
+            if (c.isPointInPath(x, y)) {
+              c.fillStyle = '#333';
+              c.fill();
+            }
+          })
+        }
+
+        function colorFill() {
+          for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+              c.fillStyle = 'rgb(' + Math.floor(255 - 31.875 * i) + ',' + Math.floor(255 - 31.875 * j) + ',0)';
+              c.fillRect(j * 50, i * 50, 50, 50);
+            }
+          }
+        }
+
+        function colorStroke() {
+          function randomInt(from, to) {
+            return parseInt(Math.random() * (to - from + 1) + from);
+          }
+          for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+              c.strokeStyle = `rgb(${randomInt(0, 255)},${randomInt(0, 255)},${randomInt(0, 255)})`;
+              c.strokeRect(j * 50, i * 50, 40, 40);
+            }
+          }
+        }
+
+        function line() {
+          c.beginPath();
+          c.moveTo(100, 100);
+          c.lineTo(300, 300);
+          c.lineWidth = 10;
+          c.lineCap = 'round';
+          c.stroke();
+        }
+
+        function dash() {
+          let offset = 5;
+          setInterval(() => {
+            c.clearRect(0, 0, 400, 400);
+            c.setLineDash([10, 5]);  // [实线长度, 间隙长度]
+            c.lineDashOffset = offset;
+            // c.strokeRect(50, 50, 210, 210);
+            c.beginPath();
+            c.moveTo(20, 20);
+            c.lineTo(50, 100);
+            c.lineTo(100, 200);
+            c.lineTo(200, 300);
+            c.lineTo(350, 100);
+            c.closePath();
+
+            c.stroke();
+
+            offset = offset - 5;
+          }, 100);
+        }
+
+        function image() {
+          const img = new Image();
+          img.onload = function () {
+            // 注意drawImage的三种语法，分别对应3、5、9个参数
+            c.drawImage(img, 0, 0, canvas.width, canvas.height);
+          }
+          img.src = '../../common/img/sea.jpg';
+        }
+
+        function status() {
+          c.fillRect(0, 0, 150, 150);   // 使用默认设置绘制一个矩形
+          c.save();                  // 保存默认状态
+
+          c.fillStyle = 'red'       // 在原有配置基础上对颜色做改变
+          c.fillRect(15, 15, 120, 120); // 使用新的设置绘制一个矩形
+          c.save();                  // 保存当前状态
+
+          c.fillStyle = '#FF0'       // 再次改变颜色配置
+          c.fillRect(30, 30, 90, 90);   // 使用新的配置绘制一个矩形
+
+          c.restore();               // 重新加载之前的颜色状态
+          c.fillRect(45, 45, 60, 60);   // 使用上一次的配置绘制一个矩形
+
+          c.restore();               // 加载默认颜色配置
+          c.fillRect(60, 60, 30, 30);   // 使用加载的配置绘制一个矩形
+        }
+
+        function translate() {
+          c.save(); // 保存坐原点平移之前的状态
+          c.translate(100, 100);
+          c.strokeRect(0, 0, 100, 100);
+          c.restore(); // 恢复到最初状态，否则下一个translate会以上一个translate作为基点平移
+          c.translate(200, 200);
+          c.fillRect(0, 0, 100, 100);
+        }
+
+        function rotate() {
+          c.fillStyle = 'red';
+          c.save(); // 保存初始时的基点位置和填充颜色
+
+          c.translate(100, 100);
+          c.rotate(45 * Math.PI / 180); // 此方法只接受一个参数：旋转的角度，它是顺时针方向的，以弧度为单位的值, 以基准点为中心旋转
+          c.fillStyle = 'blue';
+          c.fillRect(0, 0, 100, 100);
+
+          c.restore(); // 将之前保存的状态弹出
+          c.fillRect(0, 0, 50, 50);
+        }
+
+        function Composite() {
+          c.fillStyle = 'blue';
+          c.fillRect(0, 0, 200, 200);
+
+          c.globalCompositeOperation = 'source-over'; //全局合成操作(13种方式)
+          c.fillStyle = 'red';
+          c.fillRect(100, 100, 200, 200);
+        }
+
+        dash();
+
+    </script>
+</body>
+</html>

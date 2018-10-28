@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>无标题文档</title>
+  <style>
+    body {
+      background: #333
+    }
+
+    canvas {
+      background: #FFF;
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+
+<body>
+<canvas id="c1" width="600" height="600">
+  <span>不支持canvas的浏览器</span>
+</canvas>
+
+<script>
+  const c1 = document.getElementById('c1');
+  const c = c1.getContext('2d');
+
+  c.fillRect(0, 0, 100, 100);
+
+  //在画布上获取存在的图像数据
+  const img = c.getImageData(0, 0, 100, 100);  //参数：基准点xy  宽高
+
+  //alert(img.data.length);  //img.data 是一个数组，存放着每一个像素的r g b a值，每个值的范围都是0-255
+
+  //创建图像数据
+  const img1 = c.createImageData(100, 100); //参数：宽高
+
+  for (let i = 0; i < img1.width * img1.height; i++) {
+    img1.data[4 * i + 0] = 200;
+    img1.data[4 * i + 1] = 0;
+    img1.data[4 * i + 2] = 0;
+    img1.data[4 * i + 3] = 255;
+  }
+
+  //设置图像数据到画布上
+  c.putImageData(img1, 100, 100);  //设置图像 X和Y轴偏移
+
+  //获取图像中某一个坐标的像素rgba值
+  alert(getXY(img1, 3, 5));
+
+  function getXY(obj, x, y) {
+    const w = obj.width;
+    const d = obj.data;
+
+    const color = [];
+
+    color[0] = d[4 * (y * w + x)];   //获取是第几个像素 并获取像素的rgba值在数组中的位置
+    color[1] = d[4 * (y * w + x) + 1];
+    color[2] = d[4 * (y * w + x) + 2];
+    color[3] = d[4 * (y * w + x) + 3];
+
+    return color;
+  }
+</script>
+</body>
+</html>

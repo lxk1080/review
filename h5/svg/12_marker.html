@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>marker</title>
+</head>
+<body>
+<!--
+  1. markerWidth和markerHeight，marker视窗的宽度和高度，这个尺寸至少大于marker标签内定义的图形，除非你要隐藏图形的某部分
+  2. refX和refY，图形元素和marker连接的位置坐标(原坐标为饰用图形的最后一个点)，为正值时，为x,y轴的反方向，即向左和向上
+  3. orient，接受一个auto值或者一个固定角度值(例如: 45deg)，此值决定了它是否会随着应用的元素一起旋转
+  4. markerUnits，确定marker是否进行缩放
+      strokeWidth: 允许marker缩放，与当前描边宽度的单位是相同的尺寸
+                   例如一个9px、6px的矩形，把它和一个stroke-width为5px的line连接起来，此时它的尺寸是45px、30px
+      userSpaceOnUse: 不受连接的元素的影响
+  5. 可以给marker元素添加一个viewBox，对照markerWidth和markerHeight，效果与svg上viewBox相同
+  5. marker-mid: 设置在当polyline、path和polygon转换方向时的位置点
+-->
+
+<svg width="400" height="200">
+  <defs>
+    <marker
+        id="arrow"
+        markerWidth="10"
+        markerHeight="10"
+        refx="0"
+        refy="3"
+        orient="auto"
+        markerUnits="strokeWidth"
+    >
+      <path d="M0,0 L0,6 L9,3 z" fill="#f00"/>
+    </marker>
+  </defs>
+
+  <line x1="50" y1="50" x2="250" y2="50" stroke="#000" stroke-width="3" marker-end="url(#arrow)"/>
+</svg>
+
+<!--marker-mid-->
+<svg width="400px" height="200px">
+  <defs>
+    <marker id="arrow"
+            markerWidth="10"
+            markerHeight="10"
+            refx="0"
+            refy="3"
+            orient="auto"
+            markerUnits="strokeWidth"
+            viewBox="0 0 20 20"
+    >
+      <path d="M0,0 L0,6 L9,3 z" fill="#f00"/>
+    </marker>
+
+    <marker id="circle" markerWidth="4" markerHeight="4" refx="2" refy="2">
+      <circle cx="2" cy="2" r="2" stroke="none" fill="#f00"/>
+    </marker>
+  </defs>
+
+  <path
+      d="M10,50 l0,50 l0,30 l40,0 l30,0"
+      stroke="#000"
+      stroke-width="3"
+      fill="none"
+      marker-start="url(#circle)"
+      marker-mid="url(#circle)"
+      marker-end="url(#arrow)"
+  />
+</svg>
+
+</body>
+</html>

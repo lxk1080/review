@@ -1,136 +1,130 @@
 ﻿<!doctype html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>无标题文档</title>
+    <meta charset="utf-8">
+    <title>无标题文档</title>
 </head>
 
 <body>
+<script>
+  /**
+    正则表达式  RegExp对象   Regular expression
 
-		<script>
-		
-		//正则表达式  RegExp对象   Regular expression
-		
-		//1.创建的两种方法：
-		
-		//隐式创建   /正则表达式/gim   global:全局匹配   ignore：忽略大小写  m:考虑换行
-		//var reg = /(\d){4}/gi;   //'\d'代表任意数字，4代表连续的几个数字
-		
-		//显示创建   var reg = new RegExp("正则表达式","gi"); 
-		//var reg = new RegExp('(\\d){4})','gi');  // ‘\’要转义
-		
-		//2.正则表达式对象的方法
-		//exec() 检索与正则表达式匹配的字符串，并以数组格式返回
-		//test() 检索是否与正则表达式匹配，返回true和false
-		
-		//3.支持正则表达式的String方法（详见W3School离线手册）
-		//match()   
-		//search()   
-		//replace()    
-		//split()
-		
-		//4.元字符-限定符
-		//{n}代表出现n次，{n,m}代表出现n或m次（贪婪匹配的原则）
-		// + 出现1次或多次， /a+/gi 
-		// * 出现0次或多次， /a*/gi
-		// ? 出现0次或1次，  /a?/gi , /1?/gi , /(\d)?/gi （只对于限定符前面的一个字符而言，/ab?/gi就是对于b出现0或1次）
-		
-		//5.元字符-字符匹配符
-		//[a-z] 可以匹配a-z中的任意一个字符 /[a-z]/gi
-		//[^a-z] 可以匹配不是a-z中的任意一个字符
-		//[abcd] 可以匹配abcd中的任意一个字符,[^abcd]可以匹配不是abcd中的任意一个字符
-		// . 可以匹配除 \n 之外的任意一个字符，匹配本身需要 \. 写法 转义
-		//需要用到转义符号的字符：. * + $ / \ ? ^ ( ) [ ] { } 
-		
-		//6.元字符-定位符
-		//[^han] 可以匹配目标字符串的开始位置 han handfsf han
-		//[han$] 可以匹配目标字符串的结束位置
-		//[han|韩] 可以匹配目标字符串的 字母han 或 中文韩 （hanshunping 韩顺平）
-		
-		
-		
-		
-		//连续的4个任意数字
-		/*
-		function test1(){
-			var reg = /(\d){4}/gi; 
-			var val = ta.value;
-			while(res = reg.exec(val)){
-				alert(res[0]);	
-			}
-		}
-		*/
-		
-		//反向引用
-		/*
-		function test2(){
-			var val = ta.value;
-			var reg = /(\d)\1(\d)\2/gi; //子表达式（用括号括起来的） 捕获  反向引用（反向引用的数值根据子表达式索引获取）
-			var res; 
-			while(res = reg.exec(val)){
-				window.alert(res[0]);
-			}
-		}
-		*/
-		
-		//验证邮箱
-		/*
-		function test3(){
-			var val = ta.value;
-			var reg = /^[a-zA-Z0-9_-]+@([a-zA-Z0-9]+\.)+(com|cn|net|org)$/gi;
-			if(reg.test(val)){
-				alert('是邮箱');
-			} else {
-				alert('不是邮箱');	
-			}	
-		}
-		*/
-		
-		//验证是否是数字（包括小数）
-		/*
-		function test4(){
-			var val = ta.value;
-			var reg = /^[0-9]+(\.)?[0-9]+$/gi;
-			if(reg.test(val)){
-				alert('是数字');
-			} else {
-				alert('不是数字');	
-			}
-		}
-		*/
-		
-		//验证url (http://www.baidu.com:8080/abc/index.html)（全格式都可验证，但要以 http:// 开头）
-		/*
-		function test5(){
-			var val = ta.value;
-			if(val.charAt(val.length-1) == '\/'){
-				val = val.substring(0,val.length-1);	
-			}
-			var reg =/(http:\/\/)(www|wap)\.[a-zA-Z0-9]+\.((com|cn|net)(:[\d]{4})(\/[a-zA-Z0-9]+)*\/\w+\.(html|htm)$|(com|cn|net)(:[\d]{4})(\/[a-zA-Z0-9]+)+$|(com|cn|net)(:[\d]{4})$|(com|cn|net)$|(com|cn|net)(\/[a-zA-Z0-9]+)+$|(com|cn|net)(\/[a-zA-Z0-9]+)+\/\w+\.(html|htm)$)/gi;
-			
-			if(reg.test(val)){
-				alert('是url');
-			} else {
-				alert('不是url');	
-			}
-		}
-		*/
-		
-	
-		
-		
-		//回车执行
-		document.onkeydown = function(e){
-			if(e.which == 13){
-				btn.onclick();
-				return false;	
-			}	
-		}
+    1.创建的两种方法：
 
-		</script>
-          
-		<textarea id="ta" cols="50" rows="10"></textarea>
-        <button id='btn' onClick="test5()">测试</button>
-        
+      隐式创建   /正则表达式/gim   global:全局匹配   ignore：忽略大小写  m:考虑换行
+      var reg = /(\d){4}/gi;   //'\d'代表任意数字，4代表连续的几个数字
+
+      显示创建   var reg = new RegExp("正则表达式","gi");
+      var reg = new RegExp('(\\d){4})','gi');  // ‘\’要转义
+
+    2.正则表达式对象的方法
+    exec() 检索与正则表达式匹配的字符串，并以数组格式返回
+    test() 检索是否与正则表达式匹配，返回true和false
+
+    3.支持正则表达式的String方法（详见W3School离线手册）
+    match()
+    search()
+    replace()
+    split()
+
+    4.元字符-限定符
+    {n}代表出现n次，{n,m}代表出现n或m次（贪婪匹配的原则）
+    + 出现1次或多次， /a+/gi
+    * 出现0次或多次， /a*!/gi
+    ? 出现0次或1次，  /a?/gi , /1?/gi , /(\d)?/gi （只对于限定符前面的一个字符而言，/ab?/gi就是对于b出现0或1次）
+
+    5.元字符-字符匹配符
+    [a-z] 可以匹配a-z中的任意一个字符 /[a-z]/gi
+    [^a-z] 可以匹配不是a-z中的任意一个字符
+    [abcd] 可以匹配abcd中的任意一个字符,[^abcd]可以匹配不是abcd中的任意一个字符
+    . 可以匹配除 \n 之外的任意一个字符，匹配本身需要 \. 写法 转义
+    需要用到转义符号的字符：. * + $ / \ ? ^ ( ) [ ] { }
+
+    6.元字符-定位符
+    [^han] 可以匹配目标字符串的开始位置 han handfsf han
+    [han$] 可以匹配目标字符串的结束位置
+    [han|韩] 可以匹配目标字符串的 字母han 或 中文韩 （hanshunping 韩顺平）
+  */
+
+  //连续的4个任意数字
+  /*
+  function test1(){
+      var reg = /(\d){4}/gi;
+      var val = ta.value;
+      while(res = reg.exec(val)){
+          alert(res[0]);
+      }
+  }
+  */
+
+  //反向引用
+  /*
+  function test2(){
+      var val = ta.value;
+      var reg = /(\d)\1(\d)\2/gi; //子表达式（用括号括起来的） 捕获  反向引用（反向引用的数值根据子表达式索引获取）
+      var res;
+      while(res = reg.exec(val)){
+          window.alert(res[0]);
+      }
+  }
+  */
+
+  //验证邮箱
+  /*
+  function test3(){
+      var val = ta.value;
+      var reg = /^[a-zA-Z0-9_-]+@([a-zA-Z0-9]+\.)+(com|cn|net|org)$/gi;
+      if(reg.test(val)){
+          alert('是邮箱');
+      } else {
+          alert('不是邮箱');
+      }
+  }
+  */
+
+  //验证是否是数字（包括小数）
+  /*
+  function test4(){
+      var val = ta.value;
+      var reg = /^[0-9]+(\.)?[0-9]+$/gi;
+      if(reg.test(val)){
+          alert('是数字');
+      } else {
+          alert('不是数字');
+      }
+  }
+  */
+
+  //验证url (http://www.baidu.com:8080/abc/index.html)（全格式都可验证，但要以 http:// 开头）
+  /*
+  function test5(){
+      var val = ta.value;
+      if(val.charAt(val.length-1) == '\/'){
+          val = val.substring(0,val.length-1);
+      }
+      var reg =/(http:\/\/)(www|wap)\.[a-zA-Z0-9]+\.((com|cn|net)(:[\d]{4})(\/[a-zA-Z0-9]+)*\/\w+\.(html|htm)$|(com|cn|net)(:[\d]{4})(\/[a-zA-Z0-9]+)+$|(com|cn|net)(:[\d]{4})$|(com|cn|net)$|(com|cn|net)(\/[a-zA-Z0-9]+)+$|(com|cn|net)(\/[a-zA-Z0-9]+)+\/\w+\.(html|htm)$)/gi;
+
+      if(reg.test(val)){
+          alert('是url');
+      } else {
+          alert('不是url');
+      }
+  }
+  */
+
+  //回车执行
+  document.onkeydown = function (e) {
+    if (e.which === 13) {
+      btn.onclick();
+      return false;
+    }
+  }
+
+</script>
+
+<textarea id="ta" cols="50" rows="10"></textarea>
+<button id='btn' onClick="test5()">测试</button>
+
 </body>
 </html>

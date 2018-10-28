@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<style>
+	*{padding:0; margin:0;}
+	ul{ width:888px; margin:0 auto;}
+	li{ border:#333 solid 1px; float:left; width:200px; list-style-type:none; margin:10px;}
+	li img{ width:200px;}
+	.div{ width:606px; height:260px; border:#969 solid 1px; clear:both; margin:50px auto;}
+	.s1,.s2,.s3{ float:left; width:200px; height:25px; border:#CCC solid 1px;}
+	.allmoney{float:right}
+</style>
+</head>
+
+<body>
+
+	<ul>
+    <li draggable="true">
+    	<img src="../common/img/img1.jpg">
+        <p>js语言精粹</p>
+        <p>50元</p>
+    </li>
+    <li draggable="true">
+    	<img src="../common/img/img2.jpg">
+        <p>js权威指南</p>
+        <p>78元</p>
+    </li>
+    <li draggable="true">
+    	<img src="../common/img/img3.jpg">
+        <p>精通js</p>
+        <p>62元</p>
+    </li>
+    <li draggable="true">
+    	<img src="../common/img/img4.jpg">
+        <p>DOM编程艺术</p>
+        <p>86元</p>
+    </li>
+    </ul>
+
+    <div id="div" class="div">
+    <p>
+    	<span class="s1">数量</span><span class="s2">名称</span><span class="s3">价格</span>
+    </p>
+    </div>
+
+
+    <script>
+
+	var li = document.getElementsByTagName('li');
+	var div = document.getElementById('div');
+
+	for(var i = 0; i<li.length; i++){
+		li[i].ondragstart = function(ev){
+
+			var p = this.getElementsByTagName('p');  //在this中查找p标签
+
+			ev.dataTransfer.setData('title',p[0].innerHTML);
+			ev.dataTransfer.setData('money',p[1].innerHTML);
+
+			ev.dataTransfer.setDragImage(this,0,0);   //拖动的显示图片
+			ev.dataTransfer.effectAllowed = 'copy';  //显示的光标样式
+		}
+	}
+
+	div.ondragover = function(){
+		return false;	//加了这一句才可以触发ondrop事件
+	}
+
+	var obj = {};  //一个作为标记的对象，用来对多个元素进行标记，每个元素都是一个key，value则是对于元素的标记
+	var iNum = 0;  //刚开始总价为0
+	var allMoney = null;  //刚开始装载总价的这个标签是不存在的
+
+	div.ondrop = function(ev){
+		ev.preventDefault();    //阻止浏览器打开拖动的元素
+		var title = ev.dataTransfer.getData('title');
+		var money = ev.dataTransfer.getData('money');
+
+		if(!obj[title]){   //如果没有这个标记，则添加物品，添加后此物品标记为1
+			var p = document.createElement('p');
+			var span = document.createElement('span');
+			span.className = 's1';
+			span.innerHTML = 1;
+			p.appendChild(span);
+			var span = document.createElement('span');
+			span.className = 's2';
+			span.innerHTML = title;
+			p.appendChild(span);
+			var span = document.createElement('span');
+			span.className = 's3';
+			span.innerHTML = money;
+			p.appendChild(span);
+
+			div.appendChild(p);
+
+			obj[title] = 1;  //标记1表示已添加
+		} else {
+			var s1 = document.getElementsByClassName('s1');
+			var s2 =document.getElementsByClassName('s2');
+
+			for(var i = 0; i<s2.length; i++){
+				while(s2[i].innerHTML == title){   //找到对应书名的索引i
+					s1[i].innerHTML = parseInt(s1[i].innerHTML) + 1; //在对应索引的数量标签上加1
+					break;   //通过break跳出while循环
+				}
+			}
+		}
+
+		if(!allMoney){
+		allMoney = document.createElement('div');
+		allMoney.className = 'allmoney';
+		}
+		iNum += parseInt(money);
+		allMoney.innerHTML = iNum+"元";
+		div.appendChild(allMoney);  //每次将总价添加到最后
+	}
+
+	</script>
+
+</body>
+</html>

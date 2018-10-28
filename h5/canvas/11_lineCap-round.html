@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>无标题文档</title>
+  <style>
+    body {
+      background: #333;
+    }
+
+    #c1 {
+      background: #FFF;
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="c1" width="400" height="400">  <!--默认宽300 高150-->
+  <span>不支持canvas的浏览器</span>
+</canvas>
+
+
+<script>
+  const c1 = document.getElementById('c1');
+  const c = c1.getContext('2d');
+
+  document.onmousedown = function (ev) {
+    ev = ev || window.event;
+
+    const x = ev.clientX - c1.offsetLeft;
+    const y = ev.clientY - c1.offsetTop;
+
+    c.moveTo(x, y);
+    c.lineTo(x, y);
+
+    c.strokeStyle = 'purple';
+    c.lineWidth = 30;
+    c.lineCap = 'round'; // 此属性配合上lineWidth的值，可以最快速的画出一个填充圆
+    c.stroke();
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>fill</title>
+</head>
+<body>
+<!--
+  fill-rule:
+    nonzero 非零规则，非零填充，计算与射线方向是顺时针还是逆时针
+    evenodd 奇偶规则，奇数填充，计算与射线相交的个数
+    参考：https://www.zhangxinxu.com/wordpress/2018/10/nonzero-evenodd-fill-mode-rule/
+-->
+
+<!--纯色填充-->
+<svg width="400" height="200">
+  <rect
+      x="50"
+      y="50"
+      width="135"
+      height="135"
+      stroke="#000"
+      stroke-width="10"
+      fill="#f40"
+      fill-opacity="0.2"
+  />
+</svg>
+
+<!--渐变填充-->
+<svg width="400" height="200">
+  <defs>
+    <!--线性渐变-->
+    <linearGradient id="lg">
+      <stop stop-color="#C33B35" offset="0%"/>
+      <stop stop-color="#164AFB" offset="100%"/>
+    </linearGradient>
+    <!--径向渐变-->
+    <radialGradient id="rg">
+      <stop stop-color="#C33B35" offset="0%"/>
+      <stop stop-color="#164AFB" offset="100%"/>
+    </radialGradient>
+  </defs>
+
+  <rect x="50" y="50" width="100" height="100" stroke="#000" stroke-width="10" fill="url(#lg)" fill-opacity="0.6" />
+  <rect x="170" y="50" width="100" height="100" stroke="#000" stroke-width="10" fill="url(#rg)" fill-opacity="0.6" />
+</svg>
+
+<!--图案填充-->
+<svg width="400" height="200" viewBox="0 0 600 300">
+  <defs>
+    <pattern id="a1" patternUnits="userSpaceOnUse" x="0" y="0" width="30" height="30">
+      <rect x="0" y="0" width="25" height="25" stroke="#none" fill="#09f"/>
+    </pattern>
+  </defs>
+
+  <rect x="170" y="50" width="135" height="135" stroke="#000" stroke-width="10" fill="url(#a1)" fill-opacity="0.5" />
+  <circle cx="420" cy="120" r="75" stroke="#000" stroke-width="5" fill="url(#a1)" fill-opacity="0.5" />
+</svg>
+
+</body>
+</html>

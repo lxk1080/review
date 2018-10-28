@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>svg图案元素</title>
+  <style>
+    svg {
+      display: block;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+<!--
+  patternUnits属性：
+    userSpaceOnUse: x、y、width和height表示的值都是当前用户坐标系统的值，都是绝对值
+    objectBoundingBox:
+      1. x、y、width和height表示的值都是外框的坐标系统（包裹pattern的元素），图案的单位进行了一个缩放
+      2. 使用objectBoundingBox这个值时，width和height必须小于1.0，不然图案就只会出现一次
+  patternContentUnits属性：
+    1. patternContentUnits属性定义了图案内容（即<pattern>中包裹的内容）的坐标系统，而不是图案本身
+    2. 与patternUnits属性接收的值相同
+    3. 当值为objectBoundingBox时，内容和图案的width和height均为缩放值
+-->
+
+<!--图案填充-->
+<svg width="400" height="200">
+  <defs>
+    <pattern id="pattern-1" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="10" cy="10" r="10" stroke="none" fill="#158" fill-opacity="0.5"/>
+    </pattern>
+  </defs>
+
+  <rect x="0" y="0" width="400" height="200" stroke="red" fill="url(#pattern-1)"/>
+</svg>
+
+<!--图案描边-->
+<svg width="400" height="200">
+  <defs>
+    <pattern id="pattern-2" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="10" cy="10" r="10" stroke="none" fill="851" fill-opacity="0.5"/>
+    </pattern>
+  </defs>
+
+  <rect x="0" y="0" width="400" height="200" stroke="url(#pattern-2)" stroke-width="20" fill="none"/>
+</svg>
+
+<!--设置patternContentUnits-->
+<svg width="660" height="220">
+  <defs>
+    <pattern id="pattern-3" x="0" y="0" width="0.25" height="0.25" patternContentUnits="objectBoundingBox">
+      <circle cx=".125" cy=".125" r="0.125" stroke="none" fill="#393" fill-opacity="0.5"/>
+    </pattern>
+  </defs>
+
+  <rect x="10" y="10" width="600" height="200" stroke="#630" stroke-width="5px" fill="url(#pattern-3)"/>
+</svg>
+
+<!--设置patternTransform-->
+<svg width="660" height="480">
+  <defs>
+    <pattern id="pattern-origin" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="10" cy="10" r="10" stroke="none" fill="#393" fill-opacity="0.5"/>
+    </pattern>
+  </defs>
+
+  <defs>
+    <pattern id="pattern-transformed" xlink:href="#pattern-origin" patternTransform="rotate(30)"/>
+  </defs>
+
+  <rect x="10" y="10" width="600" height="200" stroke="#630" stroke-width="5px" fill="url(#pattern-origin)"/>
+  <rect x="10" y="250" width="600" height="200" stroke="#630" stroke-width="5px" fill="url(#pattern-transformed)"/>
+</svg>
+
+<!--嵌套图案-->
+<svg width="660" height="220">
+  <defs>
+    <pattern id="pattern-inner" x="2" y="2" width="6" height="6" patternUnits="userSpaceOnUse">
+      <rect x="0" y="0" width="4" height="4" stroke="none" fill="#6a6" />
+    </pattern>
+
+    <pattern id="pattern-outer" x="13" y="13" width="50" height="50" patternUnits="userSpaceOnUse">
+      <circle cx="22" cy="22" r="20" stroke="#900" stroke-width="4px" fill="url(#pattern-inner)" fill-opacity="0.5" />
+    </pattern>
+  </defs>
+
+  <rect x="10" y="10" width="600" height="200" stroke="#630" fill="url(#pattern-outer)"/>
+</svg>
+
+</body>
+</html>

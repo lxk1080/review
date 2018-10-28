@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>无标题文档</title>
+  <style>
+    body {
+      background: #333;
+    }
+
+    #c1 {
+      background: #FFF;
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="c1" width="400" height="400">  <!--默认宽300 高150-->
+  <span>不支持canvas的浏览器</span>
+</canvas>
+
+
+<script>
+  const c1 = document.getElementById('c1');
+  const c = c1.getContext('2d');
+
+  let imageData = null;
+  let oldX = null;
+  let oldY = null;
+
+  document.onmousedown = function (ev) {   // 鼠标按下时开始画线起点
+    ev = ev || window.event;
+
+    const x = ev.clientX - c1.offsetLeft;
+    const y = ev.clientY - c1.offsetTop;
+
+    c.moveTo(x, y);
+
+    document.onmousemove = function (ev) {  // 鼠标按下时的鼠标移动事件
+      ev = ev || window.event;
+
+      const x = ev.clientX - c1.offsetLeft;
+      const y = ev.clientY - c1.offsetTop;
+
+      // 此方法清空画布时，会清空所有属性，包括之前的moveTo、lineTo
+      // 也就意味着只能重新开始画，导致上次的画的图像与当前图像不能有效融合
+      // c1.width = c1.width;
+      // if (oldX) {
+      //   c.moveTo(oldX, oldY);
+      // }
+
+      // 此方法只会清空画布上的图像，会保留上次画图的信息lineTo，所以可以和上次画的图像有效融合
+      c.clearRect(0, 0, c1.width, c1.height);
+
+      if (imageData) {
+        c.putImageData(imageData, 0, 0, 0, 0, c1.width, c1.height);
+      }
+
+      c.lineTo(x, y);
+      c.lineWidth = 20;
+      c.stroke();
+
+      // 保存数据，c1.width = c1.width 此方法清空画布会清空所有，包括一切属性
+      imageData = c.getImageData(0, 0, c1.width, c1.height);
+      oldX = x;
+      oldY = y;
+    }
+
+    document.onmouseup = function () {  // 鼠标弹起时清除鼠标移动事件
+      document.onmousemove = null;
+      document.onmouseup = null;
+      oldX = null;
+      oldY = null;
+    }
+  }
+</script>
+</body>
+</html>

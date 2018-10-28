@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>stroke</title>
+  <style>
+    html {
+      background: #212121;
+    }
+
+    .progress-bar-1 {
+      animation: draw-1 3s infinite;
+    }
+
+    .progress-bar-2 {
+      transform-origin: 50% 50%;
+      animation: draw-2 3s infinite, rotate 3s linear infinite;
+    }
+
+    @keyframes draw-1 {
+      50% {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    @keyframes draw-2 {
+      50% {
+        stroke-dasharray: 628;
+        stroke-dashoffset: 0;
+      }
+      100% {
+        stroke-dashoffset: -628;
+      }
+    }
+
+    @keyframes rotate {
+      0% {
+        transform: rotateZ(0);
+      }
+      100% {
+        transform: rotateZ(360deg);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!--
+  stroke 描边的颜色，默认值为black
+  stroke-width 描边的宽度，可用用户坐标或指定单位的方式指定。描边的宽度会相对坐标网格线居中。默认值为1
+  stroke-opacity 指定描边的透明度，其值是从0.0~1.0。0.0表示完全透明，1.0表示完全不透明，默认值为1.0
+  stroke-dasharray 用一系列的数字来指定虚线和间隙的长度。默认值为none
+  stroke-linecap 指定线头尾的形状，其值有butt、round和square，默认值为butt
+  stroke-linejoin 图形的棱角或者一系列连线的形状，其值有miter、round和bevel，默认值为miter
+  stroke-miterlimit 相交处显示宽度与线宽的最大比例，默认值为4
+-->
+
+<svg width="400" height="400" viewBox="0 0 240 240" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <circle class="progress-bar-1" r="100" cx="120" cy="120" fill="none" stroke="#ffcd00" stroke-width="2"
+          stroke-dasharray="628"
+          stroke-dashoffset="628"
+  />
+</svg>
+
+<svg width="400" height="400" viewBox="0 0 240 240" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <circle class="progress-bar-2" r="100" cx="120" cy="120" fill="none" stroke="#ffcd00" stroke-width="2"
+          stroke-dasharray="0 628"
+          stroke-dashoffset="0"
+  />
+</svg>
+
+<script>
+  // 圆形的周长 2*PI*r，也可以直接通过svg的api获得
+  const len = document.querySelector('.progress-bar-2').getTotalLength();
+  console.log(Math.ceil(len));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hash_a</title>
+</head>
+<body>
+
+<iframe id="iframe" src="hash_b.html" frameborder="1"></iframe>
+
+<button id="btn" type="button">点击</button>
+
+<div class="response"></div>
+
+<script>
+    // 发送数据
+    let btn = document.querySelector('#btn')
+    let iframe = document.querySelector('#iframe')
+    btn.addEventListener('click', function () {
+        iframe.src = './hash_b.html#' + '这个世界上总会有一个人，能读懂你说出的每句好的真意看透眉'
+    })
+
+    // 接收数据
+    let response = document.querySelector('.response')
+    window.onhashchange = function () {
+        response.innerHTML = decodeURIComponent(window.location.hash.substr(1))
+    }
+</script>
+
+</body>
+</html>

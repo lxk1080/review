@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>放大镜</title>
+    <style>
+        #canvas {
+            display: block;
+            margin: 0 auto;
+            border: #666 solid 1px;
+        }
+        #offCanvas {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="640" height="400"></canvas>
+<canvas id="offCanvas"></canvas> <!--作为离屏canvas-->
+
+<script>
+  const canvas = document.querySelector('#canvas');
+  const ctx = canvas.getContext('2d');
+  const offCanvas = document.querySelector('#offCanvas');
+  const offCtx = offCanvas.getContext('2d');
+  let isMousedown = false;
+  let scale = null;
+
+  const img = new Image();
+  img.onload = function() {
+    // 使离屏canvas的宽高为原图的宽高
+    offCanvas.width = img.width;
+    offCanvas.height = img.height;
+    scale = offCanvas.width / canvas.width;
+    offCtx.drawImage(img, 0, 0);
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  }
+  img.src = '../../common/img/sea.jpg';
+
+  function windowToCanvas(x, y) {
+    const box = canvas.getBoundingClientRect();
+    return {
+      x: x - box.left,
+      y: y - box.top,
+    };
+  }
+
+  function drawCanvasWithMagnifier(isShowMagnifier, point) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    if (isShowMagnifier) {
+      drawMagnifier(point);
+    }
+  }
+
+  function drawMagnifier(point) {
+    // 点击小图时对应到大图的位置
+    const imageLG_cx = point.x * scale;
+    const imageLG_cy = point.y * scale;
+
+    const r = 100; // 半径
+
+    const sx = imageLG_cx - r;
+    const sy = imageLG_cy - r;
+
+    const dx = point.x - r;
+    const dy = point.y - r;
+
+    ctx.save(); // 保存初始时的裁剪路径
+    ctx.beginPath();
+    ctx.arc(point.x, point.y, r, 0, 360 * Math.PI/180, false);
+    ctx.lineWidth = 10.0;
+    ctx.strokeStyle = '#669';
+    ctx.stroke();
+    ctx.clip();
+
+    ctx.drawImage(offCanvas, sx, sy, 2*r, 2*r, dx, dy, 2*r, 2*r);
+
+    ctx.restore(); // 恢复原始裁剪路径
+  }
+
+  canvas.addEventListener('mousedown', (e) => {
+    isMousedown = true;
+    const point = windowToCanvas(e.clientX, e.clientY);
+    drawCanvasWithMagnifier(true, point);
+    e.preventDefault();
+  })
+  canvas.addEventListener('mousemove', (e) => {
+    if (isMousedown) {
+      const point = windowToCanvas(e.clientX, e.clientY);
+      drawCanvasWithMagnifier(true, point);
+    }
+    e.preventDefault();
+  })
+  canvas.addEventListener('mouseup', (e) => {
+    drawCanvasWithMagnifier(false);
+    isMousedown = false;
+    e.preventDefault();
+  })
+  canvas.addEventListener('mouseout', (e) => {
+    drawCanvasWithMagnifier(false);
+    isMousedown = false;
+    e.preventDefault();
+  })
+
+</script>
+</body>
+</html>

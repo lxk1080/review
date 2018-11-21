@@ -1,0 +1,23 @@
+{
+  "manifest_version": 2,
+  "name": "souls",
+  "description": "一个souls扩展",
+  "version": "1.0.0",
+  "icons": {
+    "16": "stop.png",
+    "48": "stop.png",
+    "128": "stop.png"
+  },
+  "permissions": [
+    "tabs"
+  ],
+  "background": {
+    "persistent": false,
+    "scripts": ["background.js"]
+  },
+  "browser_action": {
+    "default_icon": "stop.png",
+    "default_title": "souls",
+    "default_popup": "index.html"
+  }
+}

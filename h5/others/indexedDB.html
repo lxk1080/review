@@ -7,8 +7,8 @@
   <script type="text/javascript">
     $(document).ready(function () {
       window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
-      var request, db;
-      var data=[{
+      let request, db;
+      const data=[{
           id: '1',
           name: "Byron",
           age: 24
@@ -43,10 +43,10 @@
       request.onupgradeneeded = function (event) {
         console.log("Upgrading");
         db = event.target.result;
-        var objectStore = db.createObjectStore("students", {keyPath: "id"});
-        for (var i = 0; i < data.length; i++) {
+        const objectStore = db.createObjectStore("students", {keyPath: "id"});
+        for (let i = 0; i < data.length; i++) {
             request = objectStore.add(data[i])
-            request.onsuccess = function(){
+            request.onsuccess = function() {
                 console.log('数据已存入数据库')
             };
             request.onerror = function () {
@@ -66,10 +66,10 @@
       // 3. 往ObjectStore里新增对象
       // 在indexedDB里任何对象的增删改查都需要放在事务里执行，并要求事务具有读写权限
       $("#addBtn").click(function () {
-        var id = $("#id").val();
-        var name = $("#name").val();
+        const id = $("#id").val();
+        const name = $("#name").val();
 
-        var transaction = db.transaction(["students"], "readwrite");
+        const transaction = db.transaction(["students"], "readwrite");
         transaction.oncomplete = function (event) {
           console.log("Success :)");
         };
@@ -77,9 +77,9 @@
           console.log("Error :(");
         };
 
-        var objectStore = transaction.objectStore("students");
+        const objectStore = transaction.objectStore("students");
 
-        var res = objectStore.add({id: id, name: name});
+        const res = objectStore.add({id: id, name: name});
         res.onsuccess = function () {
             $("#result").html("Add : Success");
         }
@@ -91,14 +91,14 @@
       // 4. 从ObjectStore里删除对象
       // 删除跟新增一样，需要创建一个新的事务，然后调用删除接口，通过key删除对象
       $("#removeBtn").click(function () {
-        var id = $("#id").val();
+        const id = $("#id").val();
         db.transaction(["students"], "readwrite").objectStore("students").delete(id);
       });
 
       // 5. 通过key取出对象
       $("#getBtn").click(function () {
-        var id = $("#id").val();
-        var request = db.transaction(["students"], "readwrite").objectStore("students").get(id);
+        const id = $("#id").val();
+        const request = db.transaction(["students"], "readwrite").objectStore("students").get(id);
         request.onsuccess = function (event) {
           $("#result").html("Name : " + request.result.name);
         };
@@ -106,11 +106,11 @@
 
       // 6. 更新一个对象
       $("#updateBtn").click(function () {
-        var id = $("#id").val();
-        var name = $("#name").val();
-        var transaction = db.transaction(["students"], "readwrite");
-        var objectStore = transaction.objectStore("students");
-        var request = objectStore.get(id);
+        const id = $("#id").val();
+        const name = $("#name").val();
+        const transaction = db.transaction(["students"], "readwrite");
+        const objectStore = transaction.objectStore("students");
+        const request = objectStore.get(id);
         request.onsuccess = function (event) {
           $("#result").html("Updating : " + request.result.name + " to " + name);
           request.result.name = name;

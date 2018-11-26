@@ -43,6 +43,7 @@
       request.onupgradeneeded = function (event) {
         console.log("Upgrading");
         db = event.target.result;
+        // 创建一个store，类似于关系型数据库中的创建一个表
         const objectStore = db.createObjectStore("students", {keyPath: "id"});
         for (let i = 0; i < data.length; i++) {
             request = objectStore.add(data[i])

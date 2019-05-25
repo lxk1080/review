@@ -10,3 +10,20 @@ friends.sort(function(a, b){
   }
 });
 console.log(friends);
+
+// 交集
+function getIntersection(a, b) {
+  return Array.from(new Set(a.filter(v => new Set(b).has(v))));
+}
+
+// 并集
+function union(a, b) {
+  return Array.from(new Set(a.concat(b)));
+}
+
+// 差集
+function differenceNew(a, b) {
+  const aSet = new Set(a);
+  const bSet = new Set(b);
+  return Array.from(new Set(a.concat(b).filter(v => aSet.has(v) && !bSet.has(v))));
+}

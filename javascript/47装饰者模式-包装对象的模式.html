@@ -14,13 +14,13 @@
 		// 需要有子类
 		// 实现同样的接口
 		
-		var carInterface = new LXK.Interface(carInterface,['getPrice','assemble']);
+		var carInterface = new Global.Interface(carInterface,['getPrice','assemble']);
 		
 		//父类（一辆车）
 		function Car(car){	
 			//这两个语句，就是为了让子类去继承的
 			this.car = car;//让子类引用父类的实例对象		
-			LXK.Interface.ensureImplements(this,carInterface);//检测实例对象的接口是否实现
+			Global.Interface.ensureImplements(this,carInterface);//检测实例对象的接口是否实现
 		}
 		Car.prototype = {
 			constructor : Car,
@@ -39,7 +39,7 @@
 			//Car.call(this,car);  //借用构造函数继承，模板继承
 			LightDecorator.superClass.constructor.call(this,car);
 		}	
-		LXK.extend(LightDecorator,Car);  //原型对象继承
+		Global.extend(LightDecorator,Car);  //原型对象继承
 		//加了车灯后，车的价钱方法需要重写
 		LightDecorator.prototype = {
 			constructor : LightDecorator,
@@ -56,7 +56,7 @@
 		function iceDecorator(car){   
 			iceDecorator.superClass.constructor.call(this,car);
 		}	
-		LXK.extend(iceDecorator,Car);  
+		Global.extend(iceDecorator,Car);
 		iceDecorator.prototype = {
 			constructor : iceDecorator,
 			getPrice : function(){

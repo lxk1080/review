@@ -38,7 +38,7 @@
 		function BenzCarShop(){}
 		
 		//继承抽象类
-		LXK.extend(BenzCarShop,CarShop);
+		Global.extend(BenzCarShop,CarShop);
 		
 		//奔驰车店的 卖车 方法
 		BenzCarShop.prototype = {
@@ -70,7 +70,7 @@
 		//宝马车店
 		function BmwCarShop(){}
 		
-		LXK.extend(BmwCarShop,CarShop);
+		Global.extend(BmwCarShop,CarShop);
 		
 		BmwCarShop.prototype = {
 				constructor : BmwCarShop,
@@ -102,7 +102,7 @@
 		//奥迪车店
 		function AudiCarShop(){}
 		
-		LXK.extend(AudiCarShop,CarShop);
+		Global.extend(AudiCarShop,CarShop);
 		
 		AudiCarShop.prototype = {
 				 constructor : AudiCarShop,
@@ -137,7 +137,7 @@
 					var car = eval('new '+type+'()');
 								
 					//检验车合不合格，不合格会抛出异常
-					LXK.Interface.ensureImplements(car,carInterface); //确定实例对象实现了这个接口
+					Global.Interface.ensureImplements(car,carInterface); //确定实例对象实现了这个接口
 					
 					//合格时出厂这个车
 					return car;
@@ -147,7 +147,7 @@
 		//______________________________________________________________________________________
 		
 		//车的接口和接口里包含的方法（引用接口类js文件）
-		var carInterface = new LXK.Interface(carInterface,['start','run']);
+		var carInterface = new Global.Interface(carInterface,['start','run']);
 		
 		//所有车的父类（要实现接口中的方法）
 		function BaseCar(){};
@@ -159,13 +159,13 @@
 		
 		//每种车都要实现这两个方法（引用原型对象继承的js文件）
 		function Benz(){}
-		LXK.extend(Benz,BaseCar); 
+		Global.extend(Benz,BaseCar);
 		
 		function Bmw(){}
-		LXK.extend(Bmw,BaseCar);
+		Global.extend(Bmw,BaseCar);
 		
 		function Audi(){}
-		LXK.extend(Audi,BaseCar);
+		Global.extend(Audi,BaseCar);
  		
 		
 		//___________________________________________________________________________________

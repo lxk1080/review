@@ -33,7 +33,7 @@
 		//web日历
 		//年对象  月对象  天对象
 		
-		var calendarInterface = new LXK.Interface(calendarInterface,['display']); //接口方法
+		var calendarInterface = new Global.Interface(calendarInterface,['display']); //接口方法
 		
 		//年对象
 		function CalendarYear(year, parent){ //parent是日历信息存放的元素，一年12个月固定的，不用传递月数参数
@@ -116,7 +116,7 @@
 		
 		var y = new CalendarYear(2016,mydiv);   //将年份的日历信息放到这个元素中
 		
-		LXK.Interface.ensureImplements(y,calendarInterface);  //接口的检验
+		Global.Interface.ensureImplements(y,calendarInterface);  //接口的检验
 		
 		y.display();  //显示这一年的日历信息
 		

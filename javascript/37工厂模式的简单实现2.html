@@ -29,7 +29,7 @@
 								}
 								
 						//检验车合不合格
-						LXK.Interface.ensureImplements(car,carInterface); //确定实例对象实现了这个接口
+						Global.Interface.ensureImplements(car,carInterface); //确定实例对象实现了这个接口
 						
 						//检验不成功时会抛出异常停止运行，成功则弹出购买成功
 						alert('购买成功');
@@ -39,7 +39,7 @@
 			};
 			
 		//车的接口和接口里包含的方法（引用接口类）
-		var carInterface = new LXK.Interface(carInterface,['start','run']);
+		var carInterface = new Global.Interface(carInterface,['start','run']);
 		
 		//所有车的父类
 		function BaseCar(){};
@@ -53,13 +53,13 @@
 		
 		//每种车都要实现这两个方法（引用原型对象继承方法）
 		function Benz(){}
-		LXK.extend(Benz,BaseCar); 
+		Global.extend(Benz,BaseCar);
 		
 		function Bmw(){}
-		LXK.extend(Bmw,BaseCar);
+		Global.extend(Bmw,BaseCar);
 		
 		function Audi(){}
-		LXK.extend(Audi,BaseCar);
+		Global.extend(Audi,BaseCar);
  		
 			
 			

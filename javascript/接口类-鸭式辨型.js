@@ -8,9 +8,9 @@
 // 01 创建接口类  class interface  可以实例化多个接口
 // 参数1：接口名  参数2：接收方法名称的数组(array)
 
-var LXK = {};  //命名空间
+var Global = {};  //命名空间
 
-LXK.Interface = function (name, methods) {
+Global.Interface = function (name, methods) {
 
   //判断接口的参数个数
   if (arguments.length != 2) {
@@ -32,8 +32,8 @@ LXK.Interface = function (name, methods) {
 }
 
 //实例化两个接口
-//var CompositeInterface = new LXK.Interface(CompositeInterface,['add','remove']);
-//var FormItemInterface = new LXK.Interface(FormItemInterface,['update','select']);
+//var CompositeInterface = new Global.Interface(CompositeInterface,['add','remove']);
+//var FormItemInterface = new Global.Interface(FormItemInterface,['update','select']);
 
 
 //________________________________________________________________________
@@ -65,7 +65,7 @@ CompositeImpl.prototype.select = function(obj){
 //检测接口里的方法是否在实现类中实现（核心方法）
 //检验通过，不做操作，检验失败，抛出异常
 
-LXK.Interface.ensureImplements = function (object) {
+Global.Interface.ensureImplements = function (object) {
 
   //接口检测方法接收的参数小于两个，参数传递失败
   if (arguments.length < 2) {
@@ -79,7 +79,7 @@ LXK.Interface.ensureImplements = function (object) {
     var instanceInterface = arguments[i];
 
     //判断参数是否是接口类型
-    if (instanceInterface.constructor !== LXK.Interface) {
+    if (instanceInterface.constructor !== Global.Interface) {
       throw new Error("参数'" + instanceInterface + "'不是一个接口");
     }
 
@@ -101,6 +101,6 @@ LXK.Interface.ensureImplements = function (object) {
 //var c = new CompositeImpl();
 
 //检测实例对象 c 中是否有后面的两个接口
-//LXK.Interface.ensureImplements(c,CompositeInterface,FormItemInterface);
+//Global.Interface.ensureImplements(c,CompositeInterface,FormItemInterface);
 
 //c.add();

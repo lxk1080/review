@@ -3,9 +3,9 @@
 //单体模式
 //实现一个跨浏览器的事件处理程序
 
-const LXK = {};   //命名空间
+const Global = {};   //命名空间
 
-LXK.EventUtil = {
+Global.EventUtil = {
   addHandler: function (element, type, fn) {
     if (element.addEventListener) { //FF
       element.addEventListener(type, fn, false); //false代表冒泡事件，默认是捕获事件

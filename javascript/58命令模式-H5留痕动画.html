@@ -12,7 +12,7 @@
 		//用命令模式实现的简单的小游戏（移动方块）
 		
 		//有一个接口，实现两个方法，一个执行命令，一个回退命令
-		var RCInterface = new LXK.Interface(RCInterface,['execute']);
+		var RCInterface = new Global.Interface(RCInterface,['execute']);
 		
 		//____________________________命令对象的类（调用者），命令实例对象是调用者
 		
@@ -152,7 +152,7 @@
 		
 		//命令按钮类
 		var commandButton = function(label,command,parent){
-			LXK.Interface.ensureImplements(command,RCInterface);
+			Global.Interface.ensureImplements(command,RCInterface);
 			//实例化按钮，放到父元素上
 			this.element = document.createElement('button');
 			this.element.innerHTML = label;

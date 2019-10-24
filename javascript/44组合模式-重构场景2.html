@@ -45,8 +45,8 @@
 		3.一般我们会在组合对象中调用其方法并隐式调用"下级对象"的方法（一般采用递归的形式去做）
 		*/
 		
-		var compositeInterface = new LXK.Interface(compositeInterface,['addChild','getChild']);
-		var leafInterface = new LXK.Interface(leafInterface,['hardWork','sleep']);
+		var compositeInterface = new Global.Interface(compositeInterface,['addChild','getChild']);
+		var leafInterface = new Global.Interface(leafInterface,['hardWork','sleep']);
 		
 		
 		//组合对象类
@@ -166,7 +166,7 @@
 		var c2 = new Composite('上海分公司');
 		c2.addChild(d3).addChild(d4);
 		
-		var c = new Composite('LXK总公司');
+		var c = new Composite('Global总公司');
 		c.addChild(c1).addChild(c2);
 				
 		

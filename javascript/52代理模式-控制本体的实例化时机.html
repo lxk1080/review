@@ -11,7 +11,7 @@
 		
 		//代理模式：代理也是对象，目的是为了节制对本体对象的访问（节省不必要占用的资源）
 		
-		var libraryInterface = new LXK.Interface(libraryInterface,['addBook','findBook','sendBook','returnBook']);
+		var libraryInterface = new Global.Interface(libraryInterface,['addBook','findBook','sendBook','returnBook']);
 		
 		//书对象
 		function Book(id, name ,author){
@@ -54,7 +54,7 @@
 			initLibrary : function(){    //控制实例化的时机，在真正用到图书馆方法的时候才实例化
 				if(this.library == null){
 					this.library = new Library(this.books);
-					LXK.Interface.ensureImplements(this.library,libraryInterface);
+					Global.Interface.ensureImplements(this.library,libraryInterface);
 				}	
 			},
 			

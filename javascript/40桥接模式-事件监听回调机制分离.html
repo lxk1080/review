@@ -22,7 +22,7 @@
 			//前台事件逻辑
 			var btn = document.getElementById('btn');
 			
-			LXK.EventUtil.addHandler(btn , 'click' , bridgeHandler );
+			Global.EventUtil.addHandler(btn , 'click' , bridgeHandler );
 			
 			
 			//利用桥模式分开（前和后成为两个完全独立的单元）
@@ -58,7 +58,7 @@
 			//前台事件逻辑
 			var btn = document.getElementById('btn');
 			
-			LXK.EventUtil.addHandler(btn , 'click' , sendReq );
+			Global.EventUtil.addHandler(btn , 'click' , sendReq );
 			
 			//后台请求逻辑
 			function sendReq(){

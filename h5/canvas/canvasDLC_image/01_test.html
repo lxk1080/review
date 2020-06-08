@@ -142,7 +142,19 @@
           c.fillRect(100, 100, 200, 200);
         }
 
-        dash();
+        // 1. 一定要清楚的是，translate是设置基准点的，scale也好还是rotate也罢实际上可以当作一个属性，必须要在画图之前就设置好
+        // 2. 操作都是叠加的，假如写了两个 scale(2, 2)，那么加在一起就是扩大4倍
+        // 3. canvas里所有的操作，变换或者是画图的偏移都是基于原点的，非常灵活
+        // 4. 原点的操作也是叠加的
+        function transformTest() {
+          c.translate(200, 200);
+          c.scale(2, 2);
+          c.rotate(45 * Math.PI / 180);
+          c.translate(-50, -50);
+          c.fillRect(0, 0, 100, 100);
+        }
+
+        transformTest();
 
     </script>
 </body>

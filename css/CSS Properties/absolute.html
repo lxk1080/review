@@ -14,13 +14,17 @@
       margin-bottom: 20px;
       overflow: hidden;
     }
+    .father {
+      position: relative;
+      min-height: 200px;
+    }
   </style>
 </head>
 <body>
 
-<!--全屏覆盖（初始屏幕被rgba(0, 0, 0, 0.1)覆盖）-->
-<div class="box">
-  <h3>全屏覆盖（初始屏幕被rgba(0, 0, 0, 0.1)覆盖）</h3>
+<!--全屏覆盖-->
+<div class="box father">
+  <h3>全屏覆盖（ 被 rgba(0, 0, 0, 0.1) 覆盖，可以把最外层的 box 看成 screen ）</h3>
   <div class="all"></div>
 
   <style>
@@ -35,11 +39,12 @@
   </style>
 </div>
 
+
 <!--遮罩层-->
 <div class="box">
-  <h3>遮罩层</h3>
+  <h3>作为遮罩层</h3>
   <div class="container">
-    <img src="img/p8.jpg" />
+    <img src="img/p8.jpg"/>
     <i class="cover"></i>
   </div>
   <style>
@@ -59,20 +64,25 @@
       top: 0;
       bottom: 0;
       background: blue;
-      opacity: 0.2;
+      opacity: 0.3;
     }
   </style>
 </div>
+
 
 <!--九宫格（随着屏幕宽高自适应）-->
 <div class="box">
   <h3>九宫格（随着屏幕宽高自适应）</h3>
   <div class="page-wrapper">
     <div class="page">
-      <div class="list"></div><div class="list"></div>
-      <div class="list"></div><div class="list"></div>
-      <div class="list"></div><div class="list"></div>
-      <div class="list"></div><div class="list"></div>
+      <div class="list"></div>
+      <div class="list"></div>
+      <div class="list"></div>
+      <div class="list"></div>
+      <div class="list"></div>
+      <div class="list"></div>
+      <div class="list"></div>
+      <div class="list"></div>
       <div class="list"></div>
     </div>
   </div>
@@ -80,7 +90,7 @@
   <style>
     .page-wrapper {
       width: 50%;
-      padding-top: 25%;
+      padding-top: 25%; /* padding-top 的百分比是相对于父元素的宽度的 */
       border: #666 solid 1px;
       position: relative;
     }
@@ -118,11 +128,12 @@
   </style>
 </div>
 
-<!--绝对定位实现绝对居中（初始屏幕万能居中，IE8以下不支持）-->
-<div class="box">
-  <h3>绝对定位实现绝对居中（初始屏幕万能居中，IE8以下不支持）</h3>
-  <p>可以看到屏幕中间的透明蓝色方块</p>
+
+<!--绝对定位实现绝对居中-->
+<div class="box father">
+  <h3>绝对定位实现绝对居中</h3>
   <div class="abscen"></div>
+
   <style>
     .abscen {
       position: absolute;
@@ -130,8 +141,8 @@
       top: 0;
       right: 0;
       bottom: 0;
-      width: 200px;
-      height: 100px;
+      width: 80px;
+      height: 80px;
       background: blue;
       margin: auto; /* 关键一句，由于是全屏覆盖，又设置了宽和高，那么此时margin:auto就可以自由分配剩下的空间 */
       opacity: 0.2;
@@ -139,22 +150,35 @@
   </style>
 </div>
 
-<!--fixed效果(避免了移动端position:fixed问题)-->
+
+<!--fixed 效果(避免了移动端 position:fixed 问题)-->
 <div class="box">
-  <h3>fixed效果(避免了移动端position:fixed问题)</h3>
-  <div class="screen">
+  <h3>fixed效果(避免了移动端 position:fixed 问题)</h3>
+  <div class="outer">
     <div class="header">header</div>
     <div class="content">
-      <p>123</p><p>123</p><p>123</p><p>123</p>
-      <p>123</p><p>123</p><p>123</p><p>123</p>
-      <p>123</p><p>123</p><p>123</p><p>123</p>
-      <p>123</p><p>123</p><p>123</p><p>123</p>
+      <p>123</p>
+      <p>123</p>
+      <p>123</p>
+      <p>123</p>
+      <p>123</p>
+      <p>123</p>
+      <p>123</p>
+      <p>123</p>
+      <p>123</p>
+      <p>123</p>
+      <p>123</p>
+      <p>123</p>
+      <p>123</p>
+      <p>123</p>
+      <p>123</p>
+      <p>123</p>
     </div>
     <div class="footer">footer</div>
   </div>
 
   <style>
-    .screen {
+    .outer {
       width: 30%;
       height: 300px;
       border: #666 solid 1px;
@@ -182,12 +206,13 @@
 
 </body>
 </html>
+
 <!--
 	1. 凌驾于普通流之上
-	2. 依赖的绝对定位，父容器为非静态定位，使用top和left控制位置
-	3. 无依赖的绝对定位，跟随性（原先位置不变，不依赖于relative等属性），使用margin控制位置
+	2. 依赖的绝对定位，父容器为非静态定位，使用 top 和 left 控制位置
+	3. 无依赖的绝对定位，跟随性（原先位置不变，不依赖于 relative 等属性），使用 margin 控制位置
 	4. 同是绝对定位的元素，越是后面的标签层级越高
-	5. 一般情况下，元素的height百分比要想起作用，需要父容器的height不是auto，
-	       但是对于绝对定位的父容器，即使height是auto，子元素的height百分比也是有效的（见上方高度自适应）
-	6. body的默认高度为0
+	5. 一般情况下，元素的 height 百分比要想起作用，需要父容器的 height 不是 auto，但是对于绝对定位的父容器，
+	   即使 height 是 auto，子元素的 height 百分比也是有效的（见上方的九宫格）
+	6. body 的默认高度为 0
 -->

@@ -5,11 +5,11 @@
   <title>Grid</title>
   <style>
     /*
-      术语: 网格线、网格轨道、网格单元格、网格区域、网格容器
+      术语：网格线、网格轨道、网格单元格、网格区域、网格容器
 
       display: grid; // grid容器
-      grid-template-columns: 网格有多少列，每列的宽度
-      grid-template-rows: 网格有多少行，每行的高度
+    * grid-template-columns: 网格有多少列，每列的宽度
+    * grid-template-rows: 网格有多少行，每行的高度
 
       grid-column-start: 列起始线
       grid-column-end: 列终止线
@@ -19,16 +19,17 @@
       grid-column: 1; 第一列
       grid-row: 1 / span 5; 从第一行开始，总共占五行
 
-      grid-column: 1 / 2; 列起始线/列终止线
-      grid-row: 1 / 2; 行起始线/行终止线
+    * grid-column: 1 / 2; 列起始线/列终止线
+    * grid-row: 1 / 2; 行起始线/行终止线
 
       grid-area: 1 / 1 / 2 / 2; row-start/column-start/row-end/column-end
     */
+
     .wrapper {
       display: grid;
       /*grid-template-columns: 100px 10px 100px 10px 100px 10px 100px;*/
       /*grid-template-rows: auto 10px auto 10px auto 10px auto 10px auto;*/
-      grid-template-columns: repeat(3, 100px 10px) 100px;
+      grid-template-columns: repeat(3, 100px 10px) 100px; /* 上面的简写 */
       grid-template-rows: repeat(4, auto 10px) auto;
     }
     .box {
@@ -84,6 +85,7 @@
     }
   </style>
 </head>
+
 <body>
 <div class="wrapper">
   <div class="box a">A</div>

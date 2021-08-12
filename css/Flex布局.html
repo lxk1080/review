@@ -6,23 +6,26 @@
   <style>
     /*
       容器的6个属性：
-        flex-direction：主轴的方向
-        flex-wrap：换行方式
-        * flex-flow：是flex-direction属性和flex-wrap属性的简写形式，默认值为row nowrap
-        justify-content：主轴上的对齐方式（相对于主轴对齐）
-        align-items：交叉轴上的对齐方式（相对于交叉轴对齐）
-        align-content：多根轴线的排列方式。如果项目只有一根轴线，该属性不起作用
+        - flex-direction：主轴的方向
+        - flex-wrap：换行方式
+        - * flex-flow：是flex-direction属性和flex-wrap属性的简写形式，默认值为row nowrap
+        - justify-content：主轴上的对齐方式（相对于主轴对齐）
+        - align-items：交叉轴上的对齐方式（相对于交叉轴对齐）
+        - align-content：多根轴线（主轴）在交叉轴上的排列方式。如果项目只有一根轴线，该属性不起作用
+
       项目的6个属性：
-        order：定义项目的排列顺序。数值越小，排列越靠前，默认为0
-        flex-grow：项目的放大比例，默认为0，即如果存在剩余空间，也不放大
-        flex-shrink：项目的缩小比例，默认为1，即如果空间不足，该项目将缩小
-        flex-basis：在分配多余空间之前，项目占据的主轴空间，默认值为auto，即项目的本来大小
-        * flex: 1. 是flex-grow, flex-shrink 和 flex-basis的简写，默认值为0 1 auto。后两个属性可选
-                2. 该属性有两个快捷值：auto (1 1 auto) 和 none (0 0 auto)。
-                3. 优先使用这个属性（很重要），而不是单独写三个分离的属性，因为浏览器会推算相关值
-        align-self：允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性
-                    默认值为auto，表示继承父元素的align-items属性
-                    如果没有父元素，则等同于stretch（如果项目未设置高度或设为auto，将占满整个容器的高度）
+        - order：定义项目的排列顺序。数值越小，排列越靠前，默认为0
+        - flex-grow：项目的放大比例，默认为0，即如果存在剩余空间，也不放大
+        - flex-shrink：项目的缩小比例，默认为1，即如果空间不足，该项目将缩小
+        - flex-basis：在分配多余空间之前，项目占据的主轴空间，默认值为auto，即项目的本来大小
+        - * flex:
+            - 1. 是flex-grow, flex-shrink 和 flex-basis的简写，默认值为0 1 auto。后两个属性可选
+            - 2. 该属性有两个快捷值：auto (1 1 auto) 和 none (0 0 auto)。
+            - 3. 优先使用这个属性（很重要），而不是单独写三个分离的属性，因为浏览器会推算相关值
+        - align-self：
+            - 允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性
+            - 默认值为auto，表示继承父元素的align-items属性
+            - 如果没有父元素，则等同于stretch（如果项目未设置高度或设为auto，将占满整个容器的高度）
     */
     .box {
       margin-top: 20px;
@@ -42,6 +45,7 @@
   </style>
 </head>
 <body>
+
 <!--单项目-->
 <div class="box box1">
   <style>
@@ -64,7 +68,7 @@
       align-items: center; /* 交叉轴对齐方式 X轴 */
     }
     .box2 .item:nth-of-type(2){
-      align-self: flex-end; /* 可覆盖父元素的align-items 属性，定义自己独有的交叉轴对齐方式 */
+      align-self: flex-end; /* 可覆盖父元素的 align-items 属性，定义自己独有的交叉轴对齐方式 */
     }
   </style>
   <span class="item"></span>
@@ -104,6 +108,7 @@
   <span class="item"></span>
   <span class="item"></span>
 </div>
+
 <!--四项目2-->
 <div class="box box42">
   <style>
@@ -144,6 +149,7 @@
   <span class="item"></span>
   <span class="item"></span>
 </div>
+
 <!--六项目2-->
 <div class="box box62">
   <style>
@@ -161,6 +167,7 @@
   <span class="item"></span>
   <span class="item"></span>
 </div>
+
 <!--六项目3-->
 <div class="box box63">
   <style>

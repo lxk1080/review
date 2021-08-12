@@ -33,6 +33,7 @@
   </style>
 </div>
 
+
 <!--手机屏幕的正方形-->
 <div class="box">
   <h3>手机屏幕的正方形</h3>
@@ -56,6 +57,7 @@
   </style>
 </div>
 
+
 <!--火狐下清除button的padding-->
 <div class="box">
   <h3>火狐下清除button的padding</h3>
@@ -67,6 +69,7 @@
     }
   </style>
 </div>
+
 
 <!--原生按钮的padding高度各浏览器不兼容，用label实现-->
 <div class="box">
@@ -86,6 +89,7 @@
   </style>
 </div>
 
+
 <!--三道杠-->
 <div class="box">
   <h3>三道杠</h3>
@@ -97,12 +101,13 @@
       width: 100px;
       height: 25px;
       background: #666;
-      background-clip: content-box;
+      background-clip: content-box; /* 只给内容的部分加上背景，padding 的地方不用背景 */
       border-top: #666 solid 25px;
       border-bottom: #666 solid 25px;
     }
   </style>
 </div>
+
 
 <!--白眼-->
 <div class="box">
@@ -124,12 +129,16 @@
 
 </body>
 </html>
+
 <!--
   1. 对于inline元素，水平padding影响尺寸，垂直padding不影响，但是会影响背景色
+
   2. padding百分比相对于宽度计算
+
   3. 对于 ol/li 元素内置padding-left，单位是px不是em（一般内置的padding单位都是em）
-  在Chrome下是40px，所以字号很小，间距就大，字号很大，前面的序号可能会到容器外面，但是 li
-  元素内容的padding-left一直是40px
+     在Chrome下是40px，所以字号很小，间距就大，字号很大，前面的序号可能会到容器外面，但是 li
+     元素内容的padding-left一直是40px
+
   4. input/textarea/button/select都有内置padding，radio/checkbox无内置padding
 
   5. 在IE下，按钮的文字越多，左右的padding越大，设置 button{ overflow: visible; }

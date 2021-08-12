@@ -34,6 +34,7 @@
     </style>
 </div>
 
+
 <!--文字溢出...-->
 <div CLASS="box">
     <h3>文字溢出...</h3>
@@ -49,12 +50,14 @@
     </style>
 </div>
 
+
 <!--锚点定位（直接到指定id的位置，本质是：改变容器的滚动高度）-->
 <div class="box">
     <h3>锚点定位（直接到指定id的位置，本质是：改变容器的滚动高度）</h3>
     <a href="#mao">定位</a>
     <div id="mao">我是锚点</div>
 </div>
+
 
 <!--锚点选项卡-->
 <div class="box">
@@ -94,9 +97,10 @@
     </style>
 </div>
 
+
 <!--水平跳动修复-->
 <div class="box">
-    <h3>水平跳动修复</h3>
+    <h3>水平跳动修复（当滚动条出现的时候）</h3>
     <div class="html">
         <div class="btn-wrapper">
             <button type="button" class="btn">切换</button>
@@ -113,7 +117,7 @@
         }
         .btn-wrapper {
             text-align: center;
-            padding-left: calc(200px - 100%);
+            padding-left: calc(200px - 100%); /* 主要是这一句，滚动条出现时，内容区域宽度会减小 */
         }
         .chunk {
             display: none;
@@ -126,7 +130,7 @@
     <script>
         let btn = document.querySelector('.btn')
         btn.addEventListener('click', function () {
-            if (document.querySelector('.chunk').style.display == 'block') {
+            if (document.querySelector('.chunk').style.display === 'block') {
                 document.querySelector('.chunk').style.display = 'none'
             } else {
                 document.querySelector('.chunk').style.display = 'block'
@@ -134,6 +138,7 @@
         })
     </script>
 </div>
+
 
 <!--自定义滚动条-->
 <div class="box">
@@ -169,38 +174,43 @@
 
 </body>
 </html>
+
 <!--
-		1. overflow-x
-		   overflow-y
-		       如果x和y一个是visible，另一个是hidden、scroll或auto，那么这个visible会被重置为auto
+		1. overflow-x、overflow-y
+		    - 如果x和y一个是visible，另一个是hidden、scroll或auto，那么这个visible会被重置为auto
+
 		2. 设置td元素的overflow，还需要为table为table-layout:fixed才行
+
 		3. 所有浏览器的默认滚动条都是来自于html元素，可以:
-			html{overflow:hidden}
+			  - html{overflow:hidden}
+
 		4. 滚动高度：
-		 	var st = document.documentElement.scrollTop || document.body.scrollTop
+		 	  - var st = document.documentElement.scrollTop || document.body.scrollTop
+
 		5. 滚动栏宽度大约17px
+
 		6. 水平居中跳动问题修复
-			兼容： html{overflow: scroll}
-			IE9+： .con{ padding-left:calc(100vw - 100%); }
-				  100vw -- 浏览器宽度；100% -- 可用内容宽度
-			      100vw - 100% = 滚动栏宽度（如果出现滚动栏的话），不出现那就是0了
+			  - 兼容：html{overflow: scroll}
+			  - IE9+：.con{ padding-left: calc(100vw - 100%); }
+				  - 100vw -- 浏览器宽度；100% -- 可用内容宽度
+			    - 100vw - 100% = 滚动栏宽度（如果出现滚动栏的话），不出现那就是0了
 
 		7. 自定义滚动条
-			常用：
-				::-webkit-scrollbar{  //  血槽宽度
-					width: 8px;
-					height: 8px;
-				}
-				::-webkit-scrollbar-thumb{  //  拖动条
-					background-color: rgba(0,0,0,.3);
-					border-radius: 6px;
-				}
-				::-webkit-scrollbar-track{  //  背景槽
-					background-color: #ddd;
-					border-radius: 6px;
-				}
+			  - 常用：
+          ::-webkit-scrollbar{ //  血槽宽度
+            width: 8px;
+            height: 8px;
+          }
+          ::-webkit-scrollbar-thumb{ // 拖动条
+            background-color: rgba(0,0,0,.3);
+            border-radius: 6px;
+          }
+          ::-webkit-scrollbar-track{ // 背景槽
+            background-color: #ddd;
+            border-radius: 6px;
+          }
 
-		8. 当overflow元素在包含块和absolute之间时，overflow无效
-		       包含块：position为relation/absolute/fixed的元素
-		       解决方法： 使overflow元素为包含块（在overflow元素上加position:relative;）
+		8. 当overflow元素在包含块和absolute元素之间时，overflow无效
+		    - 包含块：position为relation/absolute/fixed的元素
+		    - 解决方法：使overflow元素为包含块（在overflow元素上加position:relative;）
 -->

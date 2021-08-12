@@ -41,6 +41,7 @@
     </style>
 </div>
 
+
 <!--用margin负值左恒定宽自适应-->
 <div class="box">
     <h3>用margin负值左恒定宽自适应</h3>
@@ -66,9 +67,10 @@
     </style>
 </div>
 
-<!--宽高比恒等2:1-->
+
+<!--宽高比恒等 2:1-->
 <div class="box">
-    <h3>宽高比恒等2:1</h3>
+    <h3>宽高比恒等 2:1</h3>
     <div class="wrapper">
         <div></div>
     </div>
@@ -78,11 +80,12 @@
             background-size: cover;
             overflow: hidden;
         }
-        .wrapper>div {
-            margin: 50%;
+        .wrapper > div {
+            margin-top: 50%; /* 比例也是相对于父元素的宽度 */
         }
     </style>
 </div>
+
 
 <!--消除margin-top重叠（其中的一种方法）-->
 <div class="box">
@@ -95,7 +98,7 @@
             width: 200px;
             height: 200px;
             background: goldenrod;
-            overflow: hidden;  /* 使父元素变成块状格式化元素（overflow不为visible）*/
+            overflow: hidden;  /* 使父元素变成块状格式化元素（overflow 不为 visible）*/
         }
         .inner{
             width: 100px;
@@ -105,6 +108,7 @@
         }
     </style>
 </div>
+
 
 <!--无间隙两端对齐-->
 <div class="box">
@@ -124,7 +128,7 @@
         }
         .ul{
             overflow: hidden;
-            margin-right: -9px; /* 设置margin为负值，可以拉伸元素在水平方向上右边的空间，此时包含ul标签盒子宽是是610px */
+            margin-right: -9px; /* 设置 margin 为负值，可以拉伸元素在水平方向上右边的空间，此时标签盒子宽度是 609px */
         }
         .li{
             width: 194px;
@@ -135,6 +139,7 @@
         }
     </style>
 </div>
+
 
 <!--两栏等高布局-->
 <div class="box">
@@ -156,11 +161,11 @@
             border: red solid 1px;
             overflow: hidden;
         }
-        .c1,.c2 {
+        .c1, .c2 {
             float: left;
             width: 100px;
-            padding-bottom: 300px;
-            margin-bottom: -300px;
+            padding-bottom: 300px; /* 等高允许的最大高度 */
+            margin-bottom: -300px; /* 用来隐藏没用到的高度（和最大高度相同） */
         }
         .c1 {
             background: #00B7FF;
@@ -170,43 +175,45 @@
         }
     </style>
 </div>
+
 </body>
 </html>
-<!--
-	1. 非定位元素的margin百分比值是根据自身的宽计算的，绝对定位元素的百分比margin是相对于第一个定位祖先元素的宽度计算的
 
-	2. margin重叠，只发生在垂直方向上，只支持block元素（不包括float和absolute）
+<!--
+	1. 非定位元素的 margin 百分比值是根据父元素的宽计算的，绝对定位元素的百分比 margin 是相对于第一个定位祖先元素的宽度计算的
+
+	2. margin 重叠，只发生在垂直方向上，只影响 block 元素（不包括 float 和 absolute）
 
 	3. 消除margin-top重叠
-		* 使父元素变成块状格式化元素BFC（overflow、block、inline-block等等元素不为visible）
-		* 给父元素设置border
-		* 给父元素设置padding
-		* 在父元素和第一个子元素之间插入一个inline元素（例如 &nbsp;）
+		  - 使父元素变成块状格式化元素BFC（overflow、inline-block）
+		  - 给父元素设置 border
+		  - 给父元素设置 padding
+		  - 在父元素和第一个子元素之间插入一个inline元素（例如 &nbsp;）
 
-		原理：margin的本质是在遇到障碍物时靠力的反作用把自己往相反的方向推，border和padding以及inline元素的本质都是障碍物
-			 而overflow:hidden的本质是父元素将自己高度拉伸，直到能够包裹住子元素为止，这样就永远不会overflow了
+     原理：margin的本质是在遇到障碍物时靠力的反作用把自己往相反的方向推，border和padding以及inline元素的本质都是障碍物
+			    而overflow:hidden的本质是父元素将自己高度拉伸，直到能够包裹住子元素为止，这样就永远不会overflow了
 
-		注意：margin是以左和上为基准的（默认为0），也就是说，当同时存在margin-left和margin-right时，margin-left完胜，
-			 但是margin-right依然存在，margin-top同理
+		 注意：margin是以左和上为基准的（默认为0），也就是说，当同时存在margin-left和margin-right时，margin-left完胜，
+			    但是margin-right依然存在，margin-top同理
 
-		理解：margin-top就像是气波，如果父元素的top不是封闭的，这股气波就会冲出去，直到在气波范围内撞到障碍物会连同父亲被反作用向后推，
-         如果父元素是封闭的，那么子元素会被反推，如果气波足够大，而且父元素有固定的高时，子元素还会穿透父元素，也就是"溢出"
+		 理解：margin-top就像是气波，如果父元素的top不是封闭的，这股气波就会冲出去，直到在气波范围内撞到障碍物会连同父亲被反作用向后推，
+          如果父元素是封闭的，那么子元素会被反推，如果气波足够大，而且父元素有固定的高时，子元素还会穿透父元素，也就是"溢出"
 
 	4. 关于margin为什么垂直方向不能居中，因为block元素只是宽度自动填充的，而不会高度自动填充
 
 	5. 垂直居中：
-		* writing-mode:vertical-lr; （更改流为垂直方向，此时高度会自动填充，只能实现垂直居中了）
-		* position:absolute;top:0;left:0;right:0;bottom:0;margin:auto;
-		* 转换为inline-block，用vertical-align控制（注意此时的水平居中用text-align）
+		  - writing-mode:vertical-lr; （更改流为垂直方向，此时高度会自动填充，只能实现垂直居中了）
+		  - position:absolute;top:0;left:0;right:0;bottom:0;margin:auto;
+		  - 转换为inline-block，用vertical-align控制（注意此时的水平居中用text-align）
 
 	6. inline元素没有垂直的margin
 
 	7. margin-start: 当前文档流的开始方位的margin值
-		正常流：margin-start=margin-left
-		垂直流：margin-start=margin-top
+		  - 正常流：margin-start=margin-left
+		  - 垂直流：margin-start=margin-top
 
 	8. 控制margin重叠
-		  collapse： 默认，重叠
-		  discard： 取消垂直方向上的margin
-		  separate： margin不重叠
+		  - collapse：默认，重叠
+		  - discard：取消垂直方向上的margin
+		  - separate：margin不重叠
 -->

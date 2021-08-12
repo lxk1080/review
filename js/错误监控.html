@@ -1,18 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>error</title>
-    <script>
-        window.addEventListener('error', function (e) {
-          console.log('错误捕获', e)
-        }, true) // 这里要用事件捕获的方式
-    </script>
+  <meta charset="UTF-8">
+  <title>error</title>
 </head>
 <body>
-    <script src="noresource.js"></script>
-    <script>
-      (new Image()).src = 'http://baidu.com/test?error=imgError';
-    </script>
+
+<!--
+  1. 前端错误的分类
+    - 即时运行错误（代码错误）
+    - 资源加载错误
+
+  2. 错误的捕获方式
+    - 即时运行错误
+      - try...catch
+
+    - 资源加载错误
+      - 使用 object.onerror 事件（例如图片的 onerror 事件，该事件不会冒泡）
+
+    - 通用方法
+      - Error 事件捕获（虽然不能冒泡，但是可以捕获）
+        - window.addEventListener('error', function(e){}, true)
+        - 对于 js 静态资源的加载错误（本地或 CDN），不会有详细的报错信息
+        - 对于压缩的 js，还要配合 sourceMap 反查未压缩代码的行和列
+
+  3. 资源检查
+    - performance.getEntries()（获取所有已经成功加载的资源的信息）
+
+  4. 上报错误的基本原理
+    - 通过 ajax 通信的方式上报
+    - 利用 Image 对象上报
+-->
+
+<script>
+
+  // 这里要用事件捕获的方式，第三个参数为 true
+  window.addEventListener('error', function (e) {
+
+    console.log('错误捕获', e);
+
+    // 提取错误信息，可以自己定义要上传哪些
+    const errInfo = e.message || e.target.outerHTML;
+
+    // 利用 Image 对象跨域上报错误
+    (new Image()).src = `http://baidu.com/error?errInfo=${errInfo}`;
+
+  }, true);
+
+</script>
+
+<!-- 资源加载错误：本地 404 资源 -->
+<script src="./noresource.js"></script>
+
+<!-- 资源加载错误：CDN 404 资源，报错信息与本地 404 资源是一样的，没有详细报错信息 -->
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery111.js"></script>
+
+<!-- 代码运行错误：c is not defined -->
+<script>
+  // c is not defined
+  const a = 10 + c;
+
+  // 即时运行错误，报错的 Event 对象里，会有些关键信息，资源加载错误，没有这些信息
+  // message：报错信息
+  // filename：哪个文件
+  // lineno：哪一行
+  // colno：哪一列
+  // error：也是报错信息，但是更详细
+</script>
+
 </body>
 </html>

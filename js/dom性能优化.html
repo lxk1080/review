@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dom</title>
+</head>
+<body>
+<div>
+    <p></p>
+    <p></p>
+    <p></p>
+</div>
+<ul id="list"></ul>
+
+<script>
+
+    // 1、Dom 查询做缓存
+
+    // 如果不缓存 Dom 查询结果
+    for (let i = 0; i < document.getElementsByTagName('p').length; i++) {
+      // 每次循环，都进行 Dom 查询，有可能触发重绘和重排，而且会重复获取 length
+    }
+
+    // 缓存 Dom 查询结果
+    const pList = document.getElementsByTagName('p');
+    const length = pList.length;
+    for (let i = 0; i < length; i++) {
+      // 只进行一次查询，获取一次 length
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+
+    // 2、将频繁操作改为一次性操作，主要是先使用 Fragment（文档片段） 打包，Fragment 不会改变 Dom 结构
+    const listNode = document.getElementById('list');
+    const frag = document.createDocumentFragment();
+
+    for (let i = 0; i < 10; i++) {
+      const li = document.createElement('li');
+      li.innerHTML = `List Item ${i}`;
+      frag.appendChild(li);
+    }
+
+    listNode.appendChild(frag);
+
+</script>
+
+</body>
+</html>
+
+

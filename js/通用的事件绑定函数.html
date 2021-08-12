@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bind</title>
+</head>
+<body>
+
+<div>
+  <ul class="list">
+    ul
+    <li class="list-item item-1">
+      li_1
+      <div><p>inner_1</p></div>
+    </li>
+    <li class="list-item item-2">
+      li_2
+      <div><p>inner_2</p></div>
+    </li>
+    <li class="list-item item-3">
+      li_3
+      <div><p>inner_3</p></div>
+    </li>
+  </ul>
+</div>
+
+<script>
+
+  /**
+  * 通用的事件绑定函数，包含普通绑定和事件代理（事件委托）
+  * 使回调函数的 this 指向目标元素，普通绑定是元素本身，事件代理是委托元素
+  * @param elem 绑定事件的元素
+  * @param type 事件类型
+  * @param selector 事件委托元素
+  * @param fn 回调函数，注意这个不能用箭头函数，箭头函数执行总是取定义时上级作用域（这里是Window）
+  */
+  function bindEvent(elem, type, selector, fn) {
+    if (fn == null) {
+      fn = selector;
+      selector = null;
+    }
+
+    elem.addEventListener(type, e => {
+      const t = e.target;
+
+      if (selector) {
+        let isSelectorOrChildren = false;
+        let curDom = t;
+
+        // 判断一下，点击的元素有可能是委托元素的子元素
+        while (curDom !== elem) {
+          if (curDom.matches(selector)) { // matches 是 dom 对象的方法
+            isSelectorOrChildren = true;
+            break;
+          }
+          curDom = curDom.parentNode;
+        }
+
+        // 事件委托
+        if (isSelectorOrChildren) {
+          fn.call(curDom, e);
+        }
+      } else {
+        // 普通绑定
+        fn.call(elem, e);
+      }
+    });
+  }
+
+  // 以下是测试 ---------------------------------------------------------------------------------------------------------
+
+  const ul = document.getElementsByTagName('ul')[0];
+
+  // 1. 普通绑定
+  // bindEvent(ul, 'click', function(e) {
+  //   console.log(e.target);
+  //   console.log(this);
+  // });
+
+  // 2. 事件委托
+  bindEvent(ul, 'click', 'li', function (e) {
+    console.log(e.target);
+    console.log(this);
+  });
+
+</script>
+</body>
+</html>
+
+

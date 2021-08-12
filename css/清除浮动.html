@@ -4,11 +4,26 @@
     <meta charset="UTF-8">
     <title>clear</title>
     <style>
+        .box {
+            border: red solid 2px;
+        }
+        .box .item {
+            width: 100px;
+            height: 100px;
+            border: #ccc solid 1px;
+            float: left;
+        }
+        .extra {
+            height: 150px;
+            background: goldenrod;
+        }
+
+        /* 核心代码 */
         .clearfix::after {
             content: '.';  /*加一段内容*/
             display: block;  /*让生成的元素以块级元素显示，占满剩余空间*/
-            height: 0;  /*避免生成的内容破坏原有布局高度*/
             clear: both;  /*清除浮动*/
+            height: 0;  /*避免生成的内容破坏原有布局高度*/
             visibility: hidden;  /*让生成的内容不可见*/
         }
         .clearfix {
@@ -23,21 +38,5 @@
         <div class="item">inner three</div>
     </div>
     <div class="extra">extra</div>
-
-    <style>
-        .box {
-            border: red solid 2px;
-        }
-        .box .item {
-            width: 100px;
-            height: 100px;
-            border: #ccc solid 1px;
-            float: left;
-        }
-        .extra {
-            height: 150px;
-            background: goldenrod;
-        }
-    </style>
 </body>
 </html>

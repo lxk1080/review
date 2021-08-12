@@ -1,71 +1,57 @@
-// 递归（一般做法，但是好用）
+
+/**
+ * 递归 1（一般做法），严格来说不算递归，因为没有中断的条件，主要是遍历
+ * @param arr
+ * @returns {Array}
+ */
 function flat(arr) {
-    let result = []
-    function each(arr) {
-        arr.forEach((item) => {
-            if (item instanceof Array) {
-                each(item)
-            } else {
-                result.push(item)
-            }
-        })
-    }
-    each(arr)
-    return result
-}
-
-// 隐式类型转换（如果一个数组内有很多种类型的数据，处理麻烦）
-// 也可以调用 valueOf 的方法实现，同理
-function flatByConvert(arr) {
-    let toString = Array.prototype.toString
-    Array.prototype.toString = function() {
-        return this.join(',')
-    }
-    let res = arr + '' // 这里的加号会让 arr 隐式转换，先进行 valueOf 方法，在进行 toString 方法
-    Array.prototype.toString = toString
-    return res.split(',').map((item) => {
-        if (parseInt(item)) return parseInt(item)
-        return item
-    })
-}
-
-// ES6（Iterator，目前测试此方法不可用，只是最后的join方法起作用）
-Array.prototype[Symbol.iterator] = function () {
-  let arr = [].concat(this);
-  let getFirst = function (array) {
-    let first = array[0];
-    if (first instanceof Array) {
-      return getFirst(array[0]);
-    } else if (first !== undefined) {
-      return array.shift();
-    } else {
-      return '';
-    }
-  };
-  return {
-    next: function () {
-      let item = getFirst(arr);
-      if (item) {
-        return {
-          value: item,
-          done: false,
-        };
+  let result = [];
+  function each(arr) {
+    arr.forEach((item) => {
+      if (item instanceof Array) {
+        each(item);
       } else {
-        return {
-          done: true,
-        };
+        result.push(item);
       }
-    },
-  };
-};
-var flatByES6 = function (arr) {
-    let r = []
-    for (let i of arr) { r.push(i) }
-    return r
+    })
+  }
+  each(arr);
+  return result;
 }
 
-let arr = ['1', 2, [3, ['a', 'b', 'c'], 4], 5, 6, [7, 8, [9, 10, [11, 12]]]]
+/**
+ * 递归 2（推荐使用这种方法），虽然也是递归，但是与递归 1 的思路不同，感觉 2 的思路从代码上来看更好理解，更符合递归的原则
+ * 递归 1，从左往右逐个找，找到一个数组，把这个数组全部拍平后，再检查下一个数据，数据一个一个的处理，需要遍历每一个数据
+ * 递归 2，先把第一层的全部数组拍平，再检查第二层，再拍平，一层一层的处理，主要是利用 concat 可以连接数组的特性，不需要遍历
+ * @param arr
+ */
+function flaten (arr) {
+  const hasArray = arr.some(v => v instanceof Array);
+  if (!hasArray) {
+    return arr;
+  }
+  const res = Array.prototype.concat.apply([], arr);
+  return flaten(res);
+}
 
-console.log(flat(arr))
-console.log(flatByConvert(arr))
-console.log(flatByES6(arr))
+/**
+ * 这方法超方便，主要是先 join 再 split，后面的 map 是为了区分 number 和 string 类型的数据
+ * 不过这方法有个缺点，对于 string 类型的数字，flat 后会变成 number 类型，例如下面的数据 '1'
+ * 不过也没办法，如果不做 parseInt 转换的话，所有数据都是字符串了
+ * 从另一个角度来说，加了 parseInt 的转换，其实是在修正数据，字符串的数字，最终肯定还是要转换成 number 类型使用的
+ * @param arr
+ * @returns {(number | string)[]}
+ */
+function flatByConvert(arr) {
+  return arr.join(',').split(',').map(v => parseInt(v) || v);
+}
+
+
+
+// 以下是测试 -----------------------------------------------------------------------------------------------------------
+
+let arr = ['1', 2, [3, ['a', 'b', 'c'], 4], 5, 6, [7, 8, [9, 10, [11, 12]]]];
+
+console.log(flat(arr));
+console.log(flaten(arr));
+console.log(flatByConvert(arr));

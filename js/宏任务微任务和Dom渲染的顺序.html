@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dom</title>
+</head>
+<body>
+<script>
+    // 微任务在 Dom 渲染前触发，宏任务在 Dom 渲染后触发
+
+    const div = document.createElement('div');
+    div.innerHTML = '一段文本';
+    window.document.body.append(div);
+
+    // 微任务
+    Promise.resolve().then(() => {
+      console.log(document.querySelector('div').innerHTML);
+      alert('Promise'); // dom 渲染了吗 ？
+    });
+
+    // 宏任务
+    setTimeout(() => {
+      console.log(document.querySelector('div').innerHTML);
+      alert('setTimeout'); // dom 渲染了吗 ？
+    });
+
+</script>
+</body>
+</html>

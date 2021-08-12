@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>searchQuery</title>
+</head>
+<body>
+
+<script>
+
+  /**
+   * 获取 URL 中某个参数的值，写这个主要是为了练习正则表示式，熟悉 match 方法的返回值
+   * @param key
+   * @returns {string | null}
+   * @example search = '?a=1&b=2&c=3'
+   */
+  const searchQuery = function (key) {
+    const search = location.search.substr(1);
+
+    // 使正则表达式匹配 'a=1&'、'&b=2&'、'&c=3' 这样的字符串
+    const reg = new RegExp(`(^|&)${key}=([^&]*)(&|$)`, 'i');
+    const res = search.match(reg);
+
+    // 看看 match 方法的返回值
+    console.log('res', res);
+
+    if (!res) {
+      return null;
+    }
+
+    return res[2];
+  }
+
+  /**
+   * 使用新的 API URLSearchParams，不过新 API 的兼容性不好
+   * @param key
+   * @returns {string | null}
+   */
+  const searchQuery_2 = function (key) {
+    const search = location.search;
+    const p = new URLSearchParams(search);
+    return p.get(key);
+  }
+
+
+
+  // 以下是测试 ---------------------------------------------------------------------------------------------------------
+
+  // 自己在 url 中加下 ?a=1&b=2&c=3 参数试下
+  console.log(searchQuery('b'));
+  console.log(searchQuery_2('b'));
+
+</script>
+
+</body>
+</html>

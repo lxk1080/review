@@ -5,46 +5,55 @@
     <title>Grail</title>
     <!--利用 float属性 + 负margin值 + 相对定位 实现-->
     <style>
-        .Grail {
+        .box {
             min-width: 700px;
         }
-        header,footer {
+        header, footer {
             height: 100px;
+            background: #eeeeee;
         }
+        .left {
+            background: #aaaaaa;
+        }
+        .middle {
+            background: #999999;
+        }
+        .right {
+            background: #cccccc;
+        }
+
+        /* 以下为核心代码 */
         .container {
             height: 300px;
-            padding: 0 200px;
+            padding-left: 150px;
+            padding-right: 200px;
         }
-        .middle,.left,.right {
+        .col {
+            height: 100%;
             float: left;
-            height: 300px;
         }
         .middle {
             width: 100%;
         }
-        .left,.right {
-            position: relative;
-            width: 200px;
-        }
         .left {
+            position: relative;
+            width: 150px;
             margin-left: -100%;
-            left: -200px;
+            right: 150px;
         }
         .right {
-            margin-left: -200px;
-            right: -200px;
+            width: 200px;
+            margin-right: -200px;
         }
     </style>
 </head>
-<body class="Grail">
-    <header style="background: #00B7FF">header</header>
+<body class="box">
+    <header>header</header>
     <div class="container">
-        <div class="middle" style="background: #434563;">middle</div>
-        <div class="left" style="background: #238893;">left</div>
-        <div class="right" style="background: #8914d6;">right</div>
+        <div class="col middle">middle</div> <!-- 写在上面是为了首先加载 -->
+        <div class="col left">left</div>
+        <div class="col right">right</div>
     </div>
-    <footer style="background: #71a629;">footer</footer>
-
-    <a href="https://www.zhihu.com/question/21504052">圣杯布局和双飞翼布局的区别</a>
+    <footer>footer</footer>
 </body>
 </html>

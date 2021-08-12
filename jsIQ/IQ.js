@@ -1,3 +1,4 @@
+
 // 获取随机数（包括min和max）
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min)
@@ -12,7 +13,7 @@ function shuffle(arr) {
     newArr[i] = newArr[j];
     newArr[j] = tmp;
   }
-  return newArr
+  return newArr;
 }
 
 // 防抖函数（调用后 在计时完成后执行函数，若在延迟时间内再次调用，则重新计时）
@@ -20,11 +21,28 @@ function debounce(func, delay) {
   let timer;
   return function (...args) {
     if (timer) {
-      clearTimeout(timer)
+      clearTimeout(timer);
     }
     timer = setTimeout(() => {
-      func.apply(this, args)
+      func.apply(this, args);
+      clearTimeout(timer);
+      timer = null;
     }, delay);
+  }
+}
+
+// 节流函数（每隔一个时间段才能再次调用）
+function throttle(func, time) {
+  let timer;
+  return function(...args) {
+    if (timer) {
+      return;
+    }
+    timer = setTimeout(() => {
+      func.apply(this, args);
+      clearTimeout(timer);
+      timer = null;
+    }, time)
   }
 }
 
@@ -44,26 +62,9 @@ function debouncePro(func, delay, time) {
     }
     timer = setTimeout(() => {
       func.apply(this, args)
+      clearTimeout(timer)
+      timer = null
     }, delay)
-  }
-}
-
-// 节流函数（第一次调用立即执行，以后每隔一个时间段才能再次调用）
-function throttle(func, time) {
-  let timer, firstTime = true;
-  return function(...args) {
-    if (firstTime) {
-      func.apply(this, args);
-      return firstTime = false;
-    }
-    if (timer) {
-      return false;
-    }
-    timer = setTimeout(() => {
-      func.apply(this, args);
-      clearTimeout(timer);
-      timer = null;
-    }, time)
   }
 }
 

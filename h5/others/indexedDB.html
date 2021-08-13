@@ -1,31 +1,47 @@
 <!DOCTYPE html>
-<html>
+<!--suppress JSCheckFunctionSignatures -->
+<html lang="zh">
 <head>
   <title>IndexedDB</title>
   <meta charset="UTF-8">
-  <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+</head>
+<body>
+  <form>
+    <label for="id">Id </label><input type="text" name="id" id="id"/><br><br>
+    <label for="name">Name </label><input type="text" name="name" id="name"/><br><br>
+    <button type="button" name="addBtn" id="addBtn">Add</button>
+    <button type="button" name="removeBtn" id="removeBtn">Remove</button>
+    <button type="button" name="getBtn" id="getBtn">Get</button>
+    <button type="button" name="updateBtn" id="updateBtn">Update</button>
+  </form>
+  <br>
+  <div id="result"></div>
+
+  <!-- 以下是 script -->
+
+  <script type="text/javascript" src="../../helpers/jquery-1.10.2.min.js"></script>
   <script type="text/javascript">
     $(document).ready(function () {
       window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
       let request, db;
       const data=[{
-          id: '1',
-          name: "Byron",
-          age: 24
+        id: '1',
+        name: "Byron",
+        age: 24
       },{
-          id: '2',
-          name: "Frank",
-          age: 30
+        id: '2',
+        name: "Frank",
+        age: 30
       },{
-          id: '3',
-          name: "Aaron",
-          age: 26
+        id: '3',
+        name: "Aaron",
+        age: 26
       },{
-          id: 'r1',
-          name: "aaa"
+        id: 'r1',
+        name: "aaa"
       },{
-          id: 'r2',
-          name: "bbb"
+        id: 'r2',
+        name: "bbb"
       }];
 
       // 1. 判断浏览器是否支持indexedDB
@@ -33,59 +49,79 @@
         console.log("Your Browser does not support IndexedDB");
       }
 
-      // 2. 打开一个IndexedDB数据库（这个过程是异步的）
-      // IndexedDB需要你创建一个请求来打开它
-      // 第一个参数是数据库的名称，第二个参数是数据库的版本号。版本号可以在升级数据库时用来调整数据库结构和数据。
+      // 2. 创建一个 IndexedDB 数据库（这个过程是异步的）
+      // IndexedDB 需要你创建一个 request 来打开它
+      // 第一个参数是数据库的名称，第二个参数是数据库的版本号。版本号可以在升级数据库时用来调整数据库结构和数据
       request = window.indexedDB.open("testDB", 1);
 
-      // onupgradeneeded事件在第一次打开页面初始化数据库时会被调用，或在当有版本号变化时
-      // 所以，应该在onupgradeneeded函数里创建存储数据，keyPath: 主键，存储的数据一定要带有主键
+      // onupgradeneeded 事件在第一次打开页面初始化数据库时会被调用，或在当有版本号变化时
+      // 所以，应该在 onupgradeneeded 函数里创建存储数据，keyPath: 主键，存储的数据一定要带有主键
       request.onupgradeneeded = function (event) {
         console.log("Upgrading");
+
+        // 获取 db
         db = event.target.result;
-        // 创建一个store，类似于关系型数据库中的创建一个表
-        const objectStore = db.createObjectStore("students", {keyPath: "id"});
+
+        // 创建一个 store，类似于关系型数据库中的创建一个表
+        const objectStore = db.createObjectStore('students', {
+          keyPath: 'id',
+        });
+
         for (let i = 0; i < data.length; i++) {
-            request = objectStore.add(data[i])
-            request.onsuccess = function() {
-                console.log('数据已存入数据库')
-            };
-            request.onerror = function () {
-                console.error('数据库中已有该数据')
-            }
+          request = objectStore.add(data[i]);
+
+          request.onsuccess = function() {
+            console.log('数据已存入数据库');
+          };
+
+          request.onerror = function () {
+            console.error('数据库中已有该数据');
+          }
         }
       }
+
       // 如果没有版本号变化，而且页面之前被打开过，会触发一个onsuccess事件
       request.onsuccess = function (event) {
         console.log("Success opening DB");
         db = event.target.result;
       }
+
       request.onerror = function (event) {
         console.log("Error opening DB", event);
       }
 
-      // 3. 往ObjectStore里新增对象
-      // 在indexedDB里任何对象的增删改查都需要放在事务里执行，并要求事务具有读写权限
+      // 3. 往 ObjectStore 里新增对象
+      // 在 indexedDB 里任何对象的增删改查都需要放在事务里执行，并要求事务具有读写权限
+      // noinspection JSCheckFunctionSignatures
       $("#addBtn").click(function () {
         const id = $("#id").val();
         const name = $("#name").val();
 
+        // 搞一个事务
         const transaction = db.transaction(["students"], "readwrite");
-        transaction.oncomplete = function (event) {
+
+        transaction.oncomplete = function () {
           console.log("Success :)");
         };
-        transaction.onerror = function (event) {
+
+        transaction.onerror = function () {
           console.log("Error :(");
         };
 
+        // 获取 students store，相当于关系型数据库中的拿表
         const objectStore = transaction.objectStore("students");
 
-        const res = objectStore.add({id: id, name: name});
+        const res = objectStore.add({
+          id: id,
+          name: name,
+        });
+
         res.onsuccess = function () {
-            $("#result").html("Add : Success");
+          $("#result").html("Add : Success");
         }
+
         res.onerror = function () {
-            $("#result").html("Add : Error");
+          $("#result").html("Add : Error");
         }
       });
 
@@ -100,8 +136,9 @@
       $("#getBtn").click(function () {
         const id = $("#id").val();
         const request = db.transaction(["students"], "readwrite").objectStore("students").get(id);
-        request.onsuccess = function (event) {
-          $("#result").html("Name : " + request.result.name);
+
+        request.onsuccess = function () {
+          $("#result").html("Name : " + (request.result ? request.result.name : null));
         };
       });
 
@@ -109,28 +146,19 @@
       $("#updateBtn").click(function () {
         const id = $("#id").val();
         const name = $("#name").val();
+
         const transaction = db.transaction(["students"], "readwrite");
         const objectStore = transaction.objectStore("students");
         const request = objectStore.get(id);
-        request.onsuccess = function (event) {
-          $("#result").html("Updating : " + request.result.name + " to " + name);
+
+        request.onsuccess = function () {
           request.result.name = name;
           objectStore.put(request.result);
+
+          $("#result").html("Updating : " + request.result.name + " to " + name);
         }
       })
     })
   </script>
-</head>
-<body>
-  <form>
-    Id　  <input type="text" name="id" id="id"/><br><br>
-    Name <input type="text" name="name" id="name"/><br><br>
-    <button type="button" name="addBtn" id="addBtn">Add</button>
-    <button type="button" name="removeBtn" id="removeBtn">Remove</button>
-    <button type="button" name="getBtn" id="getBtn">Get</button>
-    <button type="button" name="updateBtn" id="updateBtn">Update</button>
-  </form>
-  <br>
-  <div id="result"></div>
 </body>
 </html>

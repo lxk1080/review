@@ -13,7 +13,7 @@ var Global = {};  //命名空间
 Global.Interface = function (name, methods) {
 
   //判断接口的参数个数
-  if (arguments.length != 2) {
+  if (arguments.length !== 2) {
     throw new Error('接口实例对象参数长度必须为2');
   }
 

@@ -8,10 +8,10 @@
 
 <div class="item">item</div>
 
-<script src='../jsLib/jquery-1.7.1.min.js'></script>
+<script src='../helpers/jquery-1.10.2.min.js'></script>
 <script>
 
-    // 封装全局函数的插件
+    // 封装对象方法
     ;(function($) {
         $.fn.extend({
             color: function(value) {
@@ -24,9 +24,11 @@
         })
     })(jQuery);
 
-   console.log($('.item').color()) // rgb(0,0,0)
+    const $item = $('.item');
 
-   console.log($('.item').color('red')) // jQuery对象
+   console.log($item.color()); // rgb(0,0,0)
+
+   console.log($item.color('red')); // jQuery对象
 
 </script>
 

@@ -16,13 +16,15 @@
     // 发送数据
     let btn = document.querySelector('#btn')
     let iframe = document.querySelector('#iframe')
+    let response = document.querySelector('.response')
+
     let targetOrigin = 'http://localhost:63342/review/http/pM_b.html' // 这里的源必须是完整域名
+
     btn.addEventListener('click', function () {
         iframe.contentWindow.postMessage('人生就是这样，处同样的位置，有人哭，有人笑，有人沉默', targetOrigin)
     })
 
     // 接收数据
-    let response = document.querySelector('.response')
     window.addEventListener('message', function(event) {
         let data = event.data
         response.innerHTML = data

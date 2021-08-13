@@ -16,7 +16,7 @@
         let data = event.data // 消息
         let origin = event.origin // 消息来源
         let source = event.source // 源window对象
-        if (origin == 'http://localhost:63342') {
+        if (origin === 'http://localhost:63342') {
             text.innerHTML = data
         }
 

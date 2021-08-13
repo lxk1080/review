@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Index</title>
+  <meta charset="UTF-8">
+  <title>Index</title>
 </head>
 <body>
 
@@ -13,56 +13,57 @@
 
 <script>
 
-    var btn = document.querySelector('.btn')
-    var resA = document.querySelector('.resA')
-    var resF = document.querySelector('.resF')
-    var resIE = document.querySelector('.resIE')
-    btn.addEventListener('click', function () {
-        // ajax无刷新上传
-        var urlA = 'http://localhost:3000?name=CORS'
-        var xhr = new XMLHttpRequest()
-        xhr.open('GET', urlA, true)
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    resA.innerHTML = `${xhr.response}（ajax）`
-                }
-            }
+  var btn = document.querySelector('.btn')
+  var resA = document.querySelector('.resA')
+  var resF = document.querySelector('.resF')
+  var resIE = document.querySelector('.resIE')
+
+  btn.addEventListener('click', function () {
+    // ajax
+    var urlA = 'http://localhost:3000?name=CORS'
+    var xhr = new XMLHttpRequest()
+    xhr.open('GET', urlA, true)
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          resA.innerHTML = `${xhr.response}（ajax）`
         }
-        xhr.send()
+      }
+    }
+    xhr.send()
 
-        // IE 下的跨域
-        /*var urlIE = 'http://localhost:3000?name=CORS'
-        var oXDomainRequest = new XDomainRequest()
-        oXDomainRequest.open('GET', urlIE, true)
-        oXDomainRequest.onload = function () {
-            resIE.innerHTML = this.responseText + 'IE'
+    // IE 下的跨域
+    // var urlIE = 'http://localhost:3000?name=CORS'
+    // var oXDomainRequest = new XDomainRequest()
+    // oXDomainRequest.open('GET', urlIE, true)
+    // oXDomainRequest.onload = function () {
+    //     resIE.innerHTML = this.responseText + 'IE'
+    // }
+    // oXDomainRequest.send()
+
+    // fetch
+    var urlF = 'http://localhost:3000'
+    fetch(urlF, {
+      method: 'post',
+      body: 'name=CORS',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    }).then(function (response) {
+      response.text().then((data) => {
+        console.log(response)
+        if (response.status === 200) {
+          resF.innerHTML = `${data}（fetch）`
+        } else {
+          console.log(response.status)
         }
-        oXDomainRequest.send()*/
+      })
+    }).catch(function () {
+      // 这里只能捕获到一些网络错误或连接断开
+      console.log('net error')
+    });
 
-        // fetch
-        var urlF = 'http://localhost:3000'
-        fetch(urlF, {
-            method: 'post',
-            body:  'name=CORS',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        }).then(function (response) {
-            response.text().then((data) => {
-                console.log(response)
-                if (response.status === 200) {
-                    resF.innerHTML = `${data}（fetch）`
-                } else {
-                    console.log(response.status)
-                }
-            })
-        }).catch(function (err) {
-            // 这里只能捕获到一些网络错误或连接断开
-            console.log('net error')
-        });
-
-    })
+  })
 
 </script>
 

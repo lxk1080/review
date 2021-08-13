@@ -8,11 +8,11 @@
 <body>
 
 	<input type="button" value="随机选择" id="input1">
-    <div id="div1"></div>
+  <div id="div1"></div>
 
 	<script>
 
-	//触发历史管理（浏览器的后退箭头） 1.通过跳转页面  2.hash   3.pushState
+	//触发历史管理（浏览器的后退箭头） 1.通过跳转页面  2.hash  3.pushState
 
 	var oinput = document.getElementById("input1");
 	var odiv = document.getElementById("div1");
@@ -22,28 +22,31 @@
 	var json = {};
 
 	oinput.onclick = function(){
-		var arr = randomNum(30,7);
-		odiv.innerHTML = arr;
-		var num = Math.random();    //用随机数代表hash值
-		window.location.hash = num;
+		var arr = randomNum(30, 7);
+		odiv.innerHTML = arr + '';
+
+		var num = Math.random(); // 用随机数代表hash值
+		window.location.hash = num + '';
 		json[num] = arr;
 	}
 
-	window.onhashchange = function(){   //hash值改变时
+  // 点击浏览器的回退按钮，hash值会改变
+	window.onhashchange = function() {
 		odiv.innerHTML = json[window.location.hash.substring(1)];
 	}
 
-	//利用pushState查找历史记录（要在服务器下运行）
-	/*
-	oinput.onclick = function(){
-		var arr = randomNum(30,7);
-		odiv.innerHTML = arr;
-		//三个参数：数据  标题（没有实现）  网址（可选，网址是虚假的，刷新页面会出错）
-		window.history.pushState(arr,'',Math.random());
-	}
-	window.onpopstate = function(ev){
-		odiv.innerHTML = ev.state;
-	}*/
+	// // 利用pushState查找历史记录（要在服务器下运行）
+	// oinput.onclick = function(){
+	// 	var arr = randomNum(30,7);
+	// 	odiv.innerHTML = arr;
+  //
+	// 	// 三个参数：数据  标题（没有实现）  网址（可选，网址是虚假的，刷新页面会出错）
+	// 	window.history.pushState(arr,'', Math.random() + '');
+	// }
+  //
+	// window.onpopstate = function(ev) {
+	// 	odiv.innerHTML = ev.state;
+	// }
 
 	function randomNum(iAll,iNow){
 		var arr = [];
@@ -52,12 +55,11 @@
 			arr.push(i);
 		}
 		for(var i = 0; i<iNow; i++){
-			var a = arr.splice(Math.floor(Math.random()*arr.length),1);
+			var a = arr.splice(Math.floor(Math.random()*arr.length), 1);
 			newArr.push(a);
 		}
 		return newArr;
 	}
-
 
 	</script>
 

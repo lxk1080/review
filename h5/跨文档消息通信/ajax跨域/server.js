@@ -6,7 +6,7 @@ let app = express()
 app.use(bodyParser.urlencoded({extended: false}))
 
 app.use('/', function (req, res ,next) {
-    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Origin", "*"); // CORS 主要是后端加这一句
     next()
 })
 

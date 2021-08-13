@@ -1,4 +1,9 @@
 
+# RR
+
+> review record，对应 review 里的 reviewNotes，以 cloud
+更新为主，reviewNotes 仅仅作为只读文件，其它相同类型的 md 文件同理
+
 ## html
 
 1. 理解语义化
@@ -571,9 +576,6 @@
 7. 错误监控，参考文件：js/错误监控.html
 
 8. requestAnimationFrame(animate)，传入一个动画函数，让其每秒 60 帧执行，以达到最流畅的程度
-
-
-
 
 
 

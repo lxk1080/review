@@ -491,6 +491,36 @@
         - 使用http头：X-Frame-Options: DENY，浏览器会拒绝当前页面加载任何 frame 页面
         - 过滤用户提交文本中的敏感标签，如 img
 
+## algorithm
+
+1. 排序
+2. 堆栈、队列、链表
+3. 递归
+4. 波兰式和逆波兰式
+
+## mvvm
+
+1. 双向绑定
+    - defineProperty
+    - /js/双向绑定js核心api.js
+2. 设计模式
+    - 观察者模式
+    - /js/观察者模式(双向绑定核心设计模式).html
+3. 生命周期
+    - /【图】/vue生命周期.jpg
+    - /js/vue生命周期.html
+    - /resource/vue/详解vue生命周期.html
+4. 源码分析
+    - data：要监听的对象
+    - Observer：监听器
+    - dep：订阅者列表，存储着 watcher 对象，对应着 data 对象某一个 key 值（每个 key 值有着独立的 dep 对象）
+    - watcher：订阅者对象
+    - 流程：Observer 监听着 data 对象，data 对象发生改变时，Observer 通知 dep 对象，dep 遍历自身所有的 watcher，告诉 watcher，data 对象发生了改变，watcher 得到了消息后，调用自身的更新函数，以获得 data 对象更新后的数据
+    - 编译：
+        - 先将所有节点转化为 dom 片段（documentFragment），在 dom 片段中编译模板（vue指令、事件、表达式...），再将编译好的 html 一次性挂载到真正的 dom 上
+        - 在编译过程中如果遇到 data 对象中监听的属性，则会实例化一个 watcher 对象，实例化过程中会将此对象添加到该属性对应的 watcher 列表（dep）中，以后该属性的值改变时，此 watcher 对象会得到通知并进行 dom 的更新
+        - 参见：/mvvm
+
 ## tools
 
 1. Git，参考文件《 Git record.md 》
@@ -573,7 +603,7 @@
     // 而最后函数内不定义 a，那就直接在上级作用域寻找 a，所以打出 100
 ```
 
-7. 错误监控，参考文件：js/错误监控.html
+7. 错误监控，参考文件：/js/错误监控.html
 
 8. requestAnimationFrame(animate)，传入一个动画函数，让其每秒 60 帧执行，以达到最流畅的程度
 

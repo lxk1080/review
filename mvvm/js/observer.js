@@ -17,6 +17,7 @@ Observer.prototype = {
             enumerable: false,
             configurable: true,
             // 在watcher对象被实例化时，会调用get方法，并在此时将watcher添加到dep中
+            // 很合理，只有在使用的时候，才去做一个监听
             get: function getter() {
                 if (Dep.target) {
                     dep.addSub(Dep.target);

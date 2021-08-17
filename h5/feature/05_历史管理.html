@@ -1,65 +1,79 @@
 <!doctype html>
-<html>
+<html lang="zh">
 <head>
 <meta charset="utf-8">
 <title>无标题文档</title>
 </head>
-
 <body>
 
-	<input type="button" value="随机选择" id="input1">
+	<input type="button" value="hash 随机选择" id="input1">
   <div id="div1"></div>
+
+  <hr />
+
+  <input type="button" value="history 随机选择" id="input2">
+  <div id="div2"></div>
 
 	<script>
 
-	//触发历史管理（浏览器的后退箭头） 1.通过跳转页面  2.hash  3.pushState
+    //触发历史管理（浏览器的后退箭头） 1.通过跳转页面  2.hash  3.pushState
 
-	var oinput = document.getElementById("input1");
-	var odiv = document.getElementById("div1");
+    var oinput1 = document.getElementById("input1");
+    var odiv1 = document.getElementById("div1");
 
-	//利用hash值查找历史记录
+    var oinput2 = document.getElementById("input2");
+    var odiv2 = document.getElementById("div2");
 
-	var json = {};
+    // 1、利用hash值查找历史记录 -------------------------------------------------------------------------------------------
 
-	oinput.onclick = function(){
-		var arr = randomNum(30, 7);
-		odiv.innerHTML = arr + '';
+    var json = {};
 
-		var num = Math.random(); // 用随机数代表hash值
-		window.location.hash = num + '';
-		json[num] = arr;
-	}
+    oinput1.onclick = function() {
+      var arr = randomNum(30, 7);
+      odiv1.innerHTML = arr + '';
 
-  // 点击浏览器的回退按钮，hash值会改变
-	window.onhashchange = function() {
-		odiv.innerHTML = json[window.location.hash.substring(1)];
-	}
+      var num = Math.random() + ''; // 用随机数代表hash值
+      window.location.hash = num ;
+      json[num] = arr;
+    }
 
-	// // 利用pushState查找历史记录（要在服务器下运行）
-	// oinput.onclick = function(){
-	// 	var arr = randomNum(30,7);
-	// 	odiv.innerHTML = arr;
-  //
-	// 	// 三个参数：数据  标题（没有实现）  网址（可选，网址是虚假的，刷新页面会出错）
-	// 	window.history.pushState(arr,'', Math.random() + '');
-	// }
-  //
-	// window.onpopstate = function(ev) {
-	// 	odiv.innerHTML = ev.state;
-	// }
+    // js修改hash
+    // 手动修改
+    // 浏览器的前进、后退
+    window.onhashchange = function() {
+      odiv1.innerHTML = json[window.location.hash.substring(1)];
+    }
 
-	function randomNum(iAll,iNow){
-		var arr = [];
-		var newArr = [];
-		for(var i = 0; i<iAll; i++ ){
-			arr.push(i);
-		}
-		for(var i = 0; i<iNow; i++){
-			var a = arr.splice(Math.floor(Math.random()*arr.length), 1);
-			newArr.push(a);
-		}
-		return newArr;
-	}
+    // 2、利用 pushState 查找历史记录（需要服务器配合，永远返回 index.html，否则刷新会404）---------------------------------------
+
+    oinput2.onclick = function(){
+      var arr = randomNum(30,7);
+      odiv2.innerHTML = arr + '';
+
+      // 三个参数：state、title（一般都是空字符串）、path
+      window.history.pushState(arr, '', Math.random() + '');
+    }
+
+    // 可以监听浏览器的前进、后退
+    // hash的改变也会触发该事件
+    window.onpopstate = function(ev) {
+      odiv2.innerHTML = ev.state;
+    }
+
+    // 辅助函数 ----------------------------------------------------------------------------------------------------------
+
+    function randomNum(iAll,iNow){
+      var arr = [];
+      var newArr = [];
+      for(var i = 0; i<iAll; i++ ){
+        arr.push(i);
+      }
+      for(var i = 0; i<iNow; i++){
+        var a = arr.splice(Math.floor(Math.random()*arr.length), 1);
+        newArr.push(a);
+      }
+      return newArr;
+    }
 
 	</script>
 

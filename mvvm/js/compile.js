@@ -104,15 +104,15 @@ Compile.prototype = {
         node.value = typeof value === 'undefined' ? '' : value;
     },
     isDirective: function (attr) {
-        return attr.indexOf('v-') == 0;
+        return attr.indexOf('v-') === 0;
     },
     isEventDirective: function (dir) {
         return dir.indexOf('on:') === 0;
     },
     isElementNode: function (node) {
-        return node.nodeType == 1;
+        return node.nodeType === 1;
     },
     isTextNode: function (node) {
-        return node.nodeType == 3;
+        return node.nodeType === 3;
     }
 };

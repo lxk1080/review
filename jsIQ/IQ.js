@@ -83,7 +83,7 @@ function chooseSort(arr) {
   return arr
 }
 
-// 冒泡排序（两个两个的比，大的放到后面， 总共循环 len - 1 次，每次循环比较若干次）
+// 冒泡排序（两个两个的比，大的放到后面，就和冒泡一样，总共循环 len - 1 次，每次循环比较若干次）
 function bubbleSort(arr) {
   let len = arr.length;
   for (let i = 0; i < len - 1; i++) {

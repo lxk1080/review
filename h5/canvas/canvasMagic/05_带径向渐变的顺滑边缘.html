@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>canvas</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+    body {
+      text-align: center;
+    }
+    .c {
+      border: #cccccc solid 1px;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="c" class="c" width="600" height="400">
+    不支持
+  </canvas>
+
+  <script>
+
+    /**
+     * currentPosition 画布中的位置
+     * @param e
+     * @returns {{x: number, y: number}}
+     */
+    function cp(e) {
+      return {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      }
+    }
+
+    /**
+     * 两点之间的距离
+     * @param point1
+     * @param point2
+     * @returns {number}
+     */
+    function distanceBetween(point1, point2) {
+      return Math.sqrt(Math.pow(point2.x - point1.x, 2) + Math.pow(point2.y - point1.y, 2));
+    }
+
+    /**
+     * point1 与 point2 的连线与 y 轴负方向的角度
+     * 如果第一个参数是 y，第二个参数是 x，则是 point1 与 point2 的连线与 x 轴正方向的角度
+     * @param point1
+     * @param point2
+     * @returns {number}
+     */
+    function angleBetween(point1, point2) {
+      return Math.atan2( point2.x - point1.x, point2.y - point1.y );
+    }
+
+    const el = document.getElementById('c');
+    const rect = el.getBoundingClientRect();
+    const ctx = el.getContext('2d');
+    let isDrawing, lastPoint;
+
+    ctx.lineJoin = ctx.lineCap = 'round';
+
+    el.onmousedown = function(e) {
+      isDrawing = true;
+      lastPoint = { x: cp(e).x, y: cp(e).y };
+    };
+
+    el.onmousemove = function(e) {
+      if (!isDrawing) return;
+
+      var currentPoint = { x: cp(e).x, y: cp(e).y };
+      var dist = distanceBetween(lastPoint, currentPoint);
+      var angle = angleBetween(lastPoint, currentPoint);
+
+      for (var i = 0; i < dist; i+=5) {
+
+        x = lastPoint.x + (Math.sin(angle) * i);
+        y = lastPoint.y + (Math.cos(angle) * i);
+
+        var radgrad = ctx.createRadialGradient(x,y,10,x,y,20);
+
+        radgrad.addColorStop(0, '#000');
+        radgrad.addColorStop(0.5, 'rgba(0,0,0,0.5)');
+        radgrad.addColorStop(1, 'rgba(0,0,0,0)');
+
+        ctx.fillStyle = radgrad;
+        ctx.fillRect(x-20, y-20, 40, 40);
+      }
+
+      lastPoint = currentPoint;
+    };
+
+    el.onmouseup = function() {
+      isDrawing = false;
+    };
+
+  </script>
+
+</body>
+</html>

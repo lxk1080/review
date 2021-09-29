@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>canvas</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+    body {
+      text-align: center;
+    }
+    .c {
+      border: #cccccc solid 1px;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="c" class="c" width="600" height="400">
+    不支持
+  </canvas>
+
+  <script>
+
+    /**
+     * currentPosition 画布中的位置
+     * @param e
+     * @returns {{x: number, y: number}}
+     */
+    function cp(e) {
+      return {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      }
+    }
+
+    const el = document.getElementById('c');
+    const ctx = el.getContext('2d');
+    const rect = el.getBoundingClientRect();
+    let isDrawing;
+
+    el.onmousedown = function(e) {
+      isDrawing = true;
+
+      ctx.lineWidth = 10; // add
+      ctx.lineJoin = ctx.lineCap = 'round'; // add
+
+      ctx.moveTo(cp(e).x, cp(e).y);
+    };
+
+    el.onmousemove = function(e) {
+      if (isDrawing) {
+        ctx.lineTo(cp(e).x, cp(e).y);
+        ctx.stroke();
+      }
+    };
+
+    el.onmouseup = function() {
+      isDrawing = false;
+    };
+
+  </script>
+
+</body>
+</html>

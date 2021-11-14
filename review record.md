@@ -147,10 +147,13 @@
 13. Dom 事件也是基于 Event Loop 机制实现的，可以这么理解，代码执行到 setTimeout 这一句时 ，进入了浏览器的计时模块，由计时模块计算触发时间并将回调函数放到 Callback Queue，而执行到 Dom 事件绑定时，调用了浏览器的事件模块，当我们点击时，事件模块将回调函数放到 Callback Queue，最后当 Call Stack 为空时，由 Event Loop 将这些函数放到 Call Stack 执行。
 
 14. 关于 Promise 的状态以及链用机制
+    - Promise 函数本身是立即执行的，它不是异步的，它只是用来处理异步代码
     - Promise 三种状态，pendding、resolved、rejected
     - resolved 状态触发 then
     - rejected 状态触发 catch
-    - then 和 catch 正常情况下返回 resolved 状态，遇到报错则返回 rejected 状态（很重要！），然后再由这个状态决定触发 then 或者 catch。
+    - then 和 catch 正常情况下返回 resolved 状态，遇到报错则返回 rejected 状态（很重要！），然后再由这个状态决定触发 then 或者 catch
+    - 当 then 里面 return 一个普通的字符串或数字时，下一个 then 中接收的就是这个字符串或数字，没有 return 的话，则是 undefined
+    - 当 then 里面 return 一个 Promise 时，下一个 then 或 catch 就会变成这个 Promise 的 then 和 catch，然后规则同上
 
 15. async/await 和 Promise 的关系
     - 执行 async 函数，返回的是 Promise 对象
@@ -606,6 +609,8 @@
 7. 错误监控，参考文件：/js/错误监控.html
 
 8. requestAnimationFrame(animate)，传入一个动画函数，让其每秒 60 帧执行，以达到最流畅的程度
+
+9. 当采用无分号代码风格的时候，只需要注意：当一行代码是以 ( [ ` 开头的时候，需要在前面补一个分号，避免语法错误
 
 
 

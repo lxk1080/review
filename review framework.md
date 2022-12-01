@@ -388,6 +388,7 @@
         <Route path="/page" component={<Component />} />
         <Link to="/page">首页</Link>
     ```
+    - 注意：在切换路由时，'/list' 和 'list' 的区别在于：后者只会替换最后一级路由。在有多级路由的时候需要注意
 
 18. vdom 和 diff 算法，核心实现的理念和其他的 vdom 实现都差不多，参考 Vue 即可
 

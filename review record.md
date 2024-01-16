@@ -7,7 +7,7 @@
 ## html
 
 1. 理解语义化
-    
+
     - 让人更容易读懂（增加代码可读性）
     - 让搜索引擎更容易读懂（SEO）
 
@@ -22,7 +22,7 @@
     - margin-right: 右侧元素左移，在外界看来，目标元素的宽度变小了（宽度占的地方更少了，如果 margin-right 为负的自身宽度，则此元素在宽度上不占空间）
     - margin-top: 自身上移
     - margin-bottom: 下方元素上移，与 margin-right 同理
-    
+
 4. BFC (Block format context)，块级格式化上下文
     - BFC 原理（渲染规则）
         - BFC 是一个独立的容器，它外面的元素不会影响里面的，反之亦然
@@ -39,7 +39,7 @@
     - 三栏布局，中间一栏最新加载或渲染（内容为重）
     - 两侧内容固定，中间内容随着宽度自适应
     - 一般都是 PC 网页
-    
+
 6. 圣杯布局和双飞翼布局的异同点：
     - 都是使用 float 左浮动，左右都用到了 margin 复位
     - 圣杯布局使用 padding 为左右腾出空间，左右使用 margin 复位，左边还需要用到定位 position
@@ -140,9 +140,14 @@
     - 同步代码，一行一行放到 Call Stack 执行
     - 遇到异步，会先“记录”下（由某个JS模块或浏览器模块处理），等待时机（Promise、定时、网络请求等）
     - 时机到了，微任务移动到 Micro Task Queue，宏任务移动到 Callback Queue
-    - 如果 Call Stack 为空（同步代码执行完），先执行微任务，再尝试 Dom 渲染（如果 Dom 结构已更新，则触发渲染），最后触发 Event Loop 开始轮询
-    - 轮询查找 CallBack Queue，如有任务，则移动到 Call Stack 执行
-    - 然后继续轮询查找（永动机）
+    - 如果 Call Stack 为空（同步代码执行完），先执行微任务，再尝试 Dom 渲染（如果 Dom 结构已更新，则触发渲染），最后执行宏任务
+    - 需要注意的是，宏任务每执行完一个，就会立即去检查是否有微任务。如果有，则先执行完所有的微任务，然后再执行下一个宏任务。如果没有，则直接执行下一个宏任务
+    - 所有宏任务都执行完后，继续事件循环（Event Loop）
+        - 轮询查找 CallBack Queue，如有任务，则移动到 Call Stack 执行，循环以上步骤
+    - 最后来理解一下：
+        - 万变不离其宗的顺序：**同步 => 微任务 => 宏任务**
+        - 为什么宏任务每执行完一个就去检查微任务？
+            - 宏任务执行时，是把代码放入到同步队列执行的，而同步代码执行完干嘛？是去执行微任务。而微任务的代码同样是放到同步队列执行的，同步执行完后，又去执行微任务，所以是所有微任务都执行完了，再去执行宏任务，然后宏任务中的代码放入同步队列，继续上面的步骤，形成了一个循环
 
 13. Dom 事件也是基于 Event Loop 机制实现的，可以这么理解，代码执行到 setTimeout 这一句时 ，进入了浏览器的计时模块，由计时模块计算触发时间并将回调函数放到 Callback Queue，而执行到 Dom 事件绑定时，调用了浏览器的事件模块，当我们点击时，事件模块将回调函数放到 Callback Queue，最后当 Call Stack 为空时，由 Event Loop 将这些函数放到 Call Stack 执行。
 
@@ -152,15 +157,27 @@
     - resolved 状态触发 then
     - rejected 状态触发 catch
     - then 和 catch 正常情况下返回 resolved 状态，遇到报错则返回 rejected 状态（很重要！），然后再由这个状态决定触发 then 或者 catch
-    - 当 then 里面 return 一个普通的字符串或数字时，下一个 then 中接收的就是这个字符串或数字，没有 return 的话，则是 undefined
-    - 当 then 里面 return 一个 Promise 时，下一个 then 或 catch 就会变成这个 Promise 的 then 和 catch，然后规则同上
+    - 当 then 里面 return 一个 Promise 时，可以这么理解：下一个 then 或 catch 就会变成这个 Promise 的 then 和 catch，然后规则同上
+    - 当 then 里面 return 一个普通的字符串或数字时（其实是隐式的将字符串或数字转化成了 Promise），下一个 then 中接收的就是这个字符串或数字，没有 return 的话，则是 undefined
 
-15. async/await 和 Promise 的关系
+15. Promise 中 resolve 和 reject 的使用场景？
+    - 一般来讲，使用场景大致分以下三种情况：
+        - 1、调用者只要结果，不关心你有没有错（resolve）
+        - 2、调用者关心你有没有错，但是不关心你为什么错（resolve + reject）
+        - 3、调用者关心你有没有错，还关心你为什么错（也是 resolve + reject）
+    - 单独使用 Promise.resolve() 没问题，但是 Promise.reject() 会报未捕获异常
+    - 只要使用了 reject，后续必须要加 catch 处理，否则会报异常，说你不捕获：Uncaught (in promise)，但是这个报错并不会中断程序的执行
+    - 所以 reject 的作用：
+        - 向后传递异常信息，以供在不同场景使用时可以输出不同的信息（对应上面的情况 2 ）
+        - 一个方法内可能有多个位置会 reject，那么可以在外层精准捕获错误信息（对应上面的情况 3 ）
+    - 事实上，可以完全不使用 reject 只使用 resolve，resolve 和 reject 分别会导向 then 和 catch，这种设计，可能是为了让代码看起来更加优雅吧。当然了，catch() 函数还是很重要的，可以直接捕获上游的执行错误，catch 和 reject 是独立的，只不过 catch 也可以为 reject 所用而已，不要把 catch 和 reject 混为一谈
+
+16. async/await 和 Promise 的关系
     - 执行 async 函数，返回的是 Promise 对象
     - await 相当于 Promise 的 then，处理不了 rejected 状态
     - try...catch 可捕获异常，代替了 Promise 的 catch
 
-16. 关于异步写法的发展和一些思考
+17. 关于异步写法的发展和一些思考
     - 解决异步回调的嵌套问题，callback hell
     - 提出 Promise，链式调用，但也是基于回调函数
     - 再提出 async/await，用同步语法写异步代码，彻底消灭回调函数
@@ -168,13 +185,14 @@
     - js 是单线程的，异步总归是是基于 event loop 的
     - 异步的本质还是回调函数， async/await 只是语法糖，但是很香！
 
-17. 宏任务（macroTask）和微任务（microTask）
+18. 宏任务（macroTask）和微任务（microTask）
     - 宏任务：setTimeout、setInterval、Ajax、Dom事件。一般是与浏览器相关的。
         - 浏览器规定的，调用浏览器的处理模块，等待时机进入 Callback Queue
     - 微任务: Promise、async/await。一般是与 js 本身相关的。
         - ES6 语法规定的，调用 JS 引擎的处理模块，等待时机进入 Micro Task Queue
     - 微任务执行时机比宏任务要早
     - 微任务在 Dom 渲染前触发，宏任务在 Dom 渲染后触发
+    - 宏任务每执行完一个后，就会检查是否有微任务，如果有，则执行微任务，如果没有，则继续执行宏任务
     - 可能是因为微任务是由 js 引擎执行的，所以 js 引擎在执行完同步任务后就顺便把微任务给做了，而如果先调用浏览器的 API，再回过头来调用 js 引擎执行微任务，这样就比较麻烦，效率低，所以就有了微任务比宏任务先执行之设计
 
 ## Dom
@@ -216,7 +234,7 @@
 9. 网页是如何展示出来的？
     - 加载了哪些资源？
         - html、js、css、媒体文件（图片、视频）
-    
+
     - 加载资源的过程
         - DNS 解析：域名 --> IP 地址。为啥要用域名？
             - 域名更容易记
@@ -348,18 +366,18 @@
     - 传统的 API，把每一个 url 当作一个功能
         - 传统方式更像是一个函数，传递参数
         - get 获取数据，/api/list?pageIndex=2
-        - post 
+        - post
             - 提交数据，/api/create
             - 更新数据，/api/update?id=2
             - 删除数据，/api/delete?id=2
-    
+
     - Restful API，把每一个 url 当作一个唯一的资源
         - 唯一的资源标识，不要用任何动词
         - get 获取数据，/api/list/2
         - post 增加数据，/api/list
         - patch/put 更新数据，/api/list/2
         - delete 删除数据，/api/list/2
-    
+
     - 有什么优点？
         - 轻量，简洁，更符合 http 协议和规范
         - 具有自解释性，面向资源，清晰易懂
@@ -369,7 +387,7 @@
     - http 协议是建立在 TCP/IP 基础上
         - http 1.0 为短连接，发送完数据就断掉
         - http 1.1 为长连接，持续时间大概 30s
-    
+
     - Request Headers
         - Accept 浏览器可接收的数据格式，text/html、image/webp
         - Accept-Encoding 浏览器可接收的压缩算法，gzip、compress
@@ -382,7 +400,7 @@
         - Referer 告诉服务器，请求来自哪里，常用于防盗链
         - If-Modified-Since 协商缓存的时间标识
         - If-None-Match 协商缓存的 Etag 标识
-    
+
     - Response Headers
         - Content-Type 返回的数据格式，application/json
         - Content-Length 返回数据的大小，多少字节，180
@@ -470,7 +488,7 @@
         - 有人查看的话，我轻松收割访问者的 cookie 信息
     - 防御措施：
         - 编码转义，对敏感字符转义处理，例如 < > / --> $lt; $gt; ...
-        
+
 2. XSRF/CSRF（Cross-site request forgery），跨站请求伪造
     - 例如：
         - 你在购物，看中了某个商品，商品 id 是 100

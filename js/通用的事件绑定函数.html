@@ -49,7 +49,7 @@
 
         // 判断一下，点击的元素有可能是委托元素的子元素
         while (curDom !== elem) {
-          if (curDom.matches(selector)) { // matches 是 dom 对象的方法
+          if (curDom.matches(selector)) { // matches 是 dom 对象的方法，用于判断是否匹配特定的 CSS 选择器，返回 true 或 false
             isSelectorOrChildren = true;
             break;
           }

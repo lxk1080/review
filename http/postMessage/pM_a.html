@@ -1,32 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>PM_a</title>
+  <meta charset="UTF-8">
+  <title>PM_a</title>
 </head>
 <body>
 
 <iframe id="iframe" src="PM_b.html" frameborder="1"></iframe>
 
-<button id="btn" type="button">点击</button>
-
 <div class="response"></div>
 
-<script>
-    // 发送数据
-    let btn = document.querySelector('#btn')
-    let iframe = document.querySelector('#iframe')
-    let targetOrigin = 'http://localhost:63342/review/http/pM_b.html' // 这里的源必须是完整域名
-    btn.addEventListener('click', function () {
-        iframe.contentWindow.postMessage('人生就是这样，处同样的位置，有人哭，有人笑，有人沉默', targetOrigin)
-    })
+<button id="btn" type="button">点击</button>
 
-    // 接收数据
-    let response = document.querySelector('.response')
-    window.addEventListener('message', function(event) {
-        let data = event.data
-        response.innerHTML = data
-    })
+<script>
+  // 发送数据
+  const btn = document.querySelector('#btn')
+  const iframe = document.querySelector('#iframe')
+  const response = document.querySelector('.response')
+
+  let count = 0
+  btn.addEventListener('click', function () {
+    // iframe.contentWindow 对应的就是 iframe 自己所在的 window
+    iframe.contentWindow.postMessage(`人生就是这样，处同样的位置，有人哭，有人笑，有人沉默 ${++count}`)
+  })
+
+  // 接收数据
+  window.addEventListener('message', function(event) {
+    response.innerHTML = event.data
+  })
 </script>
 
 </body>

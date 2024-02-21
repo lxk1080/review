@@ -10,6 +10,7 @@
 
 <script>
   let text = document.querySelector('.text')
+  let count = 0
 
   // 接收数据
   window.onhashchange = function () {
@@ -17,7 +18,7 @@
 
     // 发送数据
     try {
-      window.parent.location.hash = '当我们眺望远方的时候，近处的风景便看不清了'
+      window.parent.location.hash = `当我们眺望远方的时候，近处的风景便看不清了 ${++count}`
     } catch (e) {
       // 部分浏览器的安全机制无法修改parent.location.hash
       let ifr = document.createElement('iframe')
@@ -25,7 +26,7 @@
       ifr.src = './hash_proxy.html'
       document.body.appendChild(ifr)
       setTimeout(() => {
-        ifr.src = './hash_proxy.html#当我们眺望远方的时候，近处的风景便看不清了'
+        ifr.src = `./hash_proxy.html#当我们眺望远方的时候，近处的风景便看不清了呀 ${++count}`
       }, 60)
     }
   }

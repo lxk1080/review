@@ -31,7 +31,7 @@ function ajax(json) {
   // 1. 处理传递的json对象
   json = json || {};
   if (!json.url) return;
-  const url = json.url;
+  let url = json.url;
   const type  = (json.type || 'get').toLowerCase();
   const data = json2url(json.data || {});
 

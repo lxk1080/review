@@ -65,7 +65,7 @@
       // 4. 将script加入到dom中
       document.getElementsByTagName('head')[0].appendChild(script);
 
-      // 加载成功时
+      // 加载成功后，清除数据
       script.onload = script.onreadystatechange = function() {
         if (!script.readyState || /loaded|complete/.test(script.readyState)) {
           script.onload = script.onreadystatechange = null;

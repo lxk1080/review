@@ -104,7 +104,7 @@
 
 2. 深拷贝（能写出来是那意思就行，写不了真正的深拷贝）
 
-3. 运算符，关于 ==，除了 == null，其它地方全都用 ===，x == null，就相当于 x === null || x === undefined。
+3. 运算符，关于 ==，<span style="color: red">除了 == null，其它地方全都用 ===</span>，x == null，就相当于 x === null || x === undefined。
 
 4. falsely 变量，除了以下几种，全都是 truly 变量
     - null
@@ -130,7 +130,9 @@
 
 8. 表达式中 instanceof 的判断规则为：顺着原型链向上逐级查找，只要能找到对应的原型，都为 true。
 
-9. 作用域和闭包，自由变量的查找是在函数定义时，不是在执行时。
+    - 注意：这句话只适用于引用类型，<span style="color: red">字面量创建的</span>基本类型不适用（虽然字面量创建的基本类型能通过 `__proto__` 找到其对应的原型），像数字 123、字符串 qwer、布尔值 true，这些都不是 Number、String、Boolean 的实例，像 null 和 undefined 是没有 `__proto__` 属性的，更不是任何对象的实例。
+
+9. 作用域和闭包，关键的一句：自由变量的查找是在函数定义时，不是在执行时。
 
 10. 关于 this，this 的指向是在函数执行时确定的，不是定义时，使用箭头函数可以使 this 的取值指向定义时的上级作用域。
 
@@ -149,43 +151,7 @@
         - 为什么宏任务每执行完一个就去检查微任务？
             - 宏任务执行时，是把代码放入到同步队列执行的，而同步代码执行完干嘛？是去执行微任务。而微任务的代码同样是放到同步队列执行的，同步执行完后，又去执行微任务，所以是所有微任务都执行完了，再去执行宏任务，然后宏任务中的代码放入同步队列，继续上面的步骤，形成了一个循环
 
-13. Dom 事件也是基于 Event Loop 机制实现的，可以这么理解，代码执行到 setTimeout 这一句时 ，进入了浏览器的计时模块，由计时模块计算触发时间并将回调函数放到 Callback Queue，而执行到 Dom 事件绑定时，调用了浏览器的事件模块，当我们点击时，事件模块将回调函数放到 Callback Queue，最后当 Call Stack 为空时，由 Event Loop 将这些函数放到 Call Stack 执行。
-
-14. 关于 Promise 的状态以及链用机制
-    - Promise 函数本身是立即执行的，它不是异步的，它只是用来处理异步代码
-    - Promise 三种状态，pendding、resolved、rejected
-    - resolved 状态触发 then
-    - rejected 状态触发 catch
-    - then 和 catch 正常情况下返回 resolved 状态，遇到报错则返回 rejected 状态（很重要！），然后再由这个状态决定触发 then 或者 catch
-    - 当 then 里面 return 一个 Promise 时，可以这么理解：下一个 then 或 catch 就会变成这个 Promise 的 then 和 catch，然后规则同上
-    - 当 then 里面 return 一个普通的字符串或数字时（其实是隐式的将字符串或数字转化成了 Promise），下一个 then 中接收的就是这个字符串或数字，没有 return 的话，则是 undefined
-
-15. Promise 中 resolve 和 reject 的使用场景？
-    - 一般来讲，使用场景大致分以下三种情况：
-        - 1、调用者只要结果，不关心你有没有错（resolve）
-        - 2、调用者关心你有没有错，但是不关心你为什么错（resolve + reject）
-        - 3、调用者关心你有没有错，还关心你为什么错（也是 resolve + reject）
-    - 单独使用 Promise.resolve() 没问题，但是 Promise.reject() 会报未捕获异常
-    - 只要使用了 reject，后续必须要加 catch 处理，否则会报异常，说你不捕获：Uncaught (in promise)，但是这个报错并不会中断程序的执行
-    - 所以 reject 的作用：
-        - 向后传递异常信息，以供在不同场景使用时可以输出不同的信息（对应上面的情况 2 ）
-        - 一个方法内可能有多个位置会 reject，那么可以在外层精准捕获错误信息（对应上面的情况 3 ）
-    - 事实上，可以完全不使用 reject 只使用 resolve，resolve 和 reject 分别会导向 then 和 catch，这种设计，可能是为了让代码看起来更加优雅吧。当然了，catch() 函数还是很重要的，可以直接捕获上游的执行错误，catch 和 reject 是独立的，只不过 catch 也可以为 reject 所用而已，不要把 catch 和 reject 混为一谈
-
-16. async/await 和 Promise 的关系
-    - 执行 async 函数，返回的是 Promise 对象
-    - await 相当于 Promise 的 then，处理不了 rejected 状态
-    - try...catch 可捕获异常，代替了 Promise 的 catch
-
-17. 关于异步写法的发展和一些思考
-    - 解决异步回调的嵌套问题，callback hell
-    - 提出 Promise，链式调用，但也是基于回调函数
-    - 再提出 async/await，用同步语法写异步代码，彻底消灭回调函数
-    - async/await 和 Promise 并不互斥，通常是配合使用，相辅相成
-    - js 是单线程的，异步总归是是基于 event loop 的
-    - 异步的本质还是回调函数， async/await 只是语法糖，但是很香！
-
-18. 宏任务（macroTask）和微任务（microTask）
+13. 宏任务（macroTask）和微任务（microTask）
     - 宏任务：setTimeout、setInterval、Ajax、Dom事件。一般是与浏览器相关的。
         - 浏览器规定的，调用浏览器的处理模块，等待时机进入 Callback Queue
     - 微任务: Promise、async/await。一般是与 js 本身相关的。
@@ -194,6 +160,42 @@
     - 微任务在 Dom 渲染前触发，宏任务在 Dom 渲染后触发
     - 宏任务每执行完一个后，就会检查是否有微任务，如果有，则执行微任务，如果没有，则继续执行宏任务
     - 可能是因为微任务是由 js 引擎执行的，所以 js 引擎在执行完同步任务后就顺便把微任务给做了，而如果先调用浏览器的 API，再回过头来调用 js 引擎执行微任务，这样就比较麻烦，效率低，所以就有了微任务比宏任务先执行之设计
+
+14. Dom 事件也是基于 Event Loop 机制实现的，可以这么理解，代码执行到 setTimeout 这一句时 ，进入了浏览器的计时模块，由计时模块计算触发时间并将回调函数放到 Callback Queue，而执行到 Dom 事件绑定时，调用了浏览器的事件模块，当我们点击时，事件模块将回调函数放到 Callback Queue，最后当 Call Stack 为空时，由 Event Loop 将这些函数放到 Call Stack 执行。
+
+15. 关于 Promise 的状态以及链用机制
+    - Promise 函数本身是立即执行的，它不是异步的，它只是用来处理异步代码
+    - Promise 三种状态，pendding、resolved、rejected
+    - resolved 状态触发 then
+    - rejected 状态触发 catch
+    - then 和 catch 正常情况下返回 resolved 状态，遇到报错则返回 rejected 状态（很重要！），然后再由这个状态决定触发 then 或者 catch
+    - 当 then 里面 return 一个 Promise 时，可以这么理解：下一个 then 或 catch 就会变成这个 Promise 的 then 和 catch，然后规则同上
+    - 当 then 里面 return 一个普通的字符串或数字时（其实是隐式的将字符串或数字转化成了 Promise），下一个 then 中接收的就是这个字符串或数字，没有 return 的话，则是 undefined
+
+16. Promise 中 resolve 和 reject 的使用场景？
+    - 一般来讲，使用场景大致分以下三种情况：
+        - 1、调用者只要结果，不关心你有没有错（resolve）
+        - 2、调用者关心你有没有错，但是不关心你为什么错（resolve + reject）
+        - 3、调用者关心你有没有错，还关心你为什么错（也是 resolve + reject）
+    - 单独使用 Promise.resolve() 没问题，但是 Promise.reject() 会报未捕获异常
+    - 只要使用了 reject，后续必须要加 catch 处理，否则会报异常，说你不捕获：Uncaught (in promise)，后面同级代码会停止执行，但是并不会中断整个程序的运行
+    - 所以 reject 的作用：
+        - 向后传递异常信息，以供在不同场景使用时可以输出不同的信息（对应上面的情况 2 ）
+        - 一个方法内可能有多个位置会 reject，那么可以在外层精准捕获错误信息（对应上面的情况 3 ）
+    - 事实上，可以完全不使用 reject 只使用 resolve，resolve 和 reject 分别会导向 then 和 catch，这种设计，可能是为了让代码看起来更加优雅吧。当然了，catch() 函数还是很重要的，可以直接捕获上游的执行错误，catch 和 reject 是独立的，只不过 catch 也可以为 reject 所用而已，不要把 catch 和 reject 混为一谈
+
+17. async/await 和 Promise 的关系
+    - 执行 async 函数，返回的是 Promise 对象
+    - await 相当于 Promise 的 then，处理不了 rejected 状态
+    - try...catch 可捕获异常，代替了 Promise 的 catch
+
+18. 关于异步写法的发展和一些思考
+    - 解决异步回调的嵌套问题，callback hell
+    - 提出 Promise，链式调用，但也是基于回调函数
+    - 再提出 async/await，用同步语法写异步代码，彻底消灭回调函数
+    - async/await 和 Promise 并不互斥，通常是配合使用，相辅相成
+    - js 是单线程的，异步总归是是基于 event loop 的
+    - 异步的本质还是回调函数， async/await 只是语法糖，但是很香！
 
 ## Dom
 
@@ -314,12 +316,14 @@
 3. 跨域
     - jsonp
         - 利用 script 标签没有跨域的限制，使用 callback 传输数据
+        - jsonp 的原理就是请求一段 js 脚本，脚本内容为执行一个函数，我们在浏览器端提前定义好这个函数即可
+        - 注：jsonp 由于使用 script 标签，所以它请求的返回内容都视为 js 脚本，可以直接在浏览器上执行
     - CORS，W3C标准，全称"跨域资源共享"（Cross-origin resource sharing）
         - 整个 CORS 通信过程，都是浏览器自动完成。对于前端开发者来说，CORS 通信与同源的 AJAX 通信没有差别，代码完全一样。浏览器一旦发现 AJAX 请求跨源，就会自动添加一些附加的头信息，有时还会多出一次附加的请求，但用户不会有感觉。
         - 实现 CORS 通信的关键是服务器，要设置响应头。
         - 具体可参考：https://www.ruanyifeng.com/blog/2016/04/cors.html
-    - Hash（Hash改变，页面不刷新，页面间跨域）
-    - postMessage（H5增加，页面间跨域）
+    - Hash（Hash改变，页面不刷新，iframe页面间跨域，只能传递一些小数据）
+    - postMessage（H5增加，iframe页面间跨域，可以传递复杂数据）
     - WebSocket（服务器可以主动向客户端推送信息，客户端也可以主动向服务器发送信息）
 
 ## 存储

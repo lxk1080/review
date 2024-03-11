@@ -57,4 +57,4 @@ const obj4 = {
 }
 
 console.log(shallowEqual(obj1, obj2)); // true
-console.log(shallowEqual(obj3, obj4)); // false，第二层的比不了
+console.log(shallowEqual(obj3, obj4)); // false，第二层的比不了，只能比第一层，虽然两个对象的内容相同，但却是两个不同的引用，所以不相等

@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev-build": "webpack --config build/webpack.dev.js",
     "dev": "webpack serve --config 基本配置/webpack.dev.js",
     "build": "webpack --config 基本配置/webpack.prod.js",
     "dev-dll": "node ./scripts/dev.js"

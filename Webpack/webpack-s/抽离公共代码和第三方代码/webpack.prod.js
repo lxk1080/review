@@ -55,8 +55,10 @@ module.exports = merge(webpackCommonConf, {
       // 缓存分组
       cacheGroups: {
         // 第三方模块
+        // 这个 key 值名称可以自定义，目前并不知道这个 key 值有啥用。猜测可能是在 webpack4 中服务于 HtmlWebpackPlugin 插件的 chunks 字段的，
+        // 在 webpack5 中，会自动识别引用哪些 chunk 文件，不需要自己写
         vendor: {
-          name: 'vendor', // chunk 名称
+          name: 'vendor', // chunk 名称，一般和上层的 key 相同，对应打包后生成的 chunk 文件的名称
           priority: 1, // 值越大，权限更高，优先抽离，重要！！！就比如 lodash 模块，既是第三方模块，也是公共模块，我们期待能命中这个 chunk
           test: /node_modules/, // 至于怎么命中这个 chunk，是通过匹配模块的来源路径，这里路径匹配到了 node_modules，就说明是第三方模块
           minSize: 2048,  // 大小限制，最小分组大小，小于这个大小的 module 不进行抽离，太小了抽离没意义，单位 bytes

@@ -12,10 +12,15 @@ function EffectChangeState() {
     const timer = setInterval(() => {
       console.log('setInterval...', countRef.current)
 
-      setCount(++countRef.current)
+      // useRef 的方式是可用的
+      // setCount(++countRef.current)
+
+      // 这种方式更简洁，推荐使用！
+      setCount((preCount) => preCount + 1)
+
     }, 1000)
 
-    return () => clearTimeout(timer)
+    return () => clearInterval(timer)
   }, []) // 依赖为 []
 
   // 依赖为 [] 时： re-render 不会重新执行 effect 函数
@@ -27,6 +32,7 @@ function EffectChangeState() {
   // 4、解决方案：
   //      1. 使用全局变量，let mycount = 0，然后使用 setCount(++mycount)，这种方式在第一次初始化后，mycount 就是第一次定义的值，以后每次更新，会重新定义 mycount，但是已经用不到了
   //      2. useRef 方式，推荐使用这个，符合 hooks 编码规范
+  //      3. 补充：setCount 内可以传递一个函数，可以这么写：setCount((preCount) => preCount + 1)，这种方式是后来知道的，更加简洁，推荐！
 
   return <div>count: {count}</div>
 }

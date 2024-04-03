@@ -1,5 +1,5 @@
 
-## webpack
+## Webpack
 
 #### 基本配置和高级配置
 
@@ -62,14 +62,14 @@
 2. webpack.IgnorePlugin，用于忽略第三方包里面指定目录，让指定目录不被打包进去，可用于开发环境和生产环境
 
     ```js
-        // 例如 moment 库，里边内置了很多语言
+        // 例如 moment 日期处理库，里边内置了很多语言
         // 但是我们只需要使用中文，如果其他翻译文件也打包的话文件会很大，也影响性能
         // 通过这个插件就可以忽略掉那些不需要的目录文件
         
         // 在打包 moment 这个库的时候, 将整个 locale 目录都忽略掉
         new webpack.IgnorePlugin(/\.\/locale/, /moment/)
         
-        // 这样的话就屏蔽了所有语言包，连中文都是用不了了
+        // 这样的话就屏蔽了所有语言包，连中文都用不了了
         // 可以自行导入中文包解决
         import 'moment/locale/zh-cn';
     ```
@@ -127,7 +127,8 @@
         // 使用 ParallelUglifyPlugin 并行压缩输出的 JS 代码
         new ParallelUglifyPlugin({
           // 传递给 UglifyJS 的参数
-          // 还是使用 UglifyJS 压缩，只不过帮助开启了多进程
+          // Webpack 默认有 UglifyJS 的功能
+          // 这个插件还是使用默认的 UglifyJS 压缩，只不过帮助开启了多进程
           uglifyJS: {
             output: {
               beautify: false, // 最紧凑的输出
@@ -136,9 +137,11 @@
             compress: {
               // 删除所有的 `console` 语句，可以兼容ie浏览器
               drop_console: true,
-              // 内嵌定义了但是只用到一次的变量
+              // 内嵌定义了但是只用到一次的变量，会直接被计算
+              // 例如：var a = 10, b = 20; var c = a + b;
+              // 打包后：var c = 30;
               collapse_vars: true,
-              // 提取出 出现多次但是没有定义成变量去引用的静态值
+              // 提取出：出现了多次但是没有定义成变量去引用的静态值
               reduce_vars: true,
             }
           }
@@ -180,6 +183,13 @@
               console.log('math.js 文件修改了')
             })
         }
+        
+        // 如果想全局热更新，只需要写一个总入口文件，或不写参数
+        module.hot.accept()
+        
+        // 注意：热更新不总是好的，也会存在一些问题，热更新时，会把更新的文件内的代码重新再执行一遍
+        // 事实上是打乱了本来的执行顺序，例如变量复位问题，全局变量累加问题，Dom 节点更新问题
+        // 例如 document.body.append('123')，本来代码只执行一次，热更新后，又会再 append 一次，导致节点无故增多
     ```
 
 9. DllPlugin，动态链接库插件，用于开发环境（DllPlugin解决的是打包的速度），提高构建速度，例如前端框架 Vue、React，体积大，构建慢，但是它们比较稳定不变，构建一次即可，不用每次都重新构建，主要有两个插件：DllPlugin（打包出 dll 文件）、DllReferencePlugin（使用 dll 文件），用的时候还需要在 index.html 里引入 dll.js 文件。参考：/动态链接库插件Dllplugin，使用 `npm run dev-dll` 测试代码
@@ -200,12 +210,17 @@
 
 7. production
     - 自动开启代码压缩
-    - Vue、React 等会自动商店调试代码（如开发环境的 warning）
+    - Vue、React 等会自动删掉调试代码（如开发环境的 warning）
     - 启动 Tree-shaking（摇树，把枯叶给摇掉~），删掉无用的代码
         - 只能生效于 ES6 import 的方式，commonJS 不行
             - ES6 module，静态引入，编译时引入，只能写在外面，不能用任何条件判断是否引入，否则会报错
             - CommonJS，动态引入，执行时引入，可以在 if 语句内 require
             - Tree-Shaking 依赖于静态分析
+        - 配合属性：sideEffects
+            - 如果所有代码都不包含副作用，我们就可以简单地将该属性标记为 false，来告知 webpack 它可以安全地删除未用到的 export
+            - "副作用" 的定义是：在导入时会执行特殊行为的代码，而不是仅仅暴露一个 export 或多个 export。举例说明，例如 polyfill，它通常不提供 export，但它影响全局作用域，因此 polyfill 将被视为一个副作用
+            - 如果某些代码确实存在一些副作用，可以将 sideEffects 指定为一个数组：`"sideEffects": ["./src/utils/myPolyfill.js"]`，这样的话，即使此代码没有被 import 使用到，webpack 打包时也不会删除此代码
+            - 参考：https://webpack.docschina.org/guides/tree-shaking/#clarifying-tree-shaking-and-sideeffects
 
 8. Scope Hoisting，作用域提升，webpack 打包，默认每个 module 都会打包成一个闭包函数，而使用 Scope Hoisting，可以让多个函数合并成一个函数，这样可以减小代码体积，创建的函数作用域更少，开销随之变小，代码的执行速度更快。注意：要使 Scope Hoisting 生效，代码必须是用 ES6 Module 写的
 
@@ -229,17 +244,18 @@
     - 配置文件 `.babelrc`
         - plugins：一系列的插件，用来解析语法
         - presets：很多 plugin 的集合，作为预设
-    
-    - babel 只关心语法，不关心是否支持 api，只要符合 ES5 语法规范，即使 api 不支持，babel 也不管，所以需要 babel-polyfill 的 api 支持，同时 babel 也不处理模块化，引入进来的 polyfill，还需要配合 webpack（node 环境） 去处理
-    
+
+    - babel 只关心语法，不关心是否支持 api（例如：`Promise、.includes`），只要符合 ES5 语法规范，即使 api 不支持，babel 也不管，所以需要 babel-polyfill 的 api 支持（polyfill 的本质就是补丁，去实现这个 api），同时 babel 也不处理模块化，引入进来的 polyfill，还需要配合 webpack（node 环境）去处理
+
     - babel-polyfill，是 core-js 和 regenerator 的集合
         - regenerator，对 generator 语法的 polyfill
         - core-js，对其他语法的 polyfill
         - babel-polyfill 在 babel 7.4 之后被弃用，推荐直接使用 core-js 和 regenerator
-        - babel-polyfill，文件很大，需要按需引入
-    
+        - babel-polyfill，直接引入的话，文件很大，只需要引入用到的部分，可配置按需引入
+
             ```js
-                // 不在文件中 import '@babel/polyfill'，进行以下配置，即可实现按需引入
+                // 如果在文件中 import '@babel/polyfill'，引入的文件将会很大，所以不要在文件中直接引入
+                // 进行以下配置，即可实现按需引入，只引入用到的部分，打包时会自动引入用到过的模块
                 {
                     "presets": [
                         [
@@ -255,9 +271,10 @@
                     ]
                 }
             ```
-            
+
     - babel-runtime
-        - babel-polyfill 会污染全局环境，babel-runtime 则不会（给原生的 api 改成自己起的名了，不会影响原来的）
+        - babel-polyfill 会污染全局环境，babel-runtime 则不会
+            - babel-runtime 把原生的 api 改成自己任意起的名了，不会影响原来的，例如 Promise，会补丁成 `_promise = () => { ... }`，在编译代码的时候，也会编译成 `_promise.then(() => { ... })`，这样的话就不会影响 Promise 的值了
         - 开发应用，用 babel-polyfill
         - 开发第三方库，用 babel-runtime
 

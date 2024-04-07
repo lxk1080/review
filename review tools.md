@@ -16,9 +16,9 @@
 
 3. 抽离 css 文件，主要用于生产环境，关键插件 MiniCssExtractPlugin，用它代替 style-loader。使用 style-loader 处理 css，是通过 js 控制插入 style 标签的，js 控制比较耗性能，模板里看不到，运行时通过 Chrome 调试 Dom 结构才能看到，而用 MiniCssExtractPlugin 是直接插入到模板的 link 标签，使用 href 链接，模板里能看到插入的代码，参考：/抽离压缩css文件
 
-4. 抽离公共代码和第三方代码，主要用于生产环境，如果不做抽离，那每次修改业务代码的时候，公共代码会重复打包在引用它的多个文件，第三方代码虽然能独立生成一个 bundle，但是每次 hash 值会变，对于浏览器而言还是要重新加载。抽离之后，公共代码和第三方代码都提取为一个不变的 bundle，就不需要重复打包和加载了，关键配置：optimization.splitChunks，参考：/抽离公共代码和第三方代码
+4. 抽离公共代码和第三方代码，主要用于生产环境，如果不做抽离，那每次修改业务代码的时候，公共代码会重复打包在引用它的多个文件中，第三方代码虽然能独立生成一个 bundle，但是每次 hash 值会变，对于浏览器而言还是要重新加载。抽离之后，公共代码和第三方代码都提取为一个不变的 bundle，就不需要重复打包和加载了，关键配置：optimization.splitChunks，参考：/抽离公共代码和第三方代码
 
-5. 懒加载（异步加载），异步文件会打包成一个单独的 bundle，参考：/懒加载
+5. 懒加载（又叫按需加载），目标文件会被打包成一个单独的 bundle，参考：/懒加载
 
     ```js
         // dynamicData 文件
@@ -28,7 +28,7 @@
         const defaultValue = 'enenen';
         export default defaultValue;
 
-        // 主要是这种 import 的语法，返回一个 promise
+        // 主要说的是这种 import 的语法，返回一个 promise
         setTimeout(() => {
           import('./dynamicData').then((res) => {
             console.log(res.data.message);
@@ -46,7 +46,7 @@
     - chunk：多个模块合并而成的。可以定义 chunk 的方式，例如：entry、splitChunk、import()
     - bundle：最终的输出文件，chunk 可以理解为在内存中，还没出来，最终出来的文件叫 bundle，一个 chunk 对应一个 bundle 文件
 
-#### 优化打包构建速度
+#### 优化构建速度
 
 1. 优化 babel-loader，一般用于开发环境，生产环境用了也没啥效果
 
@@ -255,14 +255,17 @@
 
             ```js
                 // 如果在文件中 import '@babel/polyfill'，引入的文件将会很大，所以不要在文件中直接引入
-                // 进行以下配置，即可实现按需引入，只引入用到的部分，打包时会自动引入用到过的模块
+                // 安装 core-js 模块：npm i core-js 到生产依赖
+                // 进行以下配置，即可实现自动按需引入，只引入用到的部分，打包时会自动引入用到过的模块
+                // 注意 package.json 文件中 browserslist 的配置，可以配置 "IE 10" 以让 babel 引入 polyfill 代码
+                // 如果 browserslist 配置的都是新浏览器，则不会引入兼容代码，因为不需要兼容。。
                 {
                     "presets": [
                         [
                             "@babel/preset-env",
                             {
                                 "useBuiltIns": "usage",
-                                "corejs": 3
+                                "corejs": 3,
                             }
                         ]
                     ],
@@ -270,6 +273,8 @@
                         
                     ]
                 }
+                
+                // 注意：关于 regenerator 插件，在最新的 @babel/preset-env 预设中已经包含了，不需要额外引入插件
             ```
 
     - babel-runtime
@@ -278,7 +283,21 @@
         - 开发应用，用 babel-polyfill
         - 开发第三方库，用 babel-runtime
 
-
+            ```js
+                // 需要两个插件：
+                // npm i @babel/plugin-transform-runtime -D
+                // npm i @babel/runtime-corejs3
+                // 注意：两个插件，一个放在开发依赖中，一个放在生产依赖中
+                // 做以下配置：
+                plugins: [
+                    ["@babel/plugin-transform-runtime", {
+                        absoluteRuntime: false,
+                        corejs: 3, // 主要是配置这个字段，其它的字段都是默认值
+                        helpers: true,
+                        regenerator: true,
+                    }]
+                ]
+            ```
 
 
 

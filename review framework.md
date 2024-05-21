@@ -424,6 +424,8 @@
             // 接收 3+ 个参数，第一个参数可以是 tag 标签，也可以是组件名
             // 第二个参数就是标签或组件上的属性，没有的话就是 null
             // 第三个参数就是子元素，可以是个数组，也可以展开写
+            
+            // 这里顺便一提，这也是为啥 jsx 文件中要引入 React，就是因为在编译的时候是依赖 React 的 createElement 方法的
         ```
     - 组件名，首字母必须大写（React规定），`React.createElement`就是通过判断首字母是否大写来识别 Element 是个 tag 还是 Component，如果是个 Component，则会继续进入组件内部找到 jsx 结构，并编译成 `React.createElement` 形式，直到最后全部都是 tag 标签为止
 
@@ -476,16 +478,29 @@
         - patch(oldVnode, newVnode) 更新 Dom，这里 patch 只是一个过程，react 真实更新 Dom 的函数可能不叫 patch
 
 24. 关于 fiber，React 内部运行机制，开发者体会不到
+    - fiber 是啥？
+        - 就是 fiberNode，在早期版本中，叫做虚拟 dom，它表现为一个 js 对象，代表 react 的一个工作单元
+        - 对象内含有组件相关信息，它也是 react 的任务调度和更新机制的核心组成部分
     - patch 的过程有两个阶段
-        - reconciliation 阶段 - 执行 diff 算法，纯 JS 运算
-        - commit 阶段 - 将 diff 结果渲染 Dom
+        - reconciliation 阶段（调和） - 执行 diff 算法，纯 JS 运算
+        - commit 阶段（提交） - 将 diff 结果渲染 Dom
     - 可能会有性能问题
         - 单线程，JS 运算和 Dom 渲染共用同一个线程
         - 组件足够复杂时，组件更新时计算和渲染压力大，如果还有动画，可能会卡顿
     - 解决方案 fiber
-        - 将 reconciliation 阶段进行任务拆分（commit 无法拆分）
-        - Dom 需要渲染时暂停计算，空闲时恢复
+        - 将 reconciliation 阶段进行任务拆分（中断和恢复，commit 阶段无法中断）
+        - Dom 需要渲染时暂停计算（例如：响应用户输入），空闲时恢复
         - 主要用到 `window.requestIdleCallback` 这个 api
+    - 关于 fiber 的文章：
+        - fiber 架构的基础讲解：https://zhuanlan.zhihu.com/p/670914853
+
+25. 关于 .jsx 和 .js 文件后缀类型有何区别
+    - .jsx 文件后缀（extension）和 JSX 语法不是一回事
+    - .jsx 和 .js 没有什么本质的区别！用哪种后缀都可以
+    - .jsx 文件和 .js 文件后缀是可以互换的，语法内容完全通用，.jsx 文件就是 .js 文件
+    - 那为什么要用 .jsx 后缀文件名呢？
+    - 其实就是一个命名规范，主要用来做文件内容区分（告诉你，这个文件内使用了 JSX 的语法）
+    - 例如，Airbnb 团队就支持使用 .jsx 后缀，鼓励在 .js 文件里使用标准 js 语法，如果包含 JSX 语法就用 .jsx 文件名表明
 
 ## Hooks
 

@@ -1,5 +1,7 @@
 ## review interview
 
+### 基础篇
+
 1. 说说箭头函数？
    - 缺点（或者说与 function 的不同）：
      - 没有 arguments
@@ -72,3 +74,30 @@
        - `Array.from(NodeList)`
        - `Array.prototype.slice.call(NodeList)`
        - `[...NodeList]`
+
+### Vue 篇
+
+1. watch 和 computed 的区别？
+   - watch 用于监听现有的数据，一般不产生新数据
+   - computed 用于计算产生新的数据，有缓存，methods 无缓存
+   - 事实上，这两个东西并没有什么可比性
+
+
+2. Vue 的组件通讯方式？
+   - `props` 和 `$emit`，常规用法，父子间通讯
+   - `CustomEvent`，自定义事件，适合跨多级通讯
+   - `$attrs`，子组件中没有用 props 和 emits 接收的属性和方法，就会出现在 `$attrs` 上
+     - 在组件中，也可以使用 `v-bind="$attrs"` 将属性和方法传递给下一级组件
+     - 适用于父子通讯，作为 `props` 和 `$emit` 的替补
+     - 注意 props 和 emits 属性是 Vue3 新加的
+   - `$parent` 和 `$refs`，父子间通讯
+     - `$parent`，子组件获取父组件的属性和方法
+     - `$refs`，父组件获取子组件的属性和方法
+   - `provide` 和 `inject`，上层组件 provide 数据，下层所有子组件都可以 inject 获取数据
+     - 适用于父组件向下层各级子孙组件传递数据
+   - `Vuex`，全局数据共享
+
+
+3. Vuex 中的 mutation 和 action 的区别？
+   - `mutation`：原子操作，必须写同步代码
+   - `action`：可包含多个 mutation，可包含异步代码

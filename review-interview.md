@@ -1,6 +1,6 @@
 ## review interview
 
-1. 关于箭头函数
+1. 说说箭头函数？
    - 缺点（或者说与 function 的不同）：
      - 没有 arguments
      - 无法通过 call、apply、bind 改变 this
@@ -16,12 +16,12 @@
          - vue 的生命周期或 methods 等
 
 
-2. 描述 TCP 的三次握手和四次挥手
+2. 描述 TCP 的三次握手和四次挥手？
     - 如图：
     <br/><img src="./picture/01.jpg" width="50%" style="margin-top: 5px">
 
 
-3. 在 js 中 for-in 和 for-of 的区别
+3. 在 js 中 for-in 和 for-of 的区别？
    - for-of 可以，而 for-in 不可以的：
      - 可以遍历 Set、Map、Generator
    - for-in 可以，而 for-of 不可以的：
@@ -33,7 +33,7 @@
        - 判断可迭代：看它是否有 Symbol.iterator 属性，是否是个函数
 
 
-4. 关于 for await ... of 的使用
+4. 关于 for await ... of 的使用？
    - 主要是用来遍历多个 Promise 的，可以得到 Promise 的响应结果
    - 例如以下代码：
      ```js
@@ -52,14 +52,14 @@
      ```
 
 
-5. 关于 offsetHeight、clientHeight、scrollHeight 的区别
+5. 关于 offsetHeight、clientHeight、scrollHeight 的区别？
     - offsetHeight：`border + padding + content`
     - clientHeight：`padding + content`
     - scrollHeight：`padding + 实际内容尺寸`
       - 在滚动时，内边距也是要参与进去的
 
 
-6. 在 dom 中，Element 和 Node 的区别
+6. 在 dom 中，Element 和 Node 的区别？
    - 首先在 Dom 树中，所有节点都是 Node
    - Node 是 Element 的基类
    - Element 是所有其它 HTML 元素的基类，如：HTMLDivElement

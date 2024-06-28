@@ -155,6 +155,15 @@
         - `check` setImmediate 的回调
         - `close callbacks` close 事件相关
 
+### Node 篇
+
+1. 在 nodejs 中，如何开启多进程？
+   - 主要有两种方式：
+     - `child_process`，代码示例：[使用child_process开启多进程](./nodejs/开启多进程/使用child_process实现/index.js)
+       - 子进程，适合处理一些复杂的运算场景
+     - `cluster`，代码示例：[使用cluster开启多进程](./nodejs/开启多进程/使用cluster实现/index.js)
+       - 集群，适合要开启多个服务的场景
+
 ### Vue 篇
 
 1. watch 和 computed 的区别？

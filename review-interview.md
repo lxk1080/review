@@ -155,6 +155,40 @@
         - `check` setImmediate 的回调
         - `close callbacks` close 事件相关
 
+
+14. 描述一下 js-bridge 的原理？
+    - 首先什么是 js-bridge？
+      - 是 js 与 APP或客户端之间通信的桥梁
+      - js 是无法直接调用 native API 的，需要通过一些特定的方式来调用，这些方式就统称为 js-bridge，例如：微信 JSSDK
+    - js-bridge 的原理就是 APP 往 webview 里面灌输很多自定义的 API，主要分为两种方式：
+      - 注册全局 API
+        - 例如直接在 window 上挂载一个方法，当 js 调用该方法时，由 APP 控制方法的执行
+        - 这种方式不太适合异步的情况
+      - URL Scheme
+        - 例如微信的 URL Scheme：
+          - `weixin://` 打开微信
+          - `weixin://dl/scan` 扫一扫
+          - `weixin://dl/moments` 朋友圈
+        - js 可以通过 `location.href` 的方式来调用 URL Scheme，在 APP 端会做 URL 的拦截
+          - 这种方式会改变页面的 url，如果 URL Scheme 没有被处理，可能会导致网页跳转到一个错误页面
+        - js 也可以通过 `iframe` 的方式封装方法，通过 iframe.src 调用 URL Scheme
+          - 这样就避免了直接修改 location.href，当然这只是前端调用方式的一种选择，在 APP 端还是要做 URL 拦截处理的
+    - 顺带一提，Chrome 本身也是 APP，可以浏览网页也是因为有 webview，只不过它是以 webview 为主体的 AP
+      - 它也实现了很多的 URL Scheme 功能，例如：
+        - `chrome://version/`
+        - `chrome://flags/`
+        - `chrome://dino/`
+        - `chrome://inspect/#devices`
+
+
+15. requestAnimationFrame 和 requestIdleCallback 有什么区别？
+    - RAF 在每次渲染完都会尝试执行，也就是在当前帧内一定会尝试执行，高优先级
+      - 如果当前帧没有空闲时间了，则会推迟到下一帧执行，如果还没有，就继续推迟，反正最终一定会执行，且每一帧最多只会执行一次
+    - requestIdleCallback 空闲时执行，低优先级
+      - 如果一直没有时间执行，可以设置一个超时时间，这样在到了超时时间后，会强制执行
+    - 这两个任务都可以理解成宏任务
+      - 并且会在无延迟时间的 setTimeout 之后执行
+
 ### Node 篇
 
 1. 在 nodejs 中，如何开启多进程？

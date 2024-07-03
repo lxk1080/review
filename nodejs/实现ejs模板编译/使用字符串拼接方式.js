@@ -7,6 +7,7 @@
  *    所以，我们干脆就把模板代码整个都转换成 js 代码，然后再将 js 代码执行，转化成编译后的 html 代码
  *      - 主要就是转化成 js 代码的部分麻烦一些，需要处理各种语法和字符串拼接
  *      - 执行 js 代码直接使用 new Function 即可
+ *    此方式实现简单易用，但是功能有限
  */
 
 function compileTemplate(template, data) {

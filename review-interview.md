@@ -190,7 +190,31 @@
       - 并且会在无延迟时间的 setTimeout 之后执行
 
 
-16. https 协议为什么是安全的？它的加密过程是什么？
+16. 移动端点击 300ms 延迟怎么解决？
+    - 首先为什么会有 300ms 延迟？
+        - 是移动端设计用来支持双击操作的（例如双击放大），300ms 内点击了第二次，触发双击事件，超过 300ms 未点击，触发单击事件
+    - 怎么解决延迟问题？
+        - 使用 fastclick 库
+            - 它会监听 touchend 事件（此事件会先于 click 事件触发）
+            - 使用自定义 dom 事件模拟 click 事件
+            - 把默认的 click 事件（300ms 之后触发）禁止掉
+        - 对于现代浏览器，只需要加一句 meta 信息即可，主要是 `width=device-width` 这一句起作用
+            - `<meta name="viewport" content="width=device-width, initial-scale=1.0">`
+            - 浏览器会认为，已经做了响应式，在移动端就没必要双击放大了，已经是合适的页面展示效果了
+
+
+17. Retina 屏幕的 1px 如何实现？
+    - 下面以 DPR = 2（1px 会用两个物理像素表示）的屏幕为例：
+        - 使用 transform 缩放：`transform: scaleY(0.5)`
+        - 使用阴影扩散：`box-shadow: 0 0 0 0.5px #e8e8e8`
+            - X 偏移量 0
+            - Y 偏移量 0
+            - 阴影模糊半径 0
+            - 阴影扩散半径 0.5px
+            - 阴影颜色
+
+
+18. https 协议为什么是安全的？它的加密过程是什么？
     - 为什么是安全的？
       - 通过在 http 协议上添加 SSL/TLS（Secure Sockets Layer/Transport Layer Security）加密层来确保数据传输的安全性
       - 通过 “非对称加密” 结合 “对称加密” 的方式来实现数据的安全通信
@@ -218,33 +242,27 @@
     - 非对称和对称的区别？
       - 非对称加密：公钥用于加密，私钥用于解密，安全性高，适用于密钥交换和加密少量数据
       - 对称加密：同一个密钥用于加密和解密，速度快，但安全性依赖于密钥的安全管理
+    - 如下图，https 加密和解密过程
+      <br/><img src="./picture/05.jpg" width="60%" style="margin-top: 5px">
 
 
-17. 移动端点击 300ms 延迟怎么解决？
-    - 首先为什么会有 300ms 延迟？
-      - 是移动端设计用来支持双击操作的（例如双击放大），300ms 内点击了第二次，触发双击事件，超过 300ms 未点击，触发单击事件
-    - 怎么解决延迟问题？
-      - 使用 fastclick 库
-        - 它会监听 touchend 事件（此事件会先于 click 事件触发）
-        - 使用自定义 dom 事件模拟 click 事件
-        - 把默认的 click 事件（300ms 之后触发）禁止掉
-      - 对于现代浏览器，只需要加一句 meta 信息即可，主要是 `width=device-width` 这一句起作用
-        - `<meta name="viewport" content="width=device-width, initial-scale=1.0">`
-        - 浏览器会认为，已经做了响应式，在移动端就没必要双击放大了，已经是合适的页面展示效果了
+19. https 如何防止中间人攻击？
+    - 我们知道 https 是加密传输的，但是黑客还是可以攻击
+      - 在服务端向客户端传输公钥的过程中，黑客把公钥给换了，换成自己的公钥和私钥
+      - 然后在客户端向服务器传递数据过程中，黑客用自己的私钥解密，就能拿到加密数据
+    - 解决这一问题的关键就在于：证书的合法性
+      - 我们使用的证书，都是第三方的，所以最好使用那种大厂的、官方的、和浏览器公司有合作的正规的证书
+      - 如果是杂七杂八的证书，浏览器可能会验证不合法，就会提示警告
+        - 首先，黑客的话，一般无法模拟证书，如果修改了内容，那浏览器就会验证不合法
+        - 其次，如果你的服务器本身就使用的这种杂七杂八的证书，浏览器也有可能验证不通过
+      - 所以对于我们开发来说，解决这一问题主要关注的点在于，如何取得官方的正规的证书
+      - 中间人攻击示意图
+        <br/><img src="./picture/06.jpg" width="40%" style="margin-top: 5px">
+      - 浏览器警告页面
+        <br/><img src="./picture/07.jpg" width="40%" style="margin-top: 5px">
 
 
-18. Retina 屏幕的 1px 如何实现？
-    - 下面以 DPR = 2（1px 会用两个物理像素表示）的屏幕为例：
-       - 使用 transform 缩放：`transform: scaleY(0.5)`
-       - 使用阴影扩散：`box-shadow: 0 0 0 0.5px #e8e8e8`
-         - X 偏移量 0
-         - Y 偏移量 0
-         - 阴影模糊半径 0
-         - 阴影扩散半径 0.5px
-         - 阴影颜色
-
-
-19. 在 http 请求中 cookie 和 token 的区别？
+20. 在 http 请求中 cookie 和 token 的区别？
     - 首先 cookie 和 session 是一对，大致流程如下：
       - 用户在浏览器登录，输入用户名和密码
       - 服务端登录校验，保存用户信息到 session 中，并将用户的唯一标识放到 cookie 中，并返回给浏览器
@@ -284,7 +302,7 @@
           - 没有特殊要求（如创业初期的网站），可以节约很多成本
 
 
-20. 如何实现 SSO（单点登录）？
+21. 如何实现 SSO（单点登录）？
     - 单点登录：只需要登录一次，就可以在相互信任的多个应用系统中共享登录状态
       - 例如：登录了淘宝，就可以使用天猫，登录了百度，就可以逛百度贴吧
       - 单点登录和联合登录的区别？
@@ -296,13 +314,134 @@
         - 如图所示（最后访问系统 B 的时候，线画错了，问题不大）：
           - 下图中的 SSO 凭证就是 ticket，或者叫 token 也行，最终在 A、B、SSO 域名下都会存储
           - 客户端 A、B 的 token 可能是一样的，但是必须在 A、B 上分别存储，因为一般使用 localStorage 存储，这个并不跨域共享
-          - 登录页面是 SSO 系统的，在 B 页面去 SSO 系统带的 token，是从 SSO 域名下拿到的
+          - 登录页面是 SSO 系统的，在 B 页面去 SSO 系统带的 token，是从 SSO 域名下拿到的，也就是说，会先去 SSO 的前端页面
           <br/><img src="./picture/03.jpg" width="50%" style="margin-top: 5px">
         - 使用第三方账号登录，遵循 OAuth 2.0 规范（OAuth 也是实现单点登录的常见技术方案）
           - 例如用户访问客户端，服务器判定需要登录，网站授权使用微信登录
           - 微信可能提供给客户端一个二维码，用户扫描二维码登录，返回一个 token 在客户端保存
           - 用户继续发送请求时，会带上这个 token 去服务器
           - 服务器拿这个 token 去微信做校验，校验成功则继续业务
+
+
+22. HTTP 与 UDP 协议的区别？
+    - 首先，HTTP 与 UDP 不是一个网络层级的
+      - HTTP 是基于 TCP 的，TCP 和 UDP 是属于同一层级的
+      - HTTP 是应用层，TCP 和 UDP 是传输层
+    - TCP 有连接，有断开，稳定传输，一般用于网络请求
+    - UDP 无连接，无断开，不稳定传输（效率高），一般用于视频会议、语音通话
+      <br/><img src="./picture/04.jpg" width="30%" style="margin-top: 5px">
+
+
+23. HTTP 的 1.0、1.1、2.0 有什么区别？
+    - http 1.0
+      - 最基础的，支持基本的 get、post 请求方法
+    - http 1.1
+      - 增加缓存策略：cache-control、E-tag
+      - 支持长连接：Connection: keep-alive，一次 TCP 连接，可以发送多个请求
+      - 支持断点续传，状态码 206
+      - 支持新的请求方法：PUT、Delete .. ，可用于 Restful API
+    - http 2.0
+      - 可压缩请求头，减少体积（请求头一般还是有点大的，例如 cookie、token 数据都在请求头内）
+      - 多路复用，一次 TCP 连接，可以多个 http 并发请求
+        - 有了这个特性，之前做的有些优化就没用了
+        - 例如：合并三个文件为一个文件，只用发送一次请求，来优化性能
+        - 但是 http 2.0 即使面对三个文件，它也能并发请求，不会影响效率
+      - 服务端推送
+        - 服务端在客户端需要数据之前就主动地将数据发送到客户端缓存中，从而提高性能
+        - 主要应用于 websocket 技术
+
+
+24. script 标签的 defer、async 有什么区别？
+    - 如图所示：
+      - 什么都不写，只要遇到 script，就中断 dom 渲染，js 加载后执行
+      - 使用 async 时，加载时异步，但是加载完立即执行，中断 dom 渲染
+      - 使用 defer 时，加载时异步，加载完后，等待 dom 渲染完成，然后执行
+      <br/><img src="./picture/08.jpg" width="60%" style="margin-top: 5px">
+      - 使用 defer 是一种比较理想的方式
+        - 我们之前写的：把 script 写到 body 的末尾，会在最后才加载，加载完执行
+        - 使用了 defer 可以并行加载，然后等待 dom 渲染完，在最后直接执行，提升了性能
+
+
+25. prefetch 和 dns-prefetch 的区别？
+    - 首先，这个问题是混乱的，这两个没有可比性，可以拆分为下面两个问题：
+    - preload 和 prefetch 的区别？
+      - preload：预加载，资源在当前页面使用，会优先加载
+      - prefetch：预获取，资源在未来页面使用，空闲时加载
+    - dns-prefetch 和 preconnect 的区别？
+      - dns-prefetch：DNS 预查询，针对未来页面
+      - preconnect：DNS 预连接，也是针对未来页面
+    - 以下为代码示例：
+      ```js
+        <link rel="preload" href="style.css" as="style">
+        <link rel="prefetch" href="other.js" as="script">
+        <link rel="stylesheet" href="style.css">
+        <link rel="dns-prefetch" href="https://www.baidu.com">
+        <link rel="preconnect" href="https://www.baidu.com" crossOrigin>
+      ```
+
+
+26. 前端的攻击方式？
+    - XSS：跨站脚本攻击
+      - 原理：将 js 代码插入到网页内容中，渲染时执行 js 代码
+      - 预防：特殊字符替换（前端和后端都要做好自己的这一块，不要指望哪一端，出了问题前端和后端都得背锅）
+      - 在 Vue、React 中不需要关注这个问题，除非：Vue 使用 v-html，React 使用 dangerouslySetInnerHtml
+    - CSRF：跨站请求伪造
+      - 原理：诱导用户去访问另一个网站的接口，伪造请求
+        - 用户登录了 A 网站，有了 cookie
+        - 黑客诱导用户到 B 网站，并发起 A 网站的请求
+        - A 网站的 API 发现有 cookie，认为是用户自己操作的
+      - 预防：严格的跨域限制 + 验证码机制
+        - 判断 referrer（请求来源，但这个也可以伪造）
+        - 为 cookie 设置 SameSite，禁止跨域传递 cookie
+        - 关键接口可以使用短信验证码
+    - Click Jacking：点击劫持
+      - 原理：在诱导界面上蒙上一层透明的 iframe，诱导用户点击，实际点击的是 iframe 上的内容（例如诱导骗关注）
+      - 预防：让 iframe 不能跨域加载
+        - 判断 iframe 的域名和当前域名是否一致
+          ```js
+            if (top.location.hostname !== self.location.hostname) {
+              alert('您正在访问不安全的页面，即将跳转到安全页面！')
+              top.location.href = self.location.href
+            }
+          ```
+        - 请求头添加：`X-Frame-Options: sameorigin`
+          - 只能被同域名的网页加载成 iframe，第三方网页不能把我当成 iframe 加载
+    - DDoS：分布式拒绝服务（后端的）
+      - 原理：分布式的、大规模的流量访问，使服务器瘫痪
+        - 一般是种植病毒、木马到不知情的用户设备上，然后在统一的时间控制病毒访问
+      - 软件层不好做，需要硬件防护（如：阿里云 WAF）
+    - SQL 注入（后端的，经典的安全问题）
+      - 原理：黑客提交内容时，写入 SQL 语句，破坏数据库
+      - 预防：和 XSS 类似，处理输入内容，替换特殊字符
+
+
+27. WebSocket 协议和 HTTP 协议的区别？
+    - WebSocket
+      - 端对端通讯，client 和 server 都可以主动发消息（一开始 client 必须先和 server 建立连接）
+        - 协议是以 `ws://` 开头，无跨域限制
+        - 另外，ws 可升级为 wss（类似 https，加密传输）
+        - 实际开发中，建议使用 socket.io 这个库，API 使用比较简洁
+          - 现代浏览器自带 WebSocket 类，测试场景可以使用下
+      - 使用场景？
+        - 消息通知、直播间讨论区、聊天室、协同编辑
+      - 连接过程？
+        - 先发起 http 请求
+        - 成功后再升级到 websocket 协议通讯（可以看下 ws 请求，会有个 101 切换协议的状态码）
+    - 所以 ws 和 http 的区别？
+      - ws 是双端通讯，http 是单端发送请求
+      - ws 无跨域限制，http 有跨域限制
+      - 其它的就是写法上的不同了，例如：协议名称、消息发送与接收
+        - ws：`ws://` + `send/onmessage`
+        - http：`http://` + `req/res`
+    - 长轮询和 websocket 的区别？
+      - 长轮询
+        - 客户端发送 http 请求，服务端阻塞，不会立即返回，客户端等待响应
+        - 服务端有结果了再返回，返回后，客户端立即再发送请求，循环往复
+        - 需要处理 timeout 机制，timeout 中断后，客户端继续补发请求
+      - websocket
+        - 客户端发送请求无需等待服务器响应
+        - 服务器有结果了，它会主动发给客户端
+
 
 ### Node 篇
 

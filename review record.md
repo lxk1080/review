@@ -30,10 +30,10 @@
         - BFC 不会与浮动的元素重叠
         - BFC 元素计算高度时，子元素即使是 float 也会参与计算
     - 如何创建 BFC
-        - float 的值不为 none
-        - position 的值不为 static 或 relative
-        - display 属性为 inline-block、table-cell、flex 等等
+        - float 不为 none
         - overflow 不为 visible
+        - position 的值为 absolute 或 fixed
+        - display 属性为 inline-block、table-cell、flex 等等
 
 5. 圣杯布局和双飞翼布局的目的：
     - 三栏布局，中间一栏最新加载或渲染（内容为重）
@@ -65,7 +65,8 @@
 
 1. typeof 能识别哪些类型
 
-    - 所有值类型（number、string、boolean、undefined、symbol）
+    - 所有值类型（number、string、boolean、undefined、symbol、bigint）
+        - null 的话，不好说，比较特殊
     - 函数（funtion）
     - 引用类型（object）
 
@@ -172,7 +173,19 @@
     - 当 then 里面 return 一个 Promise 时，可以这么理解：下一个 then 或 catch 就会变成这个 Promise 的 then 和 catch，然后规则同上
     - 当 then 里面 return 一个普通的字符串或数字时（其实是隐式的将字符串或数字转化成了 Promise），下一个 then 中接收的就是这个字符串或数字，没有 return 的话，则是 undefined
 
-16. Promise 中 resolve 和 reject 的使用场景？
+16. 关于 Promise 的异步调用
+    - 首先我们需要知道 Promise 的异步和 setTimeout 的异步在写法上是有区别的
+        - setTimeout 写起来是一体的，有回调函数，有延时时间，时间到了之后，由处理模块将回调函数放入宏任务队列等待执行
+        - Promise 中的 resolve 和 reject 就相当于 setTimeout 中的延时时间触发，但是 promise 不需要立即定义回调函数
+    - 也就是说，当 Promise 触发 resolve 后，如果下面的代码紧接着给了 then 回调，那么这个回调函数会被立即放进微任务队列
+    - 但是，如果下面没有给出 then 回调，那么，哪个地方定义了 then 回调，就在哪个地方把回调函数放进去，这也就意味着，即使你 resolve 的时间最早，但是把 then 写在最后，那么触发 then 回调也会是在最后，因为这个回调函数是最后才加进微任务队列的
+    - 总结一下：
+        - 代码执行过程中，如果我们遇到 then 回调，有两种情况：
+            - 已经 resolve 过了（或者说已经不是 pedding 状态了，这里是为了方便理解），直接将回调加入到微任务队列中
+            - 还没有 resolve 过（还在 pedding 中），需要等到 promise 在 resolve 的时候，再将回调函数加入到微任务队列中
+        - 不过一般来讲，我们实际使用中，应该不会遇到这种问题，因为把 Promise 和回调分开写没有任何意义（我们就是要达到状态一改变就尽快执行回调函数的效果，要不然要回调干啥？），主要是为了解决一些奇葩的面试题目，例如：在 Promise 里面再写了 Promise，然后里面的 Promise 先 resolve，外层 Promise 后 resolve，让你说说执行顺序。这种题目就毫无意义，可以说是本末倒置，Promise 设计出来就是让你链式调用，让代码可读性更好，这面试题目倒好，直接搞成嵌套回调地狱，可以说是逆向发展了。虽然我对这种面试题目没什么好感，但是 Promise 的异步我们依然是要弄清楚的
+
+17. Promise 中 resolve 和 reject 的使用场景？
     - 一般来讲，使用场景大致分以下三种情况：
         - 1、调用者只要结果，不关心你有没有错（resolve）
         - 2、调用者关心你有没有错，但是不关心你为什么错（resolve + reject）
@@ -184,12 +197,12 @@
         - 一个方法内可能有多个位置会 reject，那么可以在外层精准捕获错误信息（对应上面的情况 3 ）
     - 事实上，可以完全不使用 reject 只使用 resolve，resolve 和 reject 分别会导向 then 和 catch，这种设计，可能是为了让代码看起来更加优雅吧。当然了，catch() 函数还是很重要的，可以直接捕获上游的执行错误，catch 和 reject 是独立的，只不过 catch 也可以为 reject 所用而已，不要把 catch 和 reject 混为一谈
 
-17. async/await 和 Promise 的关系
+18. async/await 和 Promise 的关系
     - 执行 async 函数，返回的是 Promise 对象
     - await 相当于 Promise 的 then，处理不了 rejected 状态
     - try...catch 可捕获异常，代替了 Promise 的 catch
 
-18. 关于异步写法的发展和一些思考
+19. 关于异步写法的发展和一些思考
     - 解决异步回调的嵌套问题，callback hell
     - 提出 Promise，链式调用，但也是基于回调函数
     - 再提出 async/await，用同步语法写异步代码，彻底消灭回调函数

@@ -33,7 +33,7 @@
         - float 不为 none
         - overflow 不为 visible
         - position 的值为 absolute 或 fixed
-        - display 属性为 inline-block、table-cell、flex 等等
+        - display 属性为 inline-block、table-[x] 系列、flex、grid 等等
 
 5. 圣杯布局和双飞翼布局的目的：
     - 三栏布局，中间一栏最新加载或渲染（内容为重）

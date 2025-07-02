@@ -352,6 +352,7 @@
       > 注：PureComponent 中不能再写 SCU，虽然代码可以运行，但是会报红色的 <span style="color: red">warning</span>
 
     - memo，函数组件中的 PureComponent，shallowEqual 代码可参考：/common/PureComponent 的浅比较/shallowEqual.js，就是上面链接里面的代码
+      > 注：第二个参数 isEqual 方法可以不写，memo 也是默认做了浅比较
 
         ```
             function MyComponent(props) {

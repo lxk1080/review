@@ -552,6 +552,112 @@
      - 这和 history、hash 完全不同，history 会伴随 pathname 的变化，hash 会伴随 hash 部分的变化
    - 在 react 中也有类似的功能
 
+
+5. 对 Vue 做过哪些优化？
+   - v-if 彻底销毁组件，v-show 是利用 css 隐藏组件，大部分情况下使用 v-if 更好，不要过渡优化
+   - v-for 要加 key，严格来说是个优化项，不过这个在实际工作中已经是必须的了
+   - 使用 computed 缓存，只要 data 数据不变，computed 就不变，不过这也是基操了
+   - keep-alive 缓存组件，适用于频繁切换的组件，例如 tabs，但也不要乱用，缓存太多会占用内存
+   - 对于体积较大的组件，例如：编辑器、复杂表格等，拆包，需要时异步加载，不需要不加载，可以减少主包体积，优化首屏加载速度
+     - vue 内有个 defineAsyncComponent 方法，可用来加载异步组件（Vue3）
+     - `defineAsyncComponent(() => import('xxx.vue')`
+   - 路由懒加载
+     - `() => import('xxx.vue')`
+   - 服务端渲染 SSR
+
+
+6. 在使用 Vue 过程中遇到过哪些坑？
+   - 内存泄漏，全局变量、全局事件、全局定时器，在组件销毁时未销毁
+   - Vue2 响应式的缺陷，对象增删属性、数组改变索引下的值，要使用 Vue.set、Vue.delete
+   - 路由切换时 scroll 到顶部，SPA 的通病，不仅仅是 Vue
+     - 例如，列表页，滚动到下面的区域，点击进入详情页，在返回列表页（重新渲染），就 scroll 到顶部了
+     - 解决方法：
+       - 最简单的是使用二级路由，在列表页底部放一个 router-view 加载详情页子路由，然后设置绝对定位，覆盖列表页
+       - 如果列表页必须销毁重建
+         - 可以尝试缓存列表页数据和 scrollTop 的值，重新渲染时，执行 scrollTo(x) 操作
+         - MPA + App Webview，需要利用 App 的功能，打开详情页时，使用 new Webview 打开，这样原来的列表页 Webview 不变
+
+
+7. 如何统一监听 Vue 组件报错
+   - 首先，window.onerror，是 js 级别的，可以全局监听所有 js 错误，但识别不了 Vue 组件信息，可以用来监听一些 Vue 监听不到的错误
+   - errorCaptured 生命周期
+     - 监听所有下级组件的错误，本组件中监听不了
+     - 返回 false 会阻止向上传播，意思是，如果返回 false，那么 window.onerror 将不会捕获到该错误
+     - 这个错误监听一般会配置在 App.vue 组件里
+     - ```js
+       errorCaptured: (err, vm, info) => {
+         // err 发生的错误
+         // vm 对应的组件
+         // info 错误信息
+         return false
+       }
+       ```
+   - errorHandler 配置
+     - Vue 全局错误监听，所有组件错误都会汇总到这里，如果 errorCaptured 返回 false，则不会传播到这里
+     - 如果 errorHandler 配置接收到了错误，那么 window.onerror 就接收不到信息了，猜测应该是内部阻止了
+     - 这个错误监听一般会配置在 main.js 文件里
+     - ```javascript
+       import { createApp } from 'vue'
+       import App from './App.vue'
+         
+       const app = createApp(App)
+         
+       app.config.errorHandler = (err, vm, info) => {
+         // 参数和 errorCaptured 一样
+       }
+       ```
+   - 注意，不管是 errorCaptured 还是 errorHandler 配置，都监听不到异步里面的报错，例如 setTimeout 里面的报错
+     - 这个时候，window.onerror 是能监听到异步里面错误的，所以 Vue 的报错功能需要结合 window.onerror 一起使用才是完整的
+   - 实际工作中，三者要结合使用
+     - errorCaptured 监听一些重要的、关键的、风险性组件的错误
+     - errorHandler 和 window.onerror 候补全局监听
+
+### React 篇
+
+1. 对 React 做过哪些优化？
+   - 不要直接在 JSX 中定义匿名函数，因为每次渲染都需要重新创建
+     - 需要传递参数的情况下，可以使用 dataset 属性设置参数
+   - 使用 shouldComponentUpdate（SCU）判断组件是否要更新
+     - 或者使用 React.PureComponent，函数式组件使用 React.memo 包裹组件，这些里面都相当于在 SCU 中做了浅比较
+     - 这里引申个点，父组件更新，那么所有子组件都会更新，当然这个更新不一定包含 dom 的更新，因为通过 diff 算法算出来如果属性都没变，dom 就不会更新，但是会走生命周期
+   - hooks 缓存函数和数据
+     - 使用 useCallback 缓存函数，使用 useMemo 缓存数据（useMemo很像Vue的computed）
+   - 异步组件
+     - 使用 React.lazy + React.Suspense 组合
+     - ```
+       const XComponent = React.lazy(() => import('./xComponent'))
+       
+       <React.Suspense fallback={<div>Loading...</div>}>
+         <XComponent />
+       </React.Suspense>
+       ```
+   - 路由懒加载
+     - ```
+       const XComponent = React.lazy(() => import('./xComponent'))
+       
+       <React.Suspense fallback={<div>Loading...</div>}>
+         <Switch>
+           <Route path="/xPage" component={XComponent} />
+         </Switch>
+       </React.Suspense>
+       ```
+     - 和异步组件的加载方法一样，只是用在不同的地方
+     - 注意：不管是异步组件还是路由懒加载，外部一定要使用 React.Suspense 包裹，否则会报错
+   - 使用第三方库优化状态的改变，控制不可变数据
+     - 例如 immutable、immer 之类的
+
+
+2. 如何统一监听 React 组件报错
+   - ErrorBoundary 组件
+     - 监听所有下级组件报错，可降级显示 UI（例如里面有一个子组件报错了，可展示：组件报错了。。等自定义信息）
+       - 关于降级显示 UI，只在生产模式生效，开发环境下会直接抛出错误（其实也是对开发比较友好了，开发环境下不需要那些花里胡哨的，直接改就好）
+     - 只监听组件渲染时报错，不监听 DOM 事件（例如点击按钮执行 click 事件方法时的报错无法监听）、异步错误（setTimeout 内发生的错误）
+     - 组件代码参考：[ErrorBoundary](React/react-z/src/components/ErrorBoundary组件/index.js)
+     - 一般用在 main.js 中，用来包裹 App 根组件
+   - 由于 ErrorBoundary 监听不到 DOM 事件的报错，所以还是需要 window.onerror 配合才行
+     - 使用 window.onerror 监听 DOM 事件、异步错误
+     - 当然你也可以使用 try..catch 去捕获错误
+
 ### 框架篇
 
 1. 使用虚拟 Dom 和 JS 哪个操作 dom 更快？
@@ -619,7 +725,50 @@
      - 主要在于优化用户体验
 
 
-2. 后端一次性返回 10 万条数据，怎么渲染？
+2. 如果一个 H5 很慢，你该如何排查性能问题？
+   - 首先这个问题，“很慢”，这个词本身就是一个模糊的词，很慢，有多慢？是哪个地方慢？加载慢还是渲染慢？还是某个页面某个操作慢？
+   - 所以第一步是定位问题，有以下几个性能指标：
+     - FP（First Paint）：页面加载完成后，第一次渲染，不管页面上有没有东西，总之是开始渲染了，发生变化了（用工具看，人眼肯定看不到）
+     - FCP（First Contentful Paint）：第一次有内容的渲染，能看到页面上有东西了，不管是一张图或一个字一个颜色，总之能看到了
+     - ~~FMP（First Meaningful Paint）：已弃用！第一次有意义的渲染，每个页面标准不一样，不知道怎样的渲染算有意义，所以弃用~~
+     - DCL（DomContentLoaded）：就是页面原生的 DOM 事件，代表 DOM 结构加载完成，但是图片视频啥的可能还没加载完
+     - LCP（Largest Contentful Paint）：页面加载时用户所看到的最大内容块（通常是图片或大文本等）何时呈现在屏幕上
+     - L（Load）：页面原生的 DOM 事件，代表页面所有内容加载完毕
+   - 如何排查？
+     - Chrome DevTools
+       - Performance：可以查看上述性能指标，有网页快照，有不同时间内执行的代码以及所花费的时间
+       - Network：可以查看各个资源的加载时间
+       - 如图：
+         <br/><img src="./picture/11.jpg" width="40%" style="margin-top: 5px">
+     - lighthouse 工具
+       - 非常流行的第三方性能评测工具，支持移动端和 PC 端
+       - 会展示多种关键性能指标，还会给你提示优化建议
+       - 如图：
+         <br/><img src="./picture/12.jpg" width="30%" style="margin-top: 5px">
+         <br/><img src="./picture/13.jpg" width="30%" style="margin-top: 5px">
+       - 安装使用：
+         - `npm i lighthouse -g`
+         - `lighthouse https://www.baidu.com/ --view --preset=desktop`
+           - `--view` 选项表示审计完成后在浏览器中打开报告查看
+           - `--preset=desktop` 表示使用桌面端的预设配置进行审计，会模拟桌面浏览器环境来评估网页
+   - 最终识别问题，对症下药，解决方法，具体问题具体对待，以下的解决方法只是举个通用的例子
+     - 加载慢？（FP 之前的时间）
+       - 优化服务端配置，使用 CDN
+       - 减少主包体积（路由懒加载，拆分组件）
+       - 优化 http 缓存策略
+     - 渲染慢？（FP 到 L 的时间）
+       - 优化前端组件内部逻辑，减少渲染次数
+       - 服务端 SSR
+     - 其它具体场景
+       - 日历组件渲染慢？使用 requestIdleCallback 预获取数据
+       - 图片渲染慢？弃用 htmlToCanvas，手动操作画图写文字
+   - 性能优化是一个循序渐进的过程，它不是硬性 bug，不能一次性解决
+   - 需要持续跟进统计结果，然后逐步分析性能瓶颈，持续优化
+   - 联想，使用二分法，逐步找到问题根源
+   - 最后，要有 “监控” “持续跟进” 的思维，解决了问题，还得保持住才行
+
+
+3. 后端一次性返回 10 万条数据，怎么渲染？
    - 首先这个问题，它的设计就是不合理的，为什么后端要一次性返回 10 万条数据？
      - 有什么场景需要这么设计？问问面试官？为什么不能分页？
    - 如果就是要处理这 10 万条数据的话？
@@ -637,7 +786,7 @@
          - 实现虚拟列表只是无奈的选择，成本可能也不低，后端的问题，应该首先由后端解决
 
 
-3. 怎么实现文字超过省略？
+4. 怎么实现文字超过省略？
    - 这个直接上代码，用 css 样式解决
      ```css
        /* 单行文本 */
@@ -656,7 +805,7 @@
      ```
 
 
-4. 前端设计模式？哪些使用场景？
+5. 前端设计模式？哪些使用场景？
     - 设计模式的原则：开放封闭原则
       - 对扩展开放
       - 对修改封闭

@@ -39,6 +39,7 @@ function flaten (arr) {
  * 不过这方法有个缺点，对于 string 类型的数字，flat 后会变成 number 类型，例如下面的数据 '1'
  * 不过也没办法，如果不做 parseInt 转换的话，所有数据都是字符串了
  * 从另一个角度来说，加了 parseInt 的转换，其实是在修正数据，字符串的数字，最终肯定还是要转换成 number 类型使用的
+ * 此方法实际工作中不推荐使用！
  * @param arr
  * @returns {(number | string)[]}
  */

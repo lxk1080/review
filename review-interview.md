@@ -855,3 +855,24 @@
         - 场景：优化 if-else 语句
       - 其它的设计模式（经典的总共有 23 种设计模式哈）
         - 组合模式、享元模式、命令模式、责任链模式、桥接模式
+
+
+6. 遇到过哪些项目难点？是如何解决的？（这个可以准备一个）
+   - 没有固定的，需要自己长期的积累总结记录
+   - 回答模版
+     - 描述问题：背景 + 现象 + 造成的影响
+     - 解决问题：分析 + 解决方案
+     - 有何成长：学到了什么 + 如何避免 + 记录
+
+### 手写代码篇
+> 规范性、完整性、鲁棒性
+
+1. [数组扁平化](js/flat.js)
+2. [获取详细数据类型](writeCode/getType获取详细数据类型.ts)
+3. [new一个对象的过程](writeCode/new一个对象的过程.ts)
+4. [遍历dom树](writeCode/遍历dom树.js)
+5. [LazyMan实现sleep机制](writeCode/LazyMan实现sleep机制.ts)
+6. [curry函数柯里化](writeCode/curry函数柯里化.ts)
+7. [instanceOf-方法实现](writeCode/instanceOf-方法实现.ts)
+8. [bind方法实现](writeCode/bind方法实现.ts)
+9. [call和apply方法实现](writeCode/call和apply方法实现.ts)

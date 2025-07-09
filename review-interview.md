@@ -658,6 +658,21 @@
      - 使用 window.onerror 监听 DOM 事件、异步错误
      - 当然你也可以使用 try..catch 去捕获错误
 
+
+3. React-setState 是微任务还是宏任务？
+   - 首先，我们知道，在 React 中 setState 的设计预期是：异步的、可合并的
+     - 在 React18 以下的版本，在 setTimeout、自定义 DOM 事件、Promise 回调中，setState 机制不生效，变成：同步的、不可合并的
+     - 在 React18 及以后的版本中，引入了 Automatic Batching 自动批处理机制，已经修复了这个问题
+   - 那么，它既然是异步的，那它是微任务还是宏任务？
+   - 我们知道，宏任务是在 DOM 更新之后执行，如果 setState 是宏任务，那将会导致死循环，因为 state 的变化又会触发 DOM 的更新
+   - 那这么说 setState 只能是微任务了？
+   - 实际上，也不是，其实 setState 的本质还是同步，只不过让 React 做成了异步的样子（因为要考虑性能，多次 state 修改，只渲染一次）
+     - React 内部有个事务机制，装饰器模式，当 React 中某个方法被执行时，实际上是被装饰器函数包裹了一层
+     - 方法内执行 setState 时，React 会先记下来，当方法执行完，会在装饰器中执行改变 state 的操作
+     - 所以针对这个方法而言，这个 setState 的操作就像是异步任务一样
+   - 所以 setState 会先于所有微任务执行，但是又在其它所有同步代码之后执行
+   - 如果硬要给个答案，那 setState 是微任务，并且是优先级最高的
+
 ### 框架篇
 
 1. 使用虚拟 Dom 和 JS 哪个操作 dom 更快？
@@ -889,6 +904,11 @@
 11. [LRU缓存实现](writeCode/LRU缓存实现.ts) + [使用-对象+双向链表-方式实现](writeCode/LRU缓存实现-对象-双向链表.ts)
 12. [手写深拷贝-考虑各种类型及循环引用](writeCode/手写深拷贝.ts)
 
+### 手写代码篇-2（偏业务型）
+
+1. [将数组转成树结构](writeCode2/数组转成树.ts)
+2. [将树转成数组](writeCode2/树转成数组.ts)
+
 ### 刁钻问题篇
 
 1. `[1, 2, 3].map(parseInt)` 输出什么？
@@ -901,7 +921,7 @@
    - 所以结果就是 `[1, NaN, NaN]`
 
 
-2. 以下代码输出什么？
+2. 以下代码输出什么？（形参是变量）
    ```javascript
    function changeArgs(x) { x = 200 }
    let num = 100
@@ -910,3 +930,162 @@
    ```
    - 答案是 100
    - 这个其实，主要是萌新需要注意，函数的形参，其实就是一个变量，变量 `x` 被重新赋值了，怎么会改变原来变量 `num` 的值呢
+
+
+3. 以下代码都输出什么？（关于作用域的问题）
+    ```js
+    // 用 let
+    const a = 100;
+    function test() {
+      console.log(a); // a is not defined 或者现代浏览器直接报错：Cannot access 'a' before initialization
+      let a = 10;
+    }
+    test();
+    
+    // 用 var
+    const a = 100;
+    function test() {
+      console.log(a); // undefined
+      var a = 10;
+    }
+    test();
+    
+    // 函数内不定义 a
+    const a = 100;
+    function test() {
+      console.log(a); // 100
+    }
+    test();
+
+    // 首先要记住：在执行 console.log(a) 的时候，会先在当前作用域内寻找 a，即使 a 是在执行语句之后定义的
+    // 情况一：用 let 时，由于 a 在后面定义，所以执行的时候，a is not defined，现代浏览器可能会直接报错
+    // 情况二：用 var 的时候，由于有变量提升，相当于在 log 语句前有个 var a; 但还没赋值，所以结果是 undefined
+    // 情况三：而最后函数内不定义 a，那就直接在上级作用域寻找 a，所以打出 100
+    ```
+
+
+4. 以下 Promise 代码执行的输出结果是什么？（Promise 的链式调用以及 then 内部返回 Promise）
+    ```js
+    Promise.resolve().then(() => {
+      console.log(0)
+      return Promise.resolve(4)
+    }).then((res) => {
+      console.log(res)
+    })
+    
+    Promise.resolve().then(() => {
+      console.log(1)
+    }).then(() => {
+      console.log(2)
+    }).then(() => {
+      console.log(3)
+    }).then(() => {
+      console.log(5)
+    }).then(() => {
+      console.log(6)
+    })
+    ```
+   - 答案是：`0 1 2 3 4 5 6`
+   - 这里面关键点在于 `return Promise.resolve()` 的隐式操作
+     - 记住，当 `.then()` 返回一个新的 `Promise` 时，会隐式插入两个额外的微任务：
+       - 第一个微任务：等待返回的 `Promise` 解决，即 `Promise.resolve(4)`
+       - 第二个微任务：将解决后的值 `4` 传递到下一个 `.then()`
+     - 因此，`return Promise.resolve(4)` 会导致后续 `.then((res) => console.log(res))` 延迟两个微任务执行
+       - 这就相当于在 `.then((res) => console.log(res))` 前面多插入了两个 `.then()`
+       - 并且，这两个 `.then()` 的执行是没有任何输出结果的
+
+
+5. 以下代码输出什么？（setState 的同步异步问题）
+    ```js
+    // this.state.val 初始值是 0
+    class ReactComp extends Component {
+      componentDidMount() {
+        this.setState({val: this.state.val + 1})
+        console.log('a-----', this.state.val)
+          
+        this.setState({val: this.state.val + 1})
+        console.log('b-----', this.state.val)
+          
+        setTimeout(() => {
+          this.setState({val: this.state.val + 1})
+          console.log('c-----', this.state.val)
+          
+          this.setState({val: this.state.val + 1})
+          console.log('d-----', this.state.val)
+        }, 0)
+      }
+    }
+    ```
+   - 答案：
+     - React 18 以下：0 0 2 3，val 最终值是 3
+     - React 18 以上：0 0 1 1，val 最终值是 2
+   - 在 React 中 setState 的设计预期是：异步的（本质是同步，只不过做成了异步的样子）、可合并的（后者覆盖前者）
+   - 但是 React18 以下的版本，在 setTimeout、自定义 DOM 事件、Promise 回调中，setState 机制不生效，变成：同步的、不可合并的
+   - 然而，在 React18 及以后的版本中，已经修复了这个问题
+
+
+6. 以下代码输出什么？（对象和属性连续赋值）
+    ```js
+    let a = { n: 1 }
+    let b = a
+    a.x = a = { n: 2 }
+    console.log('a.x =>', a.x)
+    console.log('b.x =>', b.x)
+    ```
+   - 答案：
+     - a.x => `undefined`
+     - b.x => `{ n: 2 }`
+   - 这道题的关键在于要知道一个知识点：
+     - 像 `.x` 这种属性实际上在赋值之前就已经定义了（这个其实和 js 执行流程有关，属于创建阶段的初始化）
+       - 关于 js 执行上下文，可以参考我的文章：https://juejin.cn/post/7206998548343373884
+     - 属性赋值可以参考如下代码：
+       ```js
+       const a = { n: 1 }
+       a.x = 10
+       
+       // 上面的代码实际上是：
+       const a = { n: 1 }
+       a.x = undefined // 在赋值之前，a 在堆内存中长这样：{ n: 1, x: undefined }
+       a.x = 10 // 在执行这一句时，会先做上面一句所描述的工作
+       ```
+     - 所以 js 在执行到这一句 `a.x = a = { n: 2 }` 时，会先创建 `a.x = undefined`
+       - 因为还没执行语句，所以此时的 a 还是指向 `{ n: 1 }`，创建后变成 `{ n: 1, x: undefined }`
+     - 然后开始做赋值操作，首先 `a = { n: 2 }`，此时 a 指向了一个新的引用 `{ n: 2 }`
+     - 然后执行 `a.x = a`，注意，此时，这两个 a 是不同的引用
+     - `a.x` 中的 a 是 `{ n: 1, x: undefined }`，被赋值的那个 a 是 `{ n: 2 }`
+     - 所以赋值后的结果是 `{ n: 1, x: { n: 2} }`，也就是 b 的值
+     - 所以最后的结果是：
+       - a 的值是 `{ n: 2 }`
+       - b 的值是 `{ n: 1, x: { n: 2} }`
+
+
+7. 以下代码各输出什么？（对象的 key 的数据类型）
+   ```js
+   const a = {}, b = '123', c = 123
+   a[b] = 'b'
+   a[c] = 'c'
+   console.log(a)
+   // { '123': 'c' }
+   // 当 c 作为 key 时，c.toString() = '123'，会覆盖掉 b
+   // Object.keys(a) = ['123']
+   
+   const a = {}, b = Symbol('123'), c = Symbol('123')
+   a[b] = 'b'
+   a[c] = 'c'
+   console.log(a)
+   // { Symbol(123): 'b', Symbol(123): 'c' }
+   // Object.keys(a) = [] 空数组，因为 Symbol 是唯一的，无法表示
+   // 如果 b = Symbol.for('123'), c = Symbol.for('123')，则 a = { Symbol(123): 'c' }
+   // Symbol 的参数是对自身的描述，Symbol.for 的参数是 key，如果 key 相同，则是同一个 Symbol
+   // 另外 Symbol.for('123') 与 Symbol.for(123) 相等，对 key 类型无感
+   
+   const a = {}, b = { key: '123' }, c = { key: '456' }
+   a[b] = 'b'
+   a[c] = 'c'
+   console.log(a)
+   // { '[object Object]': 'c' }
+   // Object.keys(a) = ['[object Object]']
+   ```
+   - 总结下 JS 对象 key 的数据类型
+     - 只能是字符串和 Symbol 类型
+     - 其它类型会被转化成字符串（调用自身的 toString 方法）

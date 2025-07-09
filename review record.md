@@ -170,8 +170,19 @@
     - resolved 状态触发 then
     - rejected 状态触发 catch
     - then 和 catch 正常情况下返回 resolved 状态，遇到报错则返回 rejected 状态（很重要！），然后再由这个状态决定触发 then 或者 catch
-    - 当 then 里面 return 一个 Promise 时，可以这么理解：下一个 then 或 catch 就会变成这个 Promise 的 then 和 catch，然后规则同上
-    - 当 then 里面 return 一个普通的字符串或数字时（其实是隐式的将字符串或数字转化成了 Promise），下一个 then 中接收的就是这个字符串或数字，没有 return 的话，则是 undefined
+    - 当 then 里面 return 一个普通的字符串或数字时（其实会隐式的将字符串或数字转化成了 Promise），下一个 then 中接收的就是这个字符串或数字
+      - 例如 `return 4` 会被隐式包装成 `return Promise.resolve(4)`，注意这是一个新的 Promise，和代码顶部 Promise 无关
+      - 没有写 return 的话，则会处理成 `return Promise.resolve(undefined)`
+    - 当 then 里面显式的 return 一个 Promise 时，则会隐式的插入两个额外的微任务
+      - 第一个微任务：等待返回的 `Promise` 解决（例如 `return Promise.resolve(4)`，`Promise` 的状态由 `pending` 变为 `fulfilled`）
+      - 第二个微任务：将解决后的值 `4` 传递到下一个 `.then()` 中（也就是把结果和原来的 `Promise` 调用链联接起来）
+      - 当然，这两个微任务也不是一次性插入的，和 `.then()` 一样，需要一步一步执行，分两次添加到微任务队列
+        - 当执行到 `return Promise.resolve(4)` 这一句时，会立刻添加第一个隐式微任务
+        - 当第一个隐式微任务执行完，会接着添加第二个隐式微任务
+        - 当第二个隐式微任务执行完，才会把代码中 `return Promise.resolve(4)` 这句后面的那个 `.then()` 添加到微任务
+        - 所以这从代码上看起来，就像是在后面的 `.then()` 之前插入了两个新的 `.then()` 一样
+      - 注意，只要当 Promise 嵌套使用时，内部的 `return Promise` 才会有这种效果（引入额外的微任务）
+        - 直接在外层写的 `Promise.resolve(10)` 会立即执行，没有微任务这一说
 
 16. 关于 Promise 的异步调用
     - 首先我们需要知道 Promise 的异步和 setTimeout 的异步在写法上是有区别的

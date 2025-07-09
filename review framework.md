@@ -468,6 +468,8 @@
         - 注意：在 React 18 之后，所有 setState 都是异步了（引入了自动批处理机制）
 
 22. transaction 事务机制，就是对应于 batchUpdate 运行的机制，装饰器模式，参考：/【图】/react-transaction事务机制.png
+    - 从这个机制，可以看出，setState 的本质还是同步，只不过做成了异步的样子
+    - 真正改变 state 的操作，是在这个装饰器中做的
 
 23. 简述下 react 组件渲染和更新流程吧
     - 渲染

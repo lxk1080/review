@@ -58,7 +58,14 @@
     - offsetHeight：`border + padding + content`
     - clientHeight：`padding + content`
     - scrollHeight：`padding + 实际内容尺寸`
-      - 在滚动时，内边距也是要参与进去的
+      - 记住，在滚动时，内边距也是要参与进去的
+    - 扩展一下：window.innerHeight 和 window.outerHeight 有啥区别？
+      - window.innerHeight：浏览器窗口视口（也就是页面内容显示区域）的高度，这里面包含了滚动条（要是存在的话）
+        - 用来获取浏览器视口的高度，这个属性还是比较常用的，例如图片懒加载
+        - 还有个方法也可以获取浏览器视口的高度：document.documentElement.clientHeight
+          - 但不包含滚动条高度（若滚动条存在，值会比 innerHeight 小）
+      - window.outerHeight：整个浏览器窗口的外部高度，包括浏览器所有的界面元素，像标题栏、菜单栏、工具栏、标签页等
+        - 这个属性一般和控制视口之外的元素有关，前端会比较少用到
 
 
 6. 在 dom 中，Element 和 Node 的区别？
@@ -1108,3 +1115,7 @@
 
 ### 项目设计篇
 - 请转至：[ProjectDesign](projectDesign/readme.md)
+
+### 软技能篇
+- 虽然不用写代码，但是却很重要，甚至比会写代码还重要
+- [参考讲解链接](https://coding.imooc.com/lesson/562.html#mid=50859)（尤其是最后一课，很重要！）

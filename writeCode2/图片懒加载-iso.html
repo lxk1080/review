@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>图片懒加载-iso</title>
+  <style>
+    .container {
+      border-top: #cccccc solid 1px;
+      margin-bottom: 30px;
+    }
+    .img-box {
+      width: 300px;
+      height: 200px;
+      border: #eeeeee solid 1px;
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .img-box img {
+      width: 60px;
+
+      /* 这个属性必须要指定 img 的 width 和 height 才生效，它并不是以父元素的宽高为基准，而是基准自身 */
+      /* object-fit: contain; */
+    }
+  </style>
+</head>
+<body>
+  <h2>Img lazy Load - iso</h2>
+  <div class="container">
+    <p>图片标题</p>
+    <div class="img-box" data-lazy-load="true">
+      <img
+        src="https://loading.io/assets/mod/spinner/dual-ring/sample.gif"
+        data-src="https://img1.baidu.com/it/u=1290068356,3082727061&fm=253&fmt=auto&app=138&f=JPEG?w=600&h=400"
+        alt="img-item"
+      />
+    </div>
+  </div>
+  <div class="container">
+    <p>图片标题</p>
+    <div class="img-box" data-lazy-load="true">
+      <img
+        src="https://loading.io/assets/mod/spinner/dual-ring/sample.gif"
+        data-src="https://img1.baidu.com/it/u=2364035008,3782062776&fm=253&fmt=auto&app=138&f=JPEG?w=600&h=400"
+        alt="img-item"
+      />
+    </div>
+  </div>
+  <div class="container">
+    <p>图片标题</p>
+    <div class="img-box" data-lazy-load="true">
+      <img
+        src="https://loading.io/assets/mod/spinner/dual-ring/sample.gif"
+        data-src="https://img1.baidu.com/it/u=2634037896,2431839250&fm=253&fmt=auto&app=138&f=JPEG?w=600&h=400"
+        alt="img-item"
+      />
+    </div>
+  </div>
+  <div class="container">
+    <p>图片标题</p>
+    <div class="img-box" data-lazy-load="true">
+      <img
+        src="https://loading.io/assets/mod/spinner/dual-ring/sample.gif"
+        data-src="https://img1.baidu.com/it/u=2453940806,189637311&fm=253&fmt=auto&app=120&f=JPEG?w=600&h=400"
+        alt="img-item"
+      />
+    </div>
+  </div>
+  <div class="container">
+    <p>图片标题</p>
+    <div class="img-box" data-lazy-load="true">
+      <img
+        src="https://loading.io/assets/mod/spinner/dual-ring/sample.gif"
+        data-src="https://img0.baidu.com/it/u=2069085159,670618066&fm=253&fmt=auto&app=138&f=JPEG?w=600&h=400"
+        alt="img-item"
+      />
+    </div>
+  </div>
+  <div class="container">
+    <p>图片标题</p>
+    <div class="img-box" data-lazy-load="true">
+      <img
+        src="https://loading.io/assets/mod/spinner/dual-ring/sample.gif"
+        data-src="https://img2.baidu.com/it/u=969264104,1395358401&fm=253&fmt=auto&app=138&f=JPEG?w=600&h=400"
+        alt="img-item"
+      />
+    </div>
+  </div>
+
+  <script src="https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+  <script>
+    /**
+     * 懒加载代码实现 - IntersectionObserver 版本
+     *  - 图片加载完成后，需要解绑监听，再监听下去也没啥意义了
+     *  - 关于扩展需求：
+     *    - 如果我们想做那种虚拟列表形式的，加载-销毁-再加载，用 IntersectionObserver 也可以，但不完全可以
+     *    - 因为，为了优化体验，我们肯定要做当前视口上下文区域的图片缓存，否则上下滑动页面时，显示将会很不顺畅
+     *    - 而要做这种缓存，就必须要知道每张图片所在的位置，所以又需要监听 scroll 事件了
+     */
+
+    function lazyLoad() {
+      let observer = new IntersectionObserver(entries => {
+        entries.forEach(item => {
+          if (item.isIntersecting) {
+            const imgBox = item.target
+            const img = imgBox.querySelector('img')
+            img.src = img.dataset.src
+            img.style.width = '100%'
+            observer.unobserve(imgBox)
+          }
+        })
+      })
+      const imgBoxs = document.querySelectorAll('div[data-lazy-load]')
+      for (let imgBox of imgBoxs) {
+        observer.observe(imgBox)
+      }
+    }
+
+    lazyLoad()
+
+  </script>
+</body>
+</html>

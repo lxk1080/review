@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>图片懒加载-scroll</title>
+  <style>
+    .container {
+      border-top: #cccccc solid 1px;
+      margin-bottom: 30px;
+    }
+    .img-box {
+      width: 300px;
+      height: 200px;
+      border: #eeeeee solid 1px;
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .img-box img {
+      width: 60px;
+
+      /* 这个属性必须要指定 img 的 width 和 height 才生效，它并不是以父元素的宽高为基准，而是基准自身 */
+      /* object-fit: contain; */
+    }
+  </style>
+</head>
+<body>
+  <h2>Img lazy Load - scroll</h2>
+  <div class="container">
+    <p>图片标题</p>
+    <div class="img-box" data-lazy-load="true">
+      <img
+        src="https://loading.io/assets/mod/spinner/dual-ring/sample.gif"
+        data-src="https://img1.baidu.com/it/u=1290068356,3082727061&fm=253&fmt=auto&app=138&f=JPEG?w=600&h=400"
+        alt="img-item"
+      />
+    </div>
+  </div>
+  <div class="container">
+    <p>图片标题</p>
+    <div class="img-box" data-lazy-load="true">
+      <img
+        src="https://loading.io/assets/mod/spinner/dual-ring/sample.gif"
+        data-src="https://img1.baidu.com/it/u=2364035008,3782062776&fm=253&fmt=auto&app=138&f=JPEG?w=600&h=400"
+        alt="img-item"
+      />
+    </div>
+  </div>
+  <div class="container">
+    <p>图片标题</p>
+    <div class="img-box" data-lazy-load="true">
+      <img
+        src="https://loading.io/assets/mod/spinner/dual-ring/sample.gif"
+        data-src="https://img1.baidu.com/it/u=2634037896,2431839250&fm=253&fmt=auto&app=138&f=JPEG?w=600&h=400"
+        alt="img-item"
+      />
+    </div>
+  </div>
+  <div class="container">
+    <p>图片标题</p>
+    <div class="img-box" data-lazy-load="true">
+      <img
+        src="https://loading.io/assets/mod/spinner/dual-ring/sample.gif"
+        data-src="https://img1.baidu.com/it/u=2453940806,189637311&fm=253&fmt=auto&app=120&f=JPEG?w=600&h=400"
+        alt="img-item"
+      />
+    </div>
+  </div>
+  <div class="container">
+    <p>图片标题</p>
+    <div class="img-box" data-lazy-load="true">
+      <img
+        src="https://loading.io/assets/mod/spinner/dual-ring/sample.gif"
+        data-src="https://img0.baidu.com/it/u=2069085159,670618066&fm=253&fmt=auto&app=138&f=JPEG?w=600&h=400"
+        alt="img-item"
+      />
+    </div>
+  </div>
+  <div class="container">
+    <p>图片标题</p>
+    <div class="img-box" data-lazy-load="true">
+      <img
+        src="https://loading.io/assets/mod/spinner/dual-ring/sample.gif"
+        data-src="https://img2.baidu.com/it/u=969264104,1395358401&fm=253&fmt=auto&app=138&f=JPEG?w=600&h=400"
+        alt="img-item"
+      />
+    </div>
+  </div>
+
+  <script src="https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+  <script>
+    /**
+     * 懒加载代码实现 - scroll 版本
+     *  - 1、滚动事件，使用节流函数，每隔一段时间执行一次
+     *  - 2、加载完移除掉 data-lazy-load 属性，这样下次再尝试加载，就不用检查这张图了
+     *    - 这里 data-src 顺带也移除了，不过这个移不移除问题不大，主要是图片加载后这个属性就没用了
+     *    - 但是如果是那种虚拟列表，加载完成后划到上面，需要销毁掉，然后再划回来，又需要重新加载的情况，这个时候 data-src 就不能去掉
+     *  - 3、注意首屏页面还没有滚动操作，需要初始化一下
+     *  - 4、实际项目中，还有一点需要注意：
+     *    - 这里，imgBox 的宽高就是我们需要的最终展示目标图片的宽高
+     *    - 这里是使用 imgBox 判断的高度，是因为一开始的 img 就是个 loading 图标，它的大小并没有撑满 imgBox
+     *    - 所以如果用它的 top 作为判断依据，是会有误差的，而我们使用 imgBox 的宽高，就是目标元素要展示的宽高，没有判断误差
+     *    - 为什么需要在目标图片加载完成后设置宽度为 100%？一开始就写在 css 里不行吗？
+     *      - 还是因为 loading 图标，主要是因为这里，这个图标和目标图片使用的是同一个 img 元素
+     *      - 然而，一般来讲，我们不会把 loading 图标显示的和图片尺寸一样大，例如这里，就显示个 60px 的小尺寸就好了
+     *      - 所以，当目标图片加载完成后，为了能正常显示，我们需要重新设置下这个 img 元素的宽度为 100%
+     *
+     */
+
+    function imgTryLoad() {
+      const imgBoxs = document.querySelectorAll('div[data-lazy-load]')
+      if (!imgBoxs.length) return
+
+      imgBoxs.forEach((imgBox) => {
+        const { top } = imgBox.getBoundingClientRect()
+        if (top < window.innerHeight) {
+          const img = imgBox.querySelector('img')
+          img.src = img.dataset.src
+          img.style.width = '100%'
+          imgBox.removeAttribute('data-lazy-load')
+          img.removeAttribute('data-src')
+        }
+      })
+    }
+
+    window.addEventListener('scroll', _.throttle(imgTryLoad, 100))
+    imgTryLoad()
+
+  </script>
+</body>
+</html>

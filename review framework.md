@@ -652,6 +652,37 @@
     - 总之使用 useEffect 传递依赖项的时候要小心，操作不当，有可能会造成死循环
 
 
+9. useEffect 和 useLayoutEffect 有什么区别?
+   - useEffect
+     - 执行时机：在浏览器完成渲染（绘制到屏幕）之后异步执行，不会阻塞浏览器的绘制过程，属于 "渲染后" 执行
+     - 应用场景：适用于大多数副作用场景，如数据请求、事件监听、日志记录等不涉及 DOM 布局读取/修改的操作
+     - 性能影响：不会阻塞渲染，性能更好
+   - useLayoutEffect
+     - 执行时机：在 DOM 更新之后、浏览器绘制之前同步执行，会阻塞浏览器的绘制，属于 "布局后，绘制前" 执行
+       - 真实的 DOM 结构已经更新了，但是浏览器还没来得及画出来
+       - 理论上来讲，此时开启浏览器审查元素，可以看到 DOM 结构的变化，但是屏幕上还没渲染出来
+     - 应用场景：适用于需要读取 DOM 布局并立即修改的场景，如测量 DOM 元素尺寸后，设置位置，可避免页面闪烁
+       - 由于是同步执行，它最大的作用就是，可以确保在浏览器绘制前完成所有 DOM 测量和修改，避免布局抖动
+       - 这种修改 DOM，如果用 useEffect 去做，也就代表着在渲染完成之后再改一波样式，布局应该会跳一下
+     - 性能影响：会阻塞渲染，过度使用可能导致性能问题
+   - 实际使用上，优先使用 useEffect，只有在遇到布局相关问题（如元素闪烁）时才考虑使用 useLayoutEffect
+   - 代码示例：
+     ```js
+     // useEffect - 渲染后执行
+     useEffect(() => {
+     // 数据请求等操作
+       fetchData()
+     }, [])
+
+     // useLayoutEffect - 布局后，绘制前执行
+     useLayoutEffect(() => {
+       // 读取并修改 DOM 布局
+       const { width } = elementRef.current.getBoundingClientRect()
+       elementRef.current.style.width = `${width + 100}px`
+     }, [])
+     ```
+
+
 
 
 

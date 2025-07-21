@@ -17,13 +17,17 @@
     }
 ```
 
+
 2. v-if 和 v-show
     - 区别：v-if 只渲染符合条件的 Dom，不符合的不会渲染出来。v-show 会把不符合条件的 Dom 渲染出来，并加上 style，display 为 none。
     - 场景：如果只进行一次渲染，变量更新不频繁，就用 v-if。如果更新很频繁，就用 v-show，因为用 display 的方式控制显示隐藏，不用操作 Dom，性能会好一些。
 
+
 3. v-for 和 v-if 不要同时用在同一个元素上，因为 v-if 的优先级更高，拿不到 v-for 中定义的变量，具体请看：https://cn.vuejs.org/guide/essentials/list.html#v-for-with-v-if
 
+
 4. event 对象是原生的，事件被挂载在当前元素
+
 
 5. 兄弟间组件通信：
     - 通过父组件通信
@@ -33,7 +37,26 @@
         - `event.$on()`
         - `event.$off()` // 一般在 beforeDestroy 解绑
 
-6. 生命周期图示，参见：/【图】/vue2.0生命周期.jpg
+
+6. 生命周期图示，参见：/【图】/vue2.0生命周期.jpg，最新请看：https://cn.vuejs.org/guide/essentials/lifecycle.html#lifecycle-diagram
+   - 需要创建 Vue 实例
+   - beforeCreate
+   - 初始化 Vue 内部的数据、事件和方法
+   - created
+   - 判断是否存在预编译模板？没有，那就采用即时编译模板（当调用 `vm.$mount(el)` 的时候），然后继续往下走，有的话直接往下走
+   - beforeMount
+   - 创建和插入真实 Dom 节点
+   - mounted
+   - 挂载完成
+     - 数据变化后
+     - beforeUpdate
+     - 重新渲染
+     - updated
+   - 当组件被取消挂载时
+     - beforeUnmount
+     - 取消挂载
+     - unmounted
+
 
 7. 关于父子组件的周期调用顺序，代码在：/components/生命周期调用顺序测试，参考下图：
     - 初始化
@@ -48,21 +71,26 @@
 
    ![image](https://github.com/lxk1080/md-file/blob/master/image/vue-destroy.png?raw=true)
 
+
 8. 自定义组件的 v-model，可参考：/components/自定义v-model，具体看：https://v2.cn.vuejs.org/v2/guide/components-custom-events.html#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6%E7%9A%84-v-model
     - 主要是有个 model 属性配置，可以定义 prop 和 event
+
 
 9. `this.$nextTick()`，在下次 dom 更新循环结束之后执行延迟回调
     - 在修改数据之后立即使用这个方法，可以获取更新后的 dom
     - 这个 api 存在的原因是：vue 在更新 dom 时是异步执行的（异步渲染）。这也是为了性能考虑，总不能更新一个 state 就渲染一次吧
+
 
 10. 关于插槽 slot，可参考：/components/插槽slot，具体请看：https://cn.vuejs.org/v2/guide/components-slots.html
     - 普通插槽
     - 作用域插槽
     - 具名插槽
 
-11. 动态组件，`<component :is="componentName"></component>`，适用于不确定的渲染何种组件的情况，例如新闻详情页，文字、图片排列顺序不是一定的。具体参考：https://cn.vuejs.org/v2/guide/components.html#%E5%8A%A8%E6%80%81%E7%BB%84%E4%BB%B6
 
-12. 异步组件，按需加载，用工厂函数的方式定义组件，只有在这个组件需要被渲染的时候才会触发该工厂函数，且会把结果缓存起来供未来重渲染，具体可参考：https://cn.vuejs.org/v2/guide/components-dynamic-async.html#%E5%BC%82%E6%AD%A5%E7%BB%84%E4%BB%B6
+11. 动态组件，`<component :is="componentName"></component>`，适用于不确定的渲染何种组件的情况，例如新闻详情页，文字、图片排列顺序不是一定的。具体参考：https://cn.vuejs.org/guide/essentials/component-basics#dynamic-components
+
+
+12. 异步组件，按需加载，用工厂函数的方式定义组件，只有在这个组件需要被渲染的时候才会触发该工厂函数，且会把结果缓存起来供未来重渲染，具体可参考：https://cn.vuejs.org/guide/components/async.html
 
     ```js
         components: {
@@ -70,9 +98,11 @@
         }
     ```
 
+
 13. `<keep-alive>` 缓存组件，`<keep-alive>` 包裹动态组件时，会缓存不活动的组件实例，而不是销毁它们
     - 一般会用在需要频繁切换，不需要重复渲染的场景下，这也算是性能优化的一种
     - `<keep-alive>` 是一个抽象组件：它自身不会渲染一个 dom 元素，也不会出现在组件的父组件链中
+
 
 14. mixins，混入，接收一个混入对象的数组。提取公共逻辑，具体参考：https://cn.vuejs.org/v2/guide/mixins.html
     - 混入对象的钩子将在组件自身钩子之前调用
@@ -82,16 +112,20 @@
         - 多个 mixin 可能造成命名冲突
         - mixin 和组件可能出现多对多的关系，复杂度较高
 
+
 15. vuex，可以看 music 项目复习一下，总的来说使用简单
+
 
 16. vue-router，也可以参考 music 项目
     - 路由模式
         - hash 模式（默认），如 `http://abc.com/#/user/10`
         - h5 history 模式，如 `http://abc.com/user/10` 需要 server 端支持
 
+
 17. 对于 MVVM 的理解
     - MVVM 组件化，组件化不是一个新的概念，很早以前就有，早在 asp、jsp、php 或者 nodejs 时就有，但是以前的组件化只是静态渲染（渲染模板，例如 ejs 的 include 指令可以引入模板片段，这个片段就相当于一个组件），更新还是要操作 Dom（或者重新渲染一遍-前后端不分离），比较繁琐。正因为离不开操作 Dom，所以 Jquery 在以前才能如此之火，而现在的 Vue、React 提出了创新的方式：数据驱动视图，这让我们在开发的时候更关注于业务本身，操作数据，而不用关注 Dom 该如何变化
     - 可以参考 MVVM 模型：/【图】/Vue-MVVM.png
+
 
 18. Vue 的响应式是如何实现的？
     - 核心 API：Object.defineProperty，可以参考文件：/components/vue的响应式实现，详细的可参照：/mvvm
@@ -104,34 +138,36 @@
     - 由于 defineProperty 的问题所在，需要注意已下内容，具体在：https://cn.vuejs.org/v2/guide/reactivity.html#%E6%A3%80%E6%B5%8B%E5%8F%98%E5%8C%96%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9
 
     ```js
-        // 1. 对象属性的添加或删除需要使用 Vue.set Vue.delete
-        
-        // 添加
-		this.obj.a = 'success';
-		// 改为：
-		this.$set(this.obj, 'a', 'success');
-		
-		// 删除
-		delete this.obj.name;
-		// 改为：
-		this.$delete(this.obj, 'name');
-		
-		// 2. 对于数组的变动
-		
-		// 利用索引直接设置一个数组项时
-		this.arr[0] = 'one';
-		// 改为：
-		this.$set(this.arr, 0, 'one');
-		// 或：
-		this.arr.splice(0, 1, 'one');
-		
-		// 修改数组的长度时
-		this.arr.length = 2;			
-		// 改为：
-		this.arr.splice(2);
+    // 1. 对象属性的添加或删除需要使用 Vue.set Vue.delete
+    
+    // 添加
+    this.obj.a = 'success';
+    // 改为：
+    this.$set(this.obj, 'a', 'success');
+    
+    // 删除
+    delete this.obj.name;
+    // 改为：
+    this.$delete(this.obj, 'name');
+    
+    // 2. 对于数组的变动
+    
+    // 利用索引直接设置一个数组项时
+    this.arr[0] = 'one';
+    // 改为：
+    this.$set(this.arr, 0, 'one');
+    // 或：
+    this.arr.splice(0, 1, 'one');
+    
+    // 修改数组的长度时
+    this.arr.length = 2;			
+    // 改为：
+    this.arr.splice(2);
     ```
 
+
 19. 虚拟 Dom（vdom），用 js 模拟 Dom 结构（vnode），通过新旧 vnode 对比（使用 diff 算法对比），得出最小的更新范围，最后更新 Dom。在数据驱动视图的模式下，能够有效的控制 Dom 操作。
+
 
 20. diff 算法（新旧 vnode 如何对比）
     - 为什么框架会有自己的 diif 算法？
@@ -141,6 +177,7 @@
         - 只比较同一层级，不跨级比较
         - tag 不相同，则直接删掉重建，不再深度比较
         - tag 和 key，两者都相同，则认为是相同节点，不再深度比较
+
 
 21. diff 源码需要注意的地方
     - h 函数：做了一系列的处理，返回一个 vnode
@@ -166,6 +203,7 @@
             - oldChildren[end] 和 newChildren[start]
         - 每次比较之后 start 和 end 索引都会改变，向中间靠拢，start 和 end 相遇时结束，以上四个对比有一个相同就会触发 patchVnode 函数，然后重复第三个步骤。如果以上条件都不成立，就会拿 newChildren 的 key，看能否对应上 oldChildren 中某个节点的 key，没对应上直接插入，对应上了，还得比较 sel 是否相等，不相等的话还是插入，相等了，就走 patchVnode 函数，继续重复第三个步骤。
 
+
 22. 模板编译，可以参考： /components/vue的模板编译
     - 模板编译成了 render 函数（字符串），执行 render 函数，返回 vnode
     - 基于 vnode 执行 patch（更新） 和 diff
@@ -173,17 +211,23 @@
     - vue 组件中可以用 render 代替 template
         - lh 的 vue 版本中就用到过这个方式，使用 render 虽然写起来复杂，但是更灵活，可以更细粒度的控制各个属性
 
+
 23. Vue 是如何进行渲染和更新的？可以参考：/【图】/vue渲染和更新流程.png，文档地址：https://cn.vuejs.org/v2/guide/reactivity.html#%E5%A6%82%E4%BD%95%E8%BF%BD%E8%B8%AA%E5%8F%98%E5%8C%96
     - 初次渲染过程
         - 初始化响应数据，监听 data 属性（getter setter）
         - 解析模板为 render 函数（或在开发环境已完成，vue-loader）
-        - 执行 render 函数，生成 vnode（每个组件实例都对应一个 watcher 实例，执行 render 函数的时候，会触发“接触”过的 data 属性的 getter，watcher 实例会将 data 属性记录为依赖，之后当依赖项的 setter 触发时，会通知 watcher，从而使它关联的组件重新渲染）
+        - 执行 render 函数，生成 vnode
+          - 执行 render 函数的时候，如果遇到了 data 属性，此时会新建一个 watcher 实例
+          - 在 watcher 实例创建过程中，会触发到 data 属性的 getter 函数，函数内会将刚创建的 watcher 对象添加到 data 属性的依赖列表中（dep）
+          - 之后当 data 属性改变触发 setter 时，会通知所有的 watcher，每个 watcher 都会执行自身的 Dom 更新函数，从而使组件重新渲染
+          - 这些 watcher 都是观察者，而 data 属性则是被观察者
         - 渲染成真实 dom，`patch(elem, vnode)`
     - 更新过程
         - 修改 data 数据，触发 setter
         - 重新执行 render 函数，生成 newVnode
         - 更新 dom，`patch(oldVnode, newVnode)`
-    - PS：以前的 /mvvm 里面为模拟代码，可以参考，和现在描述的可能不太一样，一切以现在最新的为准（没办法，现在的是官方文档就是这么说的）
+    - PS：文件夹 /mvvm 里面为模拟代码，可以参考，也许和现在最新版本描述的不太一样，但基本上没什么太大差距，能理解就行
+
 
 24. 前端路由实现的原理，可以参考：/h5/feature/05_历史管理.html
     - hash，可以通过 `window.onhashchange` 事件监听 hash 的变化
@@ -206,8 +250,10 @@
         - to C 系统，可以考虑用 history
         - 总之能用简单的，就不用复杂的
 
+
 25. 为什么组件 data 必须是一个函数？
-    - 组件在多处使用，进行实例化，其内部将会使用类似 `this.$data = typeof data === 'function' ? data() : data` 这样的语句，如果 data 不是一个函数，那多个实例化的组件将会共用一份数据。
+    - 组件在多处使用，进行实例化，其内部将会使用类似 `this.$data = typeof data === 'function' ? data() : data` 这样的语句，如果 data 不是一个函数，那多个实例化的组件将会共用一份数据
+    - 我觉得这并不是一件值得炫耀的事，框架真要是写的好，就不会让开发者注意这个问题，data 数据的共用问题，应该由框架缔造者解决，而不是使用者
 
 ## React
 
@@ -217,6 +263,7 @@
     - 所有的事件，都被挂载到 document 上（React 16）
     - 和 Vue 事件不一样（Vue 事件是原生的 Dom 事件，React 是合成事件，关于合成事件，在下面的第 20 条内容中会有详细讲解）
     - 注：React 17 事件绑定到了 root 组件上，有利于多个 React 版本共存，例如微前端
+
 
 2. 关于 setState，可以参考：/components/setState测试
     - 不可变值（ `setState({})` 的值一定是一个新的值或新的引用）
@@ -300,14 +347,18 @@
 
             - <span style="color: red">注意：</span>上面说的 **可能是异步更新** 和 **可能会被合并**，是仅限于 React 18 以下的版本，在 React 18 中，全部都变成了 **异步更新** 和 **会被合并** 了，主要是因为在 React 18 中引入了 `Automatic Batching` 自动批处理
 
+
 3. React 生命周期，参考：https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/
 
+
 4. 父子组件的周期调用顺序，参考 Vue，差不多
+
 
 5. 函数组件
     - 纯函数，输入 props，输出 JSX
     - 没有实例，没有生命周期，没有 state
     - 不能扩展方法（意思是不能像 class 组件一样定义成员方法）
+
 
 6. 受控组件和非受控组件，参考：/components/受控组件和非受控组件
     - 区别：根本区别在于，组件的值是否受 state 控制
@@ -320,16 +371,20 @@
         - 优先使用受控组件，符合 React 设计原则
         - 必须操作 Dom 时，使用非受控组件
 
+
 7. Portals，传送门，`ReactDom.createPortal(<div class='modal'>{ this.props.childern }</div>, document.body)`
     - 使用场景：弹出框、右键菜单、提示信息、css 兼容性问题（父元素 overflow: hidden、父组件 z-index 太小）
+
 
 8. Context，可以参考：/components/使用context生产数据
     - 使用场景：公共信息的传递（主题、语言），用 props 太繁琐，用 redux 小题大做
     - 可以跨组件使用（消费），不需要逐层向下传递
 
+
 9. 异步组件，主要以下两个 api，使用场景还是用来处理：大组件、路由懒加载，可以参考：/components/异步组件
     - React.lazy
     - React.Suspense
+
 
 10. SCU（shouldComponentUpdate），默认 return true
 
@@ -337,7 +392,7 @@
     1. react 默认：父组件有更新，子组件则无条件也更新！！！
     
     2. Vue 则不会有这个问题，Vue 使用的是 watcher 机制，只有在模板里用到的 data 数据变化才会触发更新，其他情况则不会，
-       主要是因为没被用到的数据不会被 watcher 收集为依赖，数据变化，根本没人理它
+       主要是因为没被用到的数据没有 watcher 去观察它，数据变化，根本没人理它
     
     3. 性能优化对于 React 更重要
     
@@ -346,6 +401,7 @@
     5. SCU 一定要每次都用吗？
         - 答案是否定的，只在需要的时候才会用（有性能问题的时候），小项目根本不需要
     ```
+
 
 11. PureComponent 和 memo
     - PureComponent，在 SCU 中实现了浅比较（ 只比较对象的第一层 key 值，可以参考：https://cloud.tencent.com/developer/article/1548787?from=14588 ）
@@ -373,15 +429,21 @@
 
     - 尽量不要做深比较（耗性能），浅比较已经适用大部分情况
 
+
 12. immutable.js，再稍微看一下，主要是要理解不可变数据的这个概念。不过我觉得这个库不好，迁移成本太大，还不如用 immer
+
 
 13. 高阶组件，看一下，主要就是外面包一层父组件，封装公共逻辑，参考：/components/高阶组件
 
+
 14. Render Props，与 HOC 相反，类似于包裹一个子组件，向子组件传递一个 render 函数，函数的参数就是组件需要的数据，数据的生成及更新由子组件处理，当前组件不管，当前组件只管拿来用，至于子组件怎么渲染，则由当前组件决定。参考：/components/RenderProps
+
 
 15. HOC vs Render Props
     - hoc 的模式理解简单，但会增加组件层级，嵌套比较深的话，props 来源难以确定，增加维护成本和降低代码可读性
-    - render props 代码简洁，局部使用，理解了 render props 之后，我觉得这个似乎要比高阶组件好用
+    - render props 代码简洁，局部使用，理解了 render props 之后，我觉得这个似乎要比高阶组件好用，至少 props 来源可以确定
+      - 但是如果想封装多个功能，还是避免不了要嵌套很多层，代码的可读性也会变得很差
+
 
 16. react-redux
     - 异步 action，就是 action 返回一个函数，函数的参数传递 dispatch，函数内容是一个异步请求，请求响应时再 dispatch，这个函数还可以传递第二个参数 getState
@@ -407,6 +469,7 @@
 
     - redux 数据流，参考：/【图】/redux数据流.png
 
+
 17. react-router，hash 和 history 模式，和 Vue 一样
 
     ```
@@ -414,7 +477,9 @@
         <Link to="/page">首页</Link>
     ```
 
+
 18. vdom 和 diff 算法，核心实现的理念和其他的 vdom 实现都差不多，参考 Vue 即可
+
 
 19. JSX 的本质是什么？我理解 JSX 其实是语法糖，其本质就是 createElement 函数
     - 通过 babel 编译成 React.createElement 函数（对应 Vue 的 h 函数），执行函数返回 vnode（虚拟 dom 节点，在 React 中对应的就是 fiberNode 实例）
@@ -446,20 +511,22 @@
             ))
         ```
 
+
 20. react 合成事件，参考：/【图】/react合成事件.png
     - 通过 jsx 语法绑定到元素上的事件，其实不是真的绑定，通过冒泡机制，这些事件最终都会冒泡到 html 上，在 html 上有一个统一的合成事件，通过原生事件的 target 可以获得触发事件的元素，通过 dispatchEvent（这个是 React 内部的一个函数）去触发事件回调函数，并把 event 对象传递给它，这个 event 对象也就是合成事件的实例
     - 为何要合成事件机制？
         - 更好的兼容性和跨平台（例如：react-native）
         - 挂载到 document，可以减少内存消耗，避免频繁解绑
-        - 方便事件的统一管理（如事务机制）
+        - 方便事件的统一管理（如事务机制，让 setState 变成异步）
     - 注：react16 绑定到 document，react17 绑定到了 root 上了，这样有利于多个 react 版本的共存，例如微前端
 
+
 21. setState 和 batchUpdate，可以参考：/【图】/react-setState主流程.png、react-isBatchingUpdates1、react-isBatchingUpdates2，参考文章：https://github.com/sisterAn/blog/issues/26
-    - 异步或者同步的根本在于，isBatchingUpdates 的值，isBatchingUpdates 默认为 false，也就是同步，但是，有一个函数 batchedUpdates，这个函数会把 isBatchingUpdates 修改为 true，当 React 在调用事件处理函数之前就会调用这个 batchedUpdates，造成的后果，就是由 React 控制的事件处理过程 setState 不会同步更新 this.state，而是异步
+    - 异步或者同步的根本在于，isBatchingUpdates 的值，isBatchingUpdates 默认为 false，也就是同步，但是，有一个函数 batchedUpdates，这个函数会把 isBatchingUpdates 修改为 true，当 React 在调用事件处理函数之前就调用这个 batchedUpdates，就会让 React 控制的事件处理过程 setState 不会同步更新 this.state，而是异步
     - 哪些能命中 batchUpdate 机制？
         - 生命周期（和它调用的函数）
         - react 中注册的事件（和它调用的函数）
-        - 总之就是：react 可以管理的入口，React 在进入函数时将 isBatchingUpdates 设为 true，函数执行完会设为 false，所以在函数内定义的异步回调函数内，isBatchingUpdates 为 false，可以参考上面说的几个图
+        - 总之就是：react 可以管理的入口，React 在进入函数时将 isBatchingUpdates 设为 true，函数执行完会设为 false，所以在函数内定义的异步回调函数内，isBatchingUpdates 为 false（所以异步回调内的 setState 会变成同步），可以参考上面说的几个图
     - 哪些不能命中 batchUpdate 机制？
         - setTimeout、setInterval 等（和它调用的函数）
         - 自定义的 Dom 事件（和它调用的函数），指通过 addEventListener 定义的事件
@@ -467,18 +534,21 @@
         - 总之就是：react 管不到的入口（一般是异步执行的回调函数内）
         - 注意：在 React 18 之后，所有 setState 都是异步了（引入了自动批处理机制）
 
+
 22. transaction 事务机制，就是对应于 batchUpdate 运行的机制，装饰器模式，参考：/【图】/react-transaction事务机制.png
     - 从这个机制，可以看出，setState 的本质还是同步，只不过做成了异步的样子
     - 真正改变 state 的操作，是在这个装饰器中做的
+
 
 23. 简述下 react 组件渲染和更新流程吧
     - 渲染
         - 初始化 props 和 state
         - 执行 render 函数，解析 JSX 结构，生成 vnode，patch 更新 Dom 结构
     - 更新
-        - 触发 setState 或其他，生成 dirtyComponent
+        - 触发 setState 或其他，生成 dirtyComponent（会将此脏组件先保存于脏组件列表中，后面会在事务机制函数内执行更新）
         - 遍历所有的 dirtyComponent，执行 render 函数生成 newVnode
         - patch(oldVnode, newVnode) 更新 Dom，这里 patch 只是一个过程，react 真实更新 Dom 的函数可能不叫 patch
+
 
 24. 关于 fiber，React 内部运行机制，开发者体会不到
     - fiber 是啥？
@@ -497,6 +567,7 @@
     - 关于 fiber 的文章：
         - fiber 架构的基础讲解：https://zhuanlan.zhihu.com/p/670914853
 
+
 25. 关于 .jsx 和 .js 文件后缀类型有何区别
     - .jsx 文件后缀（extension）和 JSX 语法不是一回事
     - .jsx 和 .js 没有什么本质的区别！用哪种后缀都可以
@@ -514,6 +585,7 @@
         - 如果参数传递的是 []，初始化执行一次，返回的函数在组件销毁时执行一次，这时等于 willUnMount
         - 如果参数不传递或者传递类似 [a, b]，返回的函数，会在下次 effect 执行之前被执行
 
+
 2. 关于 useRef 和 useContext，参考：/components/hooks/useRef 和 useContext
     - useRef，主要有两个作用
 
@@ -521,23 +593,38 @@
         - 定义类似于 this 的成员变量
     - useContext，和 class 组件的 Context 差不多，区别就是，消费者使用 hook 的方式来引用生产者
 
+
 3. useReducer，乍一看还以为 react 实现了 redux 的功能，实则不然，参考：/components/hooks/关于 useReducer
     - useReducer 是 useState 的代替方案，用于 state 复杂变化的情况
-        - 我觉得这个主要用于将复杂的 state 变化情况集中在一块，以便于维护
+        - 我觉得这个主要用于将复杂的 state 变化情况集中在一块，以便于维护，让我们看一眼就知道 state 有哪几种变化方向
+        - 还有个就是通过派发 action 的方式去改变 state，让每次改变都更加语义化了，代码可读性增加
     - useReducer 和 useState 一样，是单个组件状态管理，不能共享数据
     - 组件通讯还是需要 props，全局状态管理还是需要 redux
 
+
 4. useMemo 和 useCallback，类似于 class 组件的 PureComponent，主要用来做 **性能优化**，参考：/components/hooks/useMemo 和 useCallback
     - useMemo 缓存数据，分为 useMemo 和 memo，用 useMemo 处理要缓存的数据（可传递子数据项作为依赖更新），用 memo 生成子组件
+      - useMemo 的功能类似于 Vue 的 computed 函数（计算属性）
     - useCallback 缓存函数，如果函数内有用到 state，可传递 state 作为依赖参数
 
+
 5. 自定义 hook，参考：/components/hooks/自定义hook
+   - 不会有人问你写过哪些 hooks 吧？
+     - 其实写的 hook 基本上都是些提取公共业务逻辑的 hook，例如：
+       - useLoginInfo，获取用户信息
+       - useDevice，获取设备信息
+       - useLoading，对加载中图标的一些控制
+     - 基础功能 hook 写的比较少，主要是没有太多需要，例如：
+       - usePopup，从屏幕下方升起的子操作界面，传入标题与主要内容，返回：是否显示控制（setShowComp）和模态框组件（Comp）
+       - usePortalModal，模态框，让组件在 document.body 下显示，处于页面最上层，返回：是否挂载控制（setShowModal）
+
 
 6. hooks 使用规范，参考：/components/hooks/hook依赖于调用顺序
     - useXxx 的形式，只能用于函数组件和自定义 hook 中，使用了 hook 的函数组件可以在 class 组件中使用，可以看作与 class 组件的连接
     - 只能用于顶层代码，不能在循环、判断中使用 hooks
         - 无论是 render 还是 re-render，hooks 调用顺序必须一致，如果出现在了循环、判断中，则无法保证顺序一致，hooks 本质是纯函数，每次状态更新就会重新执行函数，而 state 的获取就是依赖于调用顺序的，这个很重要！！！
     - 可以借助 eslint-plugin-react-hooks 做代码识别
+
 
 7. 关于组件逻辑复用
     - Mixins，变量作用域来源不清、属性重名
@@ -548,14 +635,21 @@
         - 变量和作用域明确
         - 不会产生嵌套
 
+
 8. 使用 hooks 的一些坑，参考：/components/hooks/hooks的一些坑
     - useState 初始化值，只有第一次是有效的，只能通过 setXxx 修改
-    - useEffect 内部不能修改 state（条件为：参数为 []，详细的看参考代码，有说明）
+      - 假如 state 初始化值是 `props.xxx`，那么当 `props.xxx` 的值改变时，state 的值也是不会改变的
+    - useEffect 内部不能修改 state（条件为：参数为 []，使用 setInterval 定时改变 count，`setCount(count + 1)`）
+      - count 的值不会改变，因为函数还是 hook 组件第一次执行的时候生成的，每次执行函数的时候 count 的值都是初始值，所以 `setCount(count + 1)` 的结果永远不变
+      - 如果把 count 作为参数传递，每次 effect 函数倒是会更新，但是会造成死循环（依赖改变后重新执行函数）
+      - 只能使用 `setCount((preCount) => preCount + 1)` 或者定义一个 ref 来模拟 this 成员变量来解决
+      - 因为 hook 的使用，迫使我们需要懂 hook 组件的执行原理才行，并不是开箱即用，所以是个坑
     - useEffect 可能出现死循环（注意函数默认参数为对象或数组的情况，此时它们都是匿名的）
-
-
-
-
+      - 例如我们定义了一个 hook 名为 useXXX，然后给了它一个默认参数 `config = {}`
+      - 然后我们在这个 hook 里写了一个 useEffect，并且传递 config 作为依赖项
+      - 此时 useEffect 函数内触发一次 state 的更新，就会死循环
+      - 因为 config 每次都是一个匿名对象，是一个新对象，依赖改变，又会触发函数执行，造成死循环
+    - 总之使用 useEffect 传递依赖项的时候要小心，操作不当，有可能会造成死循环
 
 
 

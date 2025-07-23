@@ -1,8 +1,55 @@
 ## review interview
 
+### 目录
+
+1. 基础篇
+   - <a href="#jichu1">说说箭头函数？</a>
+   - <a href="#jichu2">描述 TCP 的三次握手和四次挥手？</a>
+   - <a href="#jichu3">在 js 中 for-in 和 for-of 的区别？</a>
+   - <a href="#jichu4">关于 for await ... of 的使用？</a>
+   - <a href="#jichu5">关于 offsetHeight、clientHeight、scrollHeight 的区别？</a>
+   - <a href="#jichu6">在 dom 中，Element 和 Node 的区别？</a>
+   - <a href="#jichu7">JS 的严格模式有什么特点？</a>
+   - <a href="#jichu8">http 跨域时为何要发送 options 请求？</a>
+   - <a href="#jichu9">为什么 0.1 + 0.2 !== 0.3 ？</a>
+   - <a href="#jichu10">说一说 JS 的垃圾回收机制？</a>
+   - <a href="#jichu11">如何检测 JS 内存泄漏？</a>
+   - <a href="#jichu12">JS 内存泄漏的场景有哪些？</a>
+   - <a href="#jichu13">浏览器和 nodejs 中的事件循环有什么不同？</a>
+   - <a href="#jichu14">描述一下 js-bridge 的原理？</a>
+   - <a href="#jichu15">简述 hybrid 模板的更新流程？</a>
+   - <a href="#jichu16">requestAnimationFrame 和 requestIdleCallback 有什么区别？</a>
+   - <a href="#jichu17">移动端点击 300ms 延迟怎么解决？</a>
+   - <a href="#jichu18">Retina 屏幕的 1px 如何实现？</a>
+   - <a href="#jichu19">https 协议为什么是安全的？它的加密过程是什么？</a>
+   - <a href="#jichu20">https 如何防止中间人攻击？</a>
+   - <a href="#jichu21">在 http 请求中 cookie 和 token 的区别？</a>
+   - <a href="#jichu22">如何实现 SSO（单点登录）？</a>
+   - <a href="#jichu23">HTTP 与 UDP 协议的区别？</a>
+   - <a href="#jichu24">HTTP 的 1.0、1.1、2.0 有什么区别？</a>
+   - <a href="#jichu25">script 标签的 defer、async 有什么区别？</a>
+   - <a href="#jichu26">prefetch 和 dns-prefetch 的区别？</a>
+   - <a href="#jichu27">前端的攻击方式？</a>
+   - <a href="#jichu28">WebSocket 协议和 HTTP 协议的区别？</a>
+   - <a href="#jichu29">输入 url 到网页显示的整个过程？</a>
+   - <a href="#jichu30">重绘 repaint 和重排 reflow 的区别？</a>
+   - <a href="#jichu31">如何实现网页多 Tab 通信？</a>
+   - <a href="#jichu32">for 和 forEach 哪个更快？</a>
+   - <a href="#jichu33">开发环境依赖和生产环境依赖如果写错地方了会怎样？</a>
+2. <a href="#node">Node 篇</a>
+3. <a href="#vue">Vue 篇</a>
+4. <a href="#react">React 篇</a>
+5. <a href="#framework">框架篇</a>
+6. <a href="#yewu">业务篇</a>
+7. <a href="#writecode">手写代码篇</a>
+8. <a href="#writecode2">手写代码篇-2</a>
+9. <a href="#diaozuan">刁钻问题篇</a>
+10. <a href="#project">项目设计篇</a>
+11. <a href="#softskill">软技能篇</a>
+
 ### 基础篇
 
-1. 说说箭头函数？
+1. 说说箭头函数？<span id="jichu1" />
    - 缺点（或者说与 function 的不同）：
      - 没有 arguments
      - 无法通过 call、apply、bind 改变 this
@@ -18,12 +65,12 @@
          - vue 的生命周期或 methods 等
 
 
-2. 描述 TCP 的三次握手和四次挥手？
+2. 描述 TCP 的三次握手和四次挥手？<span id="jichu2" />
     - 如图：
     <br/><img src="./picture/01.jpg" width="50%" style="margin-top: 5px">
 
 
-3. 在 js 中 for-in 和 for-of 的区别？
+3. 在 js 中 for-in 和 for-of 的区别？<span id="jichu3" />
    - for-of 可以，而 for-in 不可以的：
      - 可以遍历 Set、Map、Generator
    - for-in 可以，而 for-of 不可以的：
@@ -35,7 +82,7 @@
        - 判断可迭代：看它是否有 Symbol.iterator 属性，是否是个函数
 
 
-4. 关于 for await ... of 的使用？
+4. 关于 for await ... of 的使用？<span id="jichu4" />
    - 主要是用来遍历多个 Promise 的，可以得到 Promise 的响应结果
    - 例如以下代码：
      ```js
@@ -54,7 +101,7 @@
      ```
 
 
-5. 关于 offsetHeight、clientHeight、scrollHeight 的区别？
+5. 关于 offsetHeight、clientHeight、scrollHeight 的区别？<span id="jichu5" />
     - offsetHeight：`border + padding + content`
     - clientHeight：`padding + content`
     - scrollHeight：`padding + 实际内容尺寸`
@@ -68,7 +115,7 @@
         - 这个属性一般和控制视口之外的元素有关，前端会比较少用到
 
 
-6. 在 dom 中，Element 和 Node 的区别？
+6. 在 dom 中，Element 和 Node 的区别？<span id="jichu6" />
    - 首先在 Dom 树中，所有节点都是 Node
    - Node 是 Element 的基类
    - Element 是所有其它 HTML 元素的基类，如：HTMLDivElement
@@ -83,7 +130,7 @@
        - `[...NodeList]`
 
 
-7. JS 的严格模式有什么特点？
+7. JS 的严格模式有什么特点？<span id="jichu7" />
     - 字符串 `use strict`，可以在全局开启，或者在某一个函数开启
     - 严格控制了哪些东西？（这里列举的是部分控制）
       - 全局变量必须先声明
@@ -94,14 +141,14 @@
       - 函数的参数不能重名
 
 
-8. http 跨域时为何要发送 options 请求？
+8. http 跨域时为何要发送 options 请求？<span id="jichu8" />
    - 是跨域请求之前的预检查（但也是可能会发送 options 请求，不是一定会发）
      - 可以预先拿到服务端为 CORS（跨域资源共享）配置的各种权限
        - 例如 `Access-Control-Allow-Origin` 之类的
      - 这个请求是浏览器自行发起的，不需要开发者干预，不会影响实际的功能
 
 
-9. 为什么 `0.1 + 0.2 !== 0.3` ？
+9. 为什么 `0.1 + 0.2 !== 0.3` ？<span id="jichu9" />
    - 首先这个问题不止是 js 有，其它编程语言也有，像 C、Java、Ruby .. 都有这个问题
    - 究其原因，是和计算机的底层原理有关
      - 计算机是使用二进制来存储数据的
@@ -113,7 +160,7 @@
          - 0.875 也能够表示，因为它可以表示成为 `1/2 + 1/(2^2) + 1/(2^3)`
 
 
-10. 说一说 JS 的垃圾回收机制？
+10. 说一说 JS 的垃圾回收机制？<span id="jichu10" />
     - 引用计数
       - 看对象有没有被引用，没有被引用即触发垃圾回收
       - 这种方式对于循环引用不太好使
@@ -129,12 +176,12 @@
           - 主垃圾回收器负责老生代的垃圾回收，副垃圾回收器负责新生代的垃圾回收
 
 
-11. 如何检测 JS 内存泄漏？
+11. 如何检测 JS 内存泄漏？<span id="jichu11" />
     - 主要是使用 Chrome 开发工具里的 Performance 功能，看页面在运行过程中的内存变化
     - 也可以结合 Memory 功能一起看，里面保存有当前页面实时运行的各个对象及所占内存大小
 
 
-12. JS 内存泄漏的场景有哪些？
+12. JS 内存泄漏的场景有哪些？<span id="jichu12" />
     - 以现代 Vue、React 组件为例：
        - 被全局对象、变量引用，组件销毁时未清除
          - 例如把临时变量挂到 Window 上，或者挂到外部的 data 对象上
@@ -147,7 +194,7 @@
         - 这个 API 可以用于给两个对象建立联系，但是并不影响它们的垃圾回收，这样也就不会有内存泄漏的风险
 
 
-13. 浏览器和 nodejs 中的事件循环有什么不同？
+13. 浏览器和 nodejs 中的事件循环有什么不同？<span id="jichu13" />
     - 注意，在 nodejs 官文中，并没有微任务和宏任务这个说法，这里为了方便理解，在 node 中继续使用微任务和宏任务这两个名词
     - 首先，浏览器和 nodejs 的事件循环基本上是一致的，都有同步任务，微任务和宏任务，并且微任务是在宏任务之前执行的
     - 不同点在于，nodejs 中的任务分不同的类型，和不同的优先级（关于 nodejs 事件循环的具体内容，可以在我的 nodejs 深入浅出文章中了解到）
@@ -163,7 +210,7 @@
         - `close callbacks` close 事件相关
 
 
-14. 描述一下 js-bridge 的原理？
+14. 描述一下 js-bridge 的原理？<span id="jichu14" />
     - 首先什么是 js-bridge？
       - 是 js 与 APP或客户端之间通信的桥梁
       - js 是无法直接调用 native API 的，需要通过一些特定的方式来调用，这些方式就统称为 js-bridge，例如：微信 JSSDK
@@ -188,7 +235,7 @@
         - `chrome://inspect/#devices`
 
 
-15. 简述 hybrid 模板的更新流程？
+15. 简述 hybrid 模板的更新流程？<span id="jichu15" />
     - 我们知道，前端 hybrid 技术是 App 创建一个 Webview 并通过 file 协议打开 H5 页面，这些 H5 文件是被下载到本地的
     - 那么，H5 文件更新了，App 该怎么更新这些文件呢？
     - 一般流程是这样的：
@@ -201,7 +248,7 @@
       - 待新版本下载完成，再把老版本替换成掉，开始使用
 
 
-16. requestAnimationFrame 和 requestIdleCallback 有什么区别？
+16. requestAnimationFrame 和 requestIdleCallback 有什么区别？<span id="jichu16" />
     - RAF 在每次渲染完都会尝试执行，也就是在当前帧内一定会尝试执行，高优先级
       - 如果当前帧没有空闲时间了，则会推迟到下一帧执行，如果还没有，就继续推迟，反正最终一定会执行，且每一帧最多只会执行一次
     - requestIdleCallback 空闲时执行，低优先级
@@ -210,7 +257,7 @@
       - 并且会在无延迟时间的 setTimeout 之后执行
 
 
-17. 移动端点击 300ms 延迟怎么解决？
+17. 移动端点击 300ms 延迟怎么解决？<span id="jichu17" />
     - 首先为什么会有 300ms 延迟？
         - 是移动端设计用来支持双击操作的（例如双击放大），300ms 内点击了第二次，触发双击事件，超过 300ms 未点击，触发单击事件
     - 怎么解决延迟问题？
@@ -223,7 +270,7 @@
             - 浏览器会认为，已经做了响应式，在移动端就没必要双击放大了，已经是合适的页面展示效果了
 
 
-18. Retina 屏幕的 1px 如何实现？
+18. Retina 屏幕的 1px 如何实现？<span id="jichu18" />
     - 下面以 DPR = 2（1px 会用两个物理像素表示）的屏幕为例：
         - 使用 transform 缩放：`transform: scaleY(0.5)`
         - 使用阴影扩散：`box-shadow: 0 0 0 0.5px #e8e8e8`
@@ -234,7 +281,7 @@
             - 阴影颜色
 
 
-19. https 协议为什么是安全的？它的加密过程是什么？
+19. https 协议为什么是安全的？它的加密过程是什么？<span id="jichu19" />
     - 为什么是安全的？
       - 通过在 http 协议上添加 SSL/TLS（Secure Sockets Layer/Transport Layer Security）加密层来确保数据传输的安全性
       - 通过 “非对称加密” 结合 “对称加密” 的方式来实现数据的安全通信
@@ -266,7 +313,7 @@
       <br/><img src="./picture/05.jpg" width="60%" style="margin-top: 5px">
 
 
-20. https 如何防止中间人攻击？
+20. https 如何防止中间人攻击？<span id="jichu20" />
     - 我们知道 https 是加密传输的，但是黑客还是可以攻击
       - 在服务端向客户端传输公钥的过程中，黑客把公钥给换了，换成自己的公钥和私钥
       - 然后在客户端向服务器传递数据过程中，黑客用自己的私钥解密，就能拿到加密数据
@@ -282,7 +329,7 @@
         <br/><img src="./picture/07.jpg" width="40%" style="margin-top: 5px">
 
 
-21. 在 http 请求中 cookie 和 token 的区别？
+21. 在 http 请求中 cookie 和 token 的区别？<span id="jichu21" />
     - 首先 cookie 和 session 是一对，大致流程如下：
       - 用户在浏览器登录，输入用户名和密码
       - 服务端登录校验，保存用户信息到 session 中，并将用户的唯一标识放到 cookie 中，并返回给浏览器
@@ -322,7 +369,7 @@
           - 没有特殊要求（如创业初期的网站），可以节约很多成本
 
 
-22. 如何实现 SSO（单点登录）？
+22. 如何实现 SSO（单点登录）？<span id="jichu22" />
     - 单点登录：只需要登录一次，就可以在相互信任的多个应用系统中共享登录状态
       - 例如：登录了淘宝，就可以使用天猫，登录了百度，就可以逛百度贴吧
       - 单点登录和联合登录的区别？
@@ -344,7 +391,7 @@
           - 服务器拿这个 token 去微信做校验，校验成功则继续业务
 
 
-23. HTTP 与 UDP 协议的区别？
+23. HTTP 与 UDP 协议的区别？<span id="jichu23" />
     - 首先，HTTP 与 UDP 不是一个网络层级的
       - HTTP 是基于 TCP 的，TCP 和 UDP 是属于同一层级的
       - HTTP 是应用层，TCP 和 UDP 是传输层
@@ -353,7 +400,7 @@
       <br/><img src="./picture/04.jpg" width="30%" style="margin-top: 5px">
 
 
-24. HTTP 的 1.0、1.1、2.0 有什么区别？
+24. HTTP 的 1.0、1.1、2.0 有什么区别？<span id="jichu24" />
     - http 1.0
       - 最基础的，支持基本的 get、post 请求方法
     - http 1.1
@@ -373,7 +420,7 @@
         - 联想到 SSE 技术，也是基于 http 协议的
 
 
-25. script 标签的 defer、async 有什么区别？
+25. script 标签的 defer、async 有什么区别？<span id="jichu25" />
     - 如图所示：
       - 什么都不写，只要遇到 script，就中断 dom 渲染，js 加载后执行
       - 使用 async 时，加载时异步，但是加载完立即执行，中断 dom 渲染
@@ -384,7 +431,7 @@
         - 使用了 defer 可以并行加载，然后等待 dom 渲染完，在最后直接执行，提升了性能
 
 
-26. prefetch 和 dns-prefetch 的区别？
+26. prefetch 和 dns-prefetch 的区别？<span id="jichu26" />
     - 首先，这个问题是混乱的，这两个没有可比性，可以拆分为下面两个问题：
     - preload 和 prefetch 的区别？
       - preload：预加载，资源在当前页面使用，会优先加载
@@ -402,7 +449,7 @@
       ```
 
 
-27. 前端的攻击方式？
+27. 前端的攻击方式？<span id="jichu27" />
     - XSS：跨站脚本攻击
       - 原理：将 js 代码插入到网页内容中，渲染时执行 js 代码
       - 预防：特殊字符替换（前端和后端都要做好自己的这一块，不要指望哪一端，出了问题前端和后端都得背锅）
@@ -439,7 +486,7 @@
       - 预防：和 XSS 类似，处理输入内容，替换特殊字符
 
 
-28. WebSocket 协议和 HTTP 协议的区别？
+28. WebSocket 协议和 HTTP 协议的区别？<span id="jichu28" />
     - WebSocket
       - 端对端通讯，client 和 server 都可以主动发消息（一开始 client 必须先和 server 建立连接）
         - 协议是以 `ws://` 开头，无跨域限制
@@ -467,7 +514,7 @@
         - 服务器有结果了，它会主动发给客户端
 
 
-29. 输入 url 到网页显示的整个过程？
+29. 输入 url 到网页显示的整个过程？<span id="jichu29" />
     - 总的来说分为三个大的步骤：
       - 网络请求：加载资源
         - DNS 查询（得到 IP 地址），建立 TCP 连接（三次握手）
@@ -491,7 +538,7 @@
       <br/><img src="./picture/09.jpg" width="50%" style="margin-top: 5px">
 
 
-30. 重绘 repaint 和重排 reflow 的区别？
+30. 重绘 repaint 和重排 reflow 的区别？<span id="jichu30" />
     - 重绘
       - 只是元素外观改变，如：颜色、背景色、阴影
       - 尺寸、位置不变，不会影响其它元素的位置
@@ -507,7 +554,7 @@
         - 优化动画，使用 CSS3（例如 transform）和 RAF
 
 
-31. 如何实现网页多 Tab 通信？
+31. 如何实现网页多 Tab 通信？<span id="jichu31" />
     - WebSocket
       - 需要后端支持，成本高，但是可以在跨域 tab 中传递数据
     - storage 事件监听
@@ -519,20 +566,20 @@
       - 这个在本地调试的时候需要开启无痕模式，可以通过 `chrome://inspect` 调试
 
 
-32. for 和 forEach 哪个更快？
+32. for 和 forEach 哪个更快？<span id="jichu32" />
     - for 更快
     - forEach 每次执行，都需要创建一个函数，需要额外的开销，所以更慢
     - 记住一句话：越低级的代码，性能往往越好
 
 
-33. 开发环境依赖和生产环境依赖如果写错地方了会怎样？
+33. 开发环境依赖和生产环境依赖如果写错地方了会怎样？<span id="jichu33" />
     - 对于独立的项目来说，没有影响，对于第三方库来说，有问题
     - 严格来说，我们写依赖是需要按照规范来的，开发依赖写到 devDependencies，生产依赖写到 dependencies，但是：
       - 独立项目：所有依赖都需要安装，所以写到哪其实都一样，没啥问题
       - 第三方库：有问题，我们引用的第三方库，一般都已经打包过了，所以不需要安装开发依赖
     - 正常来讲，还是按照规范写吧，需要在运行时用到的，写在生产依赖（浏览器端执行），只在编译时用到的（node 端执行），写在开发依赖
 
-### Node 篇
+### Node 篇 <span id="node" />
 
 1. 在 nodejs 中，如何开启多进程？
    - 主要有两种方式：
@@ -546,7 +593,7 @@
    - 其实就和 express 的中间件执行顺序一样，遇 next() 先走 next，执行完后再回来继续
    - 可参考我的 nodejs-s 系列文章，写这个问题在这，主要是让你知道 “洋葱圈模型” 不是啥神秘的东西
 
-### Vue 篇
+### Vue 篇 <span id="vue" />
 
 1. watch 和 computed 的区别？
    - watch 用于监听现有的数据，一般不产生新数据
@@ -640,7 +687,7 @@
      - errorCaptured 监听一些重要的、关键的、风险性组件的错误
      - errorHandler 和 window.onerror 候补全局监听
 
-### React 篇
+### React 篇 <span id="react" />
 
 1. 对 React 做过哪些优化？
    - 不要直接在 JSX 中定义匿名函数，因为每次渲染都需要重新创建
@@ -701,7 +748,7 @@
    - 所以 setState 会先于所有微任务执行，但是又在其它所有同步代码之后执行
    - 如果硬要给个答案，那 setState 是微任务，并且是优先级最高的
 
-### 框架篇
+### 框架篇 <span id="framework" />
 
 1. 使用虚拟 Dom 和 JS 哪个操作 dom 更快？
    - 答案：JS 直接操作 dom 更快
@@ -741,7 +788,7 @@
    - 还有个问题就是：
      - 如果有需要自己操作 dom 的情况，如果没有 key，那节点每次都会删除重建，那每次重新渲染，这个 dom 都需要重新获取
 
-### 业务篇
+### 业务篇 <span id="yewu" />
 
 1. 如何进行首屏优化？
    - 代码层面优化：路由懒加载、图片懒加载、元数据按需加载、打包优化
@@ -919,7 +966,7 @@
        - 分析：看源码，替换为别的库，最终解决：自己手动使用 canvas 画图
        - 成长：越底层的东西越稳定，控制性越好，当第三方的东西出现问题无法解决的时候，最好自己手动解决
 
-### 手写代码篇
+### 手写代码篇 <span id="writecode" />
 > 规范性、完整性、鲁棒性
 
 1. [数组扁平化](js/flat.js)
@@ -935,12 +982,12 @@
 11. [LRU缓存实现](writeCode/LRU缓存实现.ts) + [使用-对象+双向链表-方式实现](writeCode/LRU缓存实现-对象-双向链表.ts)
 12. [手写深拷贝-考虑各种类型及循环引用](writeCode/手写深拷贝.ts)
 
-### 手写代码篇-2（偏业务型）
+### 手写代码篇-2（偏业务型）<span id="writecode2" />
 
 1. [将数组转成树结构](writeCode2/数组转成树.ts)
 2. [将树转成数组](writeCode2/树转成数组.ts)
 
-### 刁钻问题篇
+### 刁钻问题篇 <span id="diaozuan" />
 
 1. `[1, 2, 3].map(parseInt)` 输出什么？
    - 首先 `parseInt` 接收两个参数，参数一是字符串（一般是字符串形式的数字，直接传数字也行），参数二表示这个数字是几进制的（2~36），方法的结果是转化成十进制数字
@@ -1121,10 +1168,10 @@
      - 只能是字符串和 Symbol 类型
      - 其它类型会被转化成字符串（调用自身的 toString 方法）
 
-### 项目设计篇
+### 项目设计篇 <span id="project" />
 - 请转至：[ProjectDesign](projectDesign/readme.md)
 
-### 软技能篇
+### 软技能篇 <span id="softskill" />
 - 虽然不用写代码，但是却很重要，甚至比会写代码还重要
 - 例如，学习一门新的语言，需要考虑哪些方面？
   - 优势和应用场景

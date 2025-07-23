@@ -44,7 +44,7 @@ const p = new Promise((resolve) => {
   console.log('start');
   setTimeout(() => {
     resolve(789);
-  }, 300);
+  }, 2000);
 });
 
 Promise.resolve(123).then((data) => {

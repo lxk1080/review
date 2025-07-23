@@ -47,7 +47,7 @@
         // 所以构造函数既有prototype，也有__proto__
         console.log(Func.__proto__ === Function.prototype) // true
 
-        // 对于一个对象只有__proto__
+        // 字面量对象只有 __proto__
         var nums = [1, 2, 3];
         console.log(nums.prototype); // undefined
         console.log(nums.__proto__ === Array.prototype); // true

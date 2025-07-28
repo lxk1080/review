@@ -580,7 +580,6 @@
 
 1. 模拟生命周期，参考：/components/hooks/模拟生命周期
     - 需要注意 willUnMount 的模拟
-
         - 并不完全等同于 WillUnMount，effect 函数执行的时候（更新的时候），也会执行结束监听（在下一次 effect 函数之前执行）
         - 如果参数传递的是 []，初始化执行一次，返回的函数在组件销毁时执行一次，这时等于 willUnMount
         - 如果参数不传递或者传递类似 [a, b]，返回的函数，会在下次 effect 执行之前被执行
@@ -588,7 +587,6 @@
 
 2. 关于 useRef 和 useContext，参考：/components/hooks/useRef 和 useContext
     - useRef，主要有两个作用
-
         - 用来获取 Dom 节点
         - 定义类似于 this 的成员变量
     - useContext，和 class 组件的 Context 差不多，区别就是，消费者使用 hook 的方式来引用生产者

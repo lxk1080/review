@@ -568,7 +568,126 @@
         - fiber 架构的基础讲解：https://zhuanlan.zhihu.com/p/670914853
 
 
-25. 关于 .jsx 和 .js 文件后缀类型有何区别
+25. react-fiber 原理
+    - 可直接参考：[文章链接](https://www.doubao.com/chat/13956407549695746)
+    - fiber 解决了什么问题？
+      - 首先 fiber 是在 React 16 版本开始引入的，是 React 16 重构的协调引擎，本质是重新实现的堆栈，目的是实现增量渲染
+      - 传统 React 渲染过程是同步且不可中断的，当组件树庞大时，长时间占用主线程会导致页面卡顿（无法响应用户输入、动画掉帧等）
+    - 怎么解决的？
+      - Fiber 将渲染工作拆分成小单元，每次只处理一个单元，完成后检查是否有更高优先级任务（如用户输入），
+        <br/> 如果有，则暂停当前工作，优先处理高优先级任务，从而避免主线程阻塞
+    - Fiber 的核心设计思想是什么？
+      - 增量渲染：将渲染任务分解为小单元，分批执行
+      - 可中断与恢复：每个任务单元执行后可被暂停、恢复、终止或复用，通过优先级机制决定执行顺序
+      - 优先级调度：不同任务（如动画、用户输入、网络请求）分配不同优先级，高优先级任务可打断低优先级任务
+      - 双向链表结构：Fiber 节点通过 child（子节点）、sibling（兄弟节点）、return（父节点）指针形成链表，替代传统递归栈，便于中断后恢复遍历
+    - Fiber 架构中，任务的优先级是如何划分的？
+      - 所有任务未过期时：
+        - UserBlocking：用户交互相关（如点击、输入），需立即响应（需要在 250ms 内做出反馈）
+        - Normal：普通优先级（如网络请求后的更新），可延迟但不希望太久
+        - Low：低优先级（如非紧急数据处理），可延迟较长时间
+        - Idle：空闲时执行（如日志上报），仅在浏览器空闲时运行
+      - 存在过期任务时：
+        - 无论该任务原始优先级如何，只要 “已过期”（系统时间超过其过期时间），就会被视为最高紧急度，
+          <br/> 立即打断所有未过期任务（包括正在执行的高优先级任务），优先执行
+      - 其他说明：
+        - 每个任务的过期时间是根据任务的优先级类型和创建时间计算得出的：过期时间 = 任务创建时的当前时间 + 该优先级对应的 “超时阈值”
+          - “超时阈值” 是 React 为每种优先级预设的固定时长，优先级越高，阈值越小（要求越快完成）
+          - React 内部为不同优先级定义了明确的阈值（不同版本可能微调，以下为典型值）：
+            - UserBlocking：250ms（用户交互相关，需快速响应）
+            - Normal：5000ms（普通更新，可延迟但不太久）
+            - Low：10000ms（低优先级任务，允许较长延迟）
+            - Idle：无穷大（仅在浏览器空闲时执行，无强制完成时间）
+        - 优先级通过过期时间判断，过期时间越近，优先级越高，过期时间是一个时间戳，代表任务最晚要在这个时间前处理完成
+        - 创建一个新任务会触发优先级重排，且高优先级任务会立即打断正在执行的低优先级任务
+    - Fiber 的工作流程是怎样的？（双缓存机制）
+      - Fiber 工作流程分为两大阶段，通过 “双缓存” 机制实现高效更新：
+        - Reconciliation（协调阶段）：
+          - 遍历 Fiber 树，对比新旧节点（Diff 算法），找出需要更新的节点（增删改）
+          - 此阶段可中断，产出 “Effect List”（记录需要执行的 DOM 操作）
+        - Commit（提交阶段）：
+          - 不可中断，根据 Effect List 执行实际 DOM 操作（插入、删除、更新）
+          - 同时执行 componentDidMount、componentDidUpdate 等生命周期函数
+      - 双缓存：
+        - 内存中存在两棵 Fiber 树：current（当前 DOM 对应的树）和 workInProgress（正在构建的新树）
+        - 协调阶段在 workInProgress 树上进行修改，提交阶段将 workInProgress 切换为 current，实现 DOM 更新的原子性
+    - Fiber 架构对生命周期有什么影响？
+      - 由于协调阶段可中断，React 16 前的部分生命周期可能被多次调用（如 componentWillMount、componentWillUpdate），导致不可预期的副作用
+      - 因此 React 16 引入了新的生命周期 API 替代：
+        - 新增 getDerivedStateFromProps（纯函数，用于状态派生）、getSnapshotBeforeUpdate（在 DOM 更新前获取快照）
+        - 由此避免在可中断阶段产生副作用，确保代码可预测性
+    - Fiber 节点的结构是什么样的？（每个 Fiber 节点对应一个组件，包含以下核心属性）
+      - type：组件类型（如函数组件、类组件、标签名、forward_ref），直接显示为函数或标签名
+      - tag：组件类型对应的一个数字
+        - FunctionComponent (0)：表示函数式组件
+        - ClassComponent (1)：表示类组件
+        - HostRoot (3)：表示根节点的工作类型
+        - HostComponent (5)：表示原生 DOM 元素
+        - ContextConsumer (9)：表示上下文（Context）消费者组件
+        - ContextProvider (10)：表示上下文（Context）提供者组件
+        - ForwardRef (11)：表示使用 React.forwardRef 创建的组件
+        - MemoComponent (14)：表示使用 React.memo 创建的组件
+        - SimpleMemoComponent (15)：表示使用简单的 memo 创建的组件
+      - stateNode：关联的 DOM 节点或组件实例
+      - child/sibling/return：指向子、兄弟、父 Fiber 节点，形成链表结构
+      - pendingProps/memoizedProps：待处理的 props 和已缓存的 props（用于 Diff）
+      - effectTag：标记节点需要执行的操作（如插入、删除、更新）
+      - nextEffect：指向 Effect List 中的下一个节点，用于提交阶段快速遍历
+    - Fiber 与虚拟 DOM 的关系是什么？
+      - 虚拟 DOM 是描述 UI 的 JavaScript 对象，Fiber 是 React 的工作单元结构，两者目标不同但协同工作
+      - Fiber 架构下，虚拟 DOM 的 Diff 过程被拆分为 Fiber 节点的遍历和对比，每个 Fiber 节点对应一个虚拟 DOM 节点的处理单元
+      - Fiber 通过链表结构优化了虚拟 DOM 的递归遍历，使 Diff 过程可中断，提升了大型应用的性能
+    - React Fiber 是如何实现可中断与恢复的？
+      - 中断与恢复的实现过程：
+        - 任务拆分（将渲染工作分解为小单元）
+          - Fiber 将每个组件的处理（如 Diff、计算新状态）视为一个独立任务单元，每个 Fiber 节点对应一个任务单元
+        - 中断机制（检查优先级并暂停）
+          - React 在每个任务单元执行完毕后，会检查是否需要中断
+        - 恢复机制（从暂停处继续执行）
+          - 当浏览器空闲（高优先级任务完成），requestIdleCallback 会再次调用 workLoop
+        - 优先级抢占（高优先级任务打断低优先级任务）
+          - 如果在处理低优先级任务（如列表渲染）时，突然出现高优先级任务（如输入框输入），则会执行优先级抢占流程
+      - 核心设计点：
+        - 任务单元化：每个 Fiber 节点对应一个独立任务，避免长时间占用主线程
+        - 链表结构：通过 child/sibling/return 指针，使遍历可随时暂停和恢复（无需像虚拟 Dom 递归那样依赖调用栈）
+        - 时间切片：利用 requestIdleCallback 在浏览器空闲时处理任务，通过timeRemaining() 判断是否中断
+        - 状态保存：通过nextUnitOfWork指针记录当前进度，恢复时直接从该节点继续
+      - 参考伪代码如下：
+        ```js
+        // 简化的工作循环伪代码
+        function workLoop(deadline) {
+          let shouldYield = false;
+          // 从当前任务开始处理
+          while (nextUnitOfWork && !shouldYield) {
+            // 处理当前Fiber节点（一个任务单元）
+            nextUnitOfWork = performUnitOfWork(nextUnitOfWork);
+            // 检查剩余时间，如果不足则中断
+            shouldYield = deadline.timeRemaining() < 1;
+          }
+          // 如果还有未完成的任务，请求下一次浏览器空闲时间继续
+          if (nextUnitOfWork) {
+            requestIdleCallback(workLoop);
+          }
+        }
+        ```
+    - React 16 Fiber 三层架构是？
+      - 所谓的 “三层架构” 通常指的是支撑整个渲染流程的三个核心模块，它们协同工作实现了可中断渲染、优先级调度等核心功能，这三层分别是：
+        - Scheduler（调度器）
+          - 作用：负责任务的优先级管理和调度，决定何时执行哪个任务
+          - 地位：整个 Fiber 架构的 “调度中心”，决定任务的执行顺序和时机
+        - Reconciliation（协调器）
+          - 作用：负责找出前后两个 Fiber 树的差异（Diff 算法），标记需要更新的节点（生成 Effect List）
+          - 地位：实现 “增量渲染” 的核心，将渲染任务拆分为可中断的小单元
+        - Commit（提交器）
+          - 作用：根据协调器生成的 Effect List，执行真实的 DOM 操作，并触发生命周期函数
+          - 地位：最终将协调阶段的计算结果应用到实际 DOM，完成渲染更新
+      - 三层架构的协作流程：
+        - 当有更新触发（如 setState），Scheduler 会为该任务分配优先级并加入任务队列
+        - Scheduler 调度该任务的执行，进入 Reconciliation 阶段：遍历 Fiber 树，计算差异并生成 Effect List（此阶段可被中断）
+        - 协调完成后，进入 Commit 阶段：根据 Effect List 执行 DOM 操作和生命周期函数（此阶段不可中断）
+
+
+26. 关于 .jsx 和 .js 文件后缀类型有何区别
     - .jsx 文件后缀（extension）和 JSX 语法不是一回事
     - .jsx 和 .js 没有什么本质的区别！用哪种后缀都可以
     - .jsx 文件和 .js 文件后缀是可以互换的，语法内容完全通用，.jsx 文件就是 .js 文件

@@ -650,8 +650,8 @@
       - 核心设计点：
         - 任务单元化：每个 Fiber 节点对应一个独立任务，避免长时间占用主线程
         - 链表结构：通过 child/sibling/return 指针，使遍历可随时暂停和恢复（无需像虚拟 Dom 递归那样依赖调用栈）
-        - 时间切片：利用 requestIdleCallback 在浏览器空闲时处理任务，通过timeRemaining() 判断是否中断
-        - 状态保存：通过nextUnitOfWork指针记录当前进度，恢复时直接从该节点继续
+        - 时间切片：利用 requestIdleCallback 在浏览器空闲时处理任务，通过 timeRemaining() 判断是否中断
+        - 状态保存：通过 nextUnitOfWork 指针记录当前进度，恢复时直接从该节点继续
       - 参考伪代码如下：
         ```js
         // 简化的工作循环伪代码

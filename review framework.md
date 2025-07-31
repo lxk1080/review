@@ -800,6 +800,15 @@
      ```
 
 
+10. react 19 更新了些啥
+    - 自动批处理优化，覆盖了一些边缘情况
+    - react 18 的钩子优化（useTransition、useDeferredValue、useId）
+    - 新增的一些钩子（useActionState、useFormStatus、useOptimistic、use）
+    - 表单处理增强（主要体现在新加的两个钩子上：useActionState、useFormStatus）
+    - 服务器组件（Server Components）优化
+    - 更多请参考：[文章链接](https://www.doubao.com/chat/14399091177182210)
+
+
 
 
 

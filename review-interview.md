@@ -2,7 +2,7 @@
 
 ### 目录
 
-1. 基础篇
+1. <a href="#base">基础篇</a>
    - <a href="#jichu1">说说箭头函数？</a>
    - <a href="#jichu2">描述 TCP 的三次握手和四次挥手？</a>
    - <a href="#jichu3">在 js 中 for-in 和 for-of 的区别？</a>
@@ -47,7 +47,7 @@
 10. <a href="#project">项目设计篇</a>
 11. <a href="#softskill">软技能篇</a>
 
-### 基础篇
+### 基础篇 <span id="base" />
 
 1. 说说箭头函数？<span id="jichu1" />
    - 缺点（或者说与 function 的不同）：

@@ -1225,7 +1225,7 @@
      - 其它类型会被转化成字符串（调用自身的 toString 方法）
 
 ### 项目设计篇 <span id="project" />
-- 请转至：[ProjectDesign](projectDesign/readme.md)
+- 请转至：[project-design.md](docs/project-design.md)
 
 ### 软技能篇 <span id="softskill" />
 - 虽然不用写代码，但是却很重要，甚至比会写代码还重要

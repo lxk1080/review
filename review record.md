@@ -54,7 +54,7 @@
     - 双飞翼布局使用 margin 为左右腾出空间，但中间内容需要内嵌一个元素，左右只需要用 margin 复位，相对圣杯布局简单些
 
 
-7. 清除浮动：clearfix 了解一下，clearfix 加在浮动元素的父元素上
+7. 【outdated】清除浮动：clearfix 了解一下，clearfix 加在浮动元素的父元素上
 
 
 8. flex 布局

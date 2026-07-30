@@ -150,6 +150,38 @@ git rebase --abort
 # 推送到远程分支与目标分支 merge
 ```
 
+**cherry-pick 优选操作**
 
+```sh
+# 选择几个特定的 commit 进行合并
+
+# 假如现在有 release 和 develop 分支
+# develop 分支上提交了几个 commit
+
+git checkout develop
+
+git log --oneline
+# 输出：
+# b789012 新增列表功能
+# a123456 修复登录bug
+# c345678 新增搜索功能
+
+# 现在只想合并 修复登录bug 对应的那个 commit，先复制对应的 commit hash
+
+# 切换到 release 分支并执行 cherry-pick 操作
+
+git checkout release
+
+git cherry-pick a123456 
+
+# 这样 commit 的内容就被复制过来了，虽然内容相同，但是会生成一个新的 commit hash
+
+# 过程中可能会有冲突，解决冲突后流程正常，和 rebase 一样，过程中可以执行：
+git cherry-pick --continue
+git cherry-pick --abort
+
+# 也可以同时 cherry-pick 多个 commit，例如：
+git cherry-pick a123456 b789012 c345678
+```
 
 <br/><br/><br/>

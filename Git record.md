@@ -59,6 +59,7 @@ git clone git@github.com:lxk1080/gitSkills.git // 从远程库克隆一个本地
 git branch dev // 创建分支
 git checkout dev // 切换分支
 git checkout -b dev // 上面两句合并为一句，创建并切换到分支dev
+git checkout <commit-hash> // 可以切换到对应 commit 节点处的状态，这个操作在 vscode 中叫做：签出（已分离）
 git branch // 查看当前分支
 git merge dev // 合并 dev 分支到当前分支
 git branch -d dev  // 删除分支

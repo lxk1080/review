@@ -17,6 +17,7 @@ git add -A  // 添加所有内容（添加、删除、修改）
 
 git commit -m "first commit" // 提交，并写上提交说明
 git commit -a -m 'update commit' // 不使用 git add，直接提交，-a 相当于 git add -u，只能提交修改的和删除的，添加的文件不能提交
+git commit --amend // 将修改追加到上一个提交，如果上一个提交已经推送，那么再次推送需要使用 --force 强制推送
 
 git status // git 空间当前的状态
 
